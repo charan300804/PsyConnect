@@ -2,6 +2,8 @@
 import AssessmentResultsChart from '@/components/admin/assessment-results-chart';
 import AppointmentsChart from '@/components/admin/appointments-chart';
 import ForumActivityChart from '@/components/admin/forum-activity-chart';
+import { AppointmentsTable } from '@/components/admin/appointments-table';
+import { StudentDataTable } from '@/components/admin/student-data-table';
 
 export default function AdminPage() {
   return (
@@ -13,12 +15,17 @@ export default function AdminPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <AssessmentResultsChart />
-        <AppointmentsChart />
-        <div className="lg:col-span-2">
+      <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <AssessmentResultsChart />
+          <AppointmentsChart />
+          <div className="lg:col-span-2">
             <ForumActivityChart />
+          </div>
         </div>
+
+        <AppointmentsTable />
+        <StudentDataTable />
       </div>
     </div>
   );
