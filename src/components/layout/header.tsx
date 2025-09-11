@@ -12,6 +12,7 @@ export function Header() {
   const navItems = [
     { href: '/', label: 'Chat' },
     { href: '/resources', label: 'Resources' },
+    { href: '/test', label: 'Test' },
   ];
 
   return (
