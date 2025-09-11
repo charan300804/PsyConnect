@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HeartHandshake, LogIn } from 'lucide-react';
@@ -8,6 +9,11 @@ import { cn } from '@/lib/utils';
 
 export function Header() {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const navItems = [
     { href: '/test', label: 'Test' },
@@ -30,7 +36,7 @@ export function Header() {
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-4">
-            {navItems.map((item) => (
+            {isClient && navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -45,10 +51,10 @@ export function Header() {
               </Link>
             ))}
              <div className="border-l h-6 mx-2"></div>
-             <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
+             {isClient && <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
                 <LogIn className="w-4 h-4 mr-2" />
                 Login
-            </Link>
+            </Link>}
           </nav>
         </div>
       </div>
