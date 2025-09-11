@@ -32,7 +32,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
       name: '',
       studentId: '',
       email: '',
-      age: undefined,
+      age: '' as any,
       gender: '',
       school: '',
     },
