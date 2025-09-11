@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "resource-1",
+      "description": "A person meditating peacefully outdoors.",
+      "imageUrl": "https://picsum.photos/seed/res1/600/400",
+      "imageHint": "meditation nature"
+    },
+    {
+      "id": "resource-2",
+      "description": "A collection of journals and pens.",
+      "imageUrl": "https://picsum.photos/seed/res2/600/400",
+      "imageHint": "journaling writing"
+    },
+    {
+      "id": "resource-3",
+      "description": "Someone listening to music with headphones.",
+      "imageUrl": "https://picsum.photos/seed/res3/600/400",
+      "imageHint": "music headphones"
+    },
+    {
+      "id": "resource-4",
+      "description": "A person practicing yoga at sunrise.",
+      "imageUrl": "https://picsum.photos/seed/res4/600/400",
+      "imageHint": "yoga sunrise"
+    },
+    {
+      "id": "resource-5",
+      "description": "A group of friends talking and supporting each other.",
+      "imageUrl": "https://picsum.photos/seed/res5/600/400",
+      "imageHint": "friends support"
+    },
+    {
+      "id": "resource-6",
+      "description": "A video play button icon on a blurred background.",
+      "imageUrl": "https://picsum.photos/seed/res6/600/400",
+      "imageHint": "video play"
+    }
+  ]
 }
