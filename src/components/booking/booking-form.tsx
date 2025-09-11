@@ -65,7 +65,7 @@ export default function BookingForm() {
                     <FormItem>
                     <FormLabel>Full Name</FormLabel>
                     <FormControl>
-                        <Input placeholder="John Doe" {...field} />
+                        <Input placeholder="Full Name" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -78,7 +78,7 @@ export default function BookingForm() {
                     <FormItem>
                     <FormLabel>Student ID</FormLabel>
                     <FormControl>
-                        <Input placeholder="123456" {...field} />
+                        <Input placeholder="Student ID" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -92,7 +92,7 @@ export default function BookingForm() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="john.doe@example.com" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

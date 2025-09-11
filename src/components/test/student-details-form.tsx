@@ -53,7 +53,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder="Full Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,7 +66,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>Student ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="123456" {...field} />
+                    <Input placeholder="Student ID" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,7 +79,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="john.doe@example.com" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -93,7 +93,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                     <FormItem>
                     <FormLabel>Age</FormLabel>
                     <FormControl>
-                        <Input type="number" placeholder="18" {...field} />
+                        <Input type="number" placeholder="Age" {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -130,7 +130,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 <FormItem>
                   <FormLabel>School/University</FormLabel>
                   <FormControl>
-                    <Input placeholder="Springfield University" {...field} />
+                    <Input placeholder="School/University" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

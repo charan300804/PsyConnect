@@ -11,11 +11,19 @@ import Link from 'next/link';
 
 // This is a dummy component for replies. In a real app, this would be more complex.
 const ForumReplies = () => {
-    const replies = [
-        { id: 1, author: { name: 'Chris P.', isModerator: false }, text: "I feel the same way! I've been trying the Pomodoro technique, it helps a bit.", createdAt: '2 days ago' },
-        { id: 2, author: { name: 'Samantha R.', isModerator: false }, text: "Make sure you're getting enough sleep and eating well. It makes a huge difference for me.", createdAt: '2 days ago' },
-        { id: 3, author: { name: 'Chloe M.', isModerator: true }, text: "These are all great suggestions. Remember to take short breaks and do something you enjoy. If it gets too much, the university counselling service is available. You can book an appointment through the app.", createdAt: '1 day ago' },
-    ];
+    const replies: any[] = [];
+
+    if (replies.length === 0) {
+        return (
+            <div className="space-y-6 mt-8">
+                <h3 className="text-xl font-bold">Replies</h3>
+                <div className="text-center text-muted-foreground py-8">
+                    No replies yet. Be the first to reply!
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="space-y-6 mt-8">

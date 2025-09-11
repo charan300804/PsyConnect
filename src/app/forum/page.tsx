@@ -23,11 +23,17 @@ export default function ForumPage() {
         </Button>
       </div>
       
-      <div className="space-y-4">
-        {forumPosts.map((post) => (
-          <ForumPostItem key={post.id} post={post} />
-        ))}
-      </div>
+      {forumPosts.length === 0 ? (
+        <div className="text-center py-16">
+          <p className="text-muted-foreground">No posts have been made yet. Be the first to start a discussion!</p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {forumPosts.map((post) => (
+            <ForumPostItem key={post.id} post={post} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
