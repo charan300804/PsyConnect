@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { HeartHandshake } from 'lucide-react';
+import { HeartHandshake, Shield } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export function Header() {
@@ -44,6 +44,11 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
+             <div className="border-l h-6 mx-2"></div>
+             <Link href="/admin" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname === '/admin' ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
+                <Shield className="w-4 h-4 mr-2" />
+                Admin
+            </Link>
           </nav>
         </div>
       </div>
