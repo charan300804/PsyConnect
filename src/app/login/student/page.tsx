@@ -1,5 +1,7 @@
 
 import StudentLoginForm from '@/components/auth/student-login-form';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function StudentLoginPage() {
   return (

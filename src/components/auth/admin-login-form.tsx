@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Shield } from 'lucide-react';
@@ -80,13 +80,18 @@ export default function AdminLoginForm() {
             />
             <div className="flex flex-col gap-4">
                 <Button type="submit" className="w-full">Login</Button>
-                <Button type="button" variant="link" size="sm" asChild>
-                    <Link href="/login">Back to login selection</Link>
-                </Button>
             </div>
           </form>
         </Form>
       </CardContent>
+       <CardFooter className="flex flex-col gap-4 text-center">
+        <p className="text-xs text-muted-foreground">
+            Admin accounts are created by invitation only. Public registration is not available.
+        </p>
+        <Button type="button" variant="link" size="sm" asChild>
+            <Link href="/login">Back to login selection</Link>
+        </Button>
+      </CardFooter>
     </Card>
   );
 }
