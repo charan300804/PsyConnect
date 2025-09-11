@@ -6,8 +6,9 @@ import StudentDetailsForm from './student-details-form';
 import Questionnaire from './questionnaire';
 import { phq9Questions, gad7Questions, ghq12Questions, questionnaireOptions, ghqOptions } from '@/lib/questionnaires';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../ui/card';
 import type { StudentDetailsFormValues } from './student-details-form';
+import Link from 'next/link';
 
 const steps = ['Student Details', 'PHQ-9', 'GAD-7', 'GHQ-12', 'Results'];
 
@@ -96,29 +97,49 @@ export default function TestWizard() {
             const phq9Score = calculateScore(phq9Answers);
             const gad7Score = calculateScore(gad7Answers);
             const ghq12Score = calculateScore(ghq12Answers);
+            const needsSupport = phq9Score >= 10 || gad7Score >= 10;
             
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
                         <CardTitle>Assessment Results for {studentDetails?.name}</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div>
-                            <h3 className="font-bold">PHQ-9 Score: {phq9Score}</h3>
-                            <p>{getInterpretation(phq9Score, 'phq9')}</p>
+                    <CardContent className="space-y-6">
+                        <div className="space-y-4">
+                            <div>
+                                <h3 className="font-bold">PHQ-9 Score: {phq9Score}</h3>
+                                <p>{getInterpretation(phq9Score, 'phq9')}</p>
+                            </div>
+                            <div>
+                                <h3 className="font-bold">GAD-7 Score: {gad7Score}</h3>
+                                <p>{getInterpretation(gad7Score, 'gad7')}</p>
+                            </div>
+                            <div>
+                                <h3 className="font-bold">GHQ-12 Score: {ghq12Score}</h3>
+                                <p>A higher score suggests a greater level of psychological distress.</p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="font-bold">GAD-7 Score: {gad7Score}</h3>
-                            <p>{getInterpretation(gad7Score, 'gad7')}</p>
-                        </div>
-                        <div>
-                            <h3 className="font-bold">GHQ-12 Score: {ghq12Score}</h3>
-                            <p>A higher score suggests a greater level of psychological distress.</p>
-                        </div>
-                        <p className="text-sm text-muted-foreground">
+
+                        {needsSupport && (
+                            <div className="p-4 bg-accent/10 border-l-4 border-accent text-accent-foreground rounded-r-lg">
+                                <h4 className="font-bold mb-2">Support Recommended</h4>
+                                <p className="text-sm">
+                                    Your results indicate you may be experiencing significant distress. It can be very helpful to talk to someone.
+                                    Please consider booking an appointment with one of our on-campus counsellors.
+                                </p>
+                            </div>
+                        )}
+                        
+                        <p className="text-sm text-muted-foreground pt-4">
                             Disclaimer: These results are not a diagnosis. Please consult a healthcare professional for a formal diagnosis and treatment.
                         </p>
-                        <Button onClick={() => setCurrentStep(0)}>Start Over</Button>
+                        
+                        <CardFooter className="flex justify-between p-0">
+                           <Button variant="outline" onClick={() => setCurrentStep(0)}>Start Over</Button>
+                           <Button asChild>
+                             <Link href="/booking">Book an Appointment</Link>
+                           </Button>
+                        </CardFooter>
                     </CardContent>
                 </Card>
             );
