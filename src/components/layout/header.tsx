@@ -14,6 +14,7 @@ export function Header() {
     { href: '/chat', label: 'Chat' },
     { href: '/resources', label: 'Resources' },
     { href: '/booking', label: 'Booking' },
+    { href: '/forum', label: 'Forum' },
   ];
 
   return (
