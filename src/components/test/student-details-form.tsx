@@ -12,11 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  studentId: z.string().min(1, { message: 'Student ID is required.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
   age: z.coerce.number().min(1, { message: 'Age is required.' }).max(120),
   gender: z.string().min(1, { message: 'Please select a gender.' }),
+  school: z.string().min(2, { message: 'School name must be at least 2 characters.' }),
 });
 
-type StudentDetailsFormValues = z.infer<typeof formSchema>;
+export type StudentDetailsFormValues = z.infer<typeof formSchema>;
 
 type Props = {
   onSubmit: (data: StudentDetailsFormValues) => void;
@@ -27,8 +30,11 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
+      studentId: '',
+      email: '',
       age: undefined,
       gender: '',
+      school: '',
     },
   });
 
@@ -53,38 +59,79 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
-              name="age"
+              name="studentId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Age</FormLabel>
+                  <FormLabel>Student ID</FormLabel>
                   <FormControl>
-                    <Input type="number" placeholder="18" {...field} />
+                    <Input placeholder="123456" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
+             <FormField
               control={form.control}
-              name="gender"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="john.doe@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                control={form.control}
+                name="age"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Age</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your gender" />
-                      </SelectTrigger>
+                        <Input type="number" placeholder="18" {...field} />
                     </FormControl>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                      <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Gender</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select your gender" />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                        <SelectItem value="male">Male</SelectItem>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="other">Other</SelectItem>
+                        <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </div>
+            <FormField
+              control={form.control}
+              name="school"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>School/University</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Springfield University" {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

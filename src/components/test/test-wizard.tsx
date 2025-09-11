@@ -7,18 +7,13 @@ import Questionnaire from './questionnaire';
 import { phq9Questions, gad7Questions, ghq12Questions, questionnaireOptions, ghqOptions } from '@/lib/questionnaires';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-
-type StudentDetails = {
-  name: string;
-  age: number;
-  gender: string;
-};
+import type { StudentDetailsFormValues } from './student-details-form';
 
 const steps = ['Student Details', 'PHQ-9', 'GAD-7', 'GHQ-12', 'Results'];
 
 export default function TestWizard() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [studentDetails, setStudentDetails] = useState<StudentDetails | null>(null);
+  const [studentDetails, setStudentDetails] = useState<StudentDetailsFormValues | null>(null);
   const [phq9Answers, setPhq9Answers] = useState<Record<string, number>>({});
   const [gad7Answers, setGad7Answers] = useState<Record<string, number>>({});
   const [ghq12Answers, setGhq12Answers] = useState<Record<string, number>>({});
@@ -31,7 +26,7 @@ export default function TestWizard() {
     setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
-  const handleStudentDetailsSubmit = (data: StudentDetails) => {
+  const handleStudentDetailsSubmit = (data: StudentDetailsFormValues) => {
     setStudentDetails(data);
     handleNext();
   };
@@ -105,7 +100,7 @@ export default function TestWizard() {
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
-                        <CardTitle>Assessment Results</CardTitle>
+                        <CardTitle>Assessment Results for {studentDetails?.name}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div>
