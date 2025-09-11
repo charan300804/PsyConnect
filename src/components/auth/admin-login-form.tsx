@@ -85,9 +85,12 @@ export default function AdminLoginForm() {
         </Form>
       </CardContent>
        <CardFooter className="flex flex-col gap-4 text-center">
-        <p className="text-xs text-muted-foreground">
-            Admin accounts are created by invitation only. Public registration is not available.
-        </p>
+        <div className="text-center text-sm text-muted-foreground">
+            Only one admin can be registered.{' '}
+            <Link href="/login/admin/register" className="text-primary hover:underline">
+                Register here
+            </Link>
+        </div>
         <Button type="button" variant="link" size="sm" asChild>
             <Link href="/login">Back to login selection</Link>
         </Button>
