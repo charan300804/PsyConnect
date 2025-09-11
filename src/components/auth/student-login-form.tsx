@@ -37,7 +37,7 @@ export default function StudentLoginForm() {
       title: 'Logged In!',
       description: 'You have successfully logged in as a student.',
     });
-    router.push('/');
+    router.push('/test');
   };
 
   return (
