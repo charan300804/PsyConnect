@@ -1,3 +1,125 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "img-1",
+      "description": "A person meditating peacefully outdoors.",
+      "imageUrl": "https://picsum.photos/seed/meditation/600/400",
+      "imageHint": "meditation peaceful"
+    },
+    {
+      "id": "img-2",
+      "description": "Calm ocean waves on a beach.",
+      "imageUrl": "https://picsum.photos/seed/breathing/600/400",
+      "imageHint": "breathing calm"
+    },
+    {
+      "id": "img-3",
+      "description": "A cozy bedroom with a comfortable bed at night.",
+      "imageUrl": "https://picsum.photos/seed/sleep/600/400",
+      "imageHint": "sleep night"
+    },
+    {
+      "id": "img-4",
+      "description": "An open journal with a pen on a desk.",
+      "imageUrl": "https://picsum.photos/seed/journal/600/400",
+      "imageHint": "journal writing"
+    },
+    {
+      "id": "img-5",
+      "description": "A person doing a yoga pose in a bright room.",
+      "imageUrl": "https://picsum.photos/seed/yoga/600/400",
+      "imageHint": "yoga stretch"
+    },
+    {
+      "id": "img-6",
+      "description": "Abstract representation of brain pathways and thoughts.",
+      "imageUrl": "https://picsum.photos/seed/cbt/600/400",
+      "imageHint": "therapy mind"
+    },
+    {
+      "id": "img-7",
+      "description": "A person lying down comfortably with eyes closed.",
+      "imageUrl": "https://picsum.photos/seed/bodyscan/600/400",
+      "imageHint": "relaxation serene"
+    },
+    {
+      "id": "img-8",
+      "description": "Two people having a positive conversation over coffee.",
+      "imageUrl": "https://picsum.photos/seed/relationships/600/400",
+      "imageHint": "people talking"
+    },
+    {
+      "id": "img-9",
+      "description": "A person focused on a task at a clean desk.",
+      "imageUrl": "https://picsum.photos/seed/focus/600/400",
+      "imageHint": "focus desk"
+    },
+    {
+      "id": "img-10",
+      "description": "Lush green rainforest with sunlight filtering through.",
+      "imageUrl": "https://picsum.photos/seed/rainforest/600/400",
+      "imageHint": "nature forest"
+    },
+    {
+      "id": "img-11",
+      "description": "A person holding up a hand in a gentle stop gesture.",
+      "imageUrl": "https://picsum.photos/seed/boundaries/600/400",
+      "imageHint": "boundaries stop"
+    },
+    {
+      "id": "img-12",
+      "description": "A healthy, colorful bowl of fruit and nuts.",
+      "imageUrl": "https://picsum.photos/seed/mindfuleating/600/400",
+      "imageHint": "healthy food"
+    },
+    {
+      "id": "img-13",
+      "description": "A student studying at a desk with books and a laptop.",
+      "imageUrl": "https://picsum.photos/seed/examstress/600/400",
+      "imageHint": "student study"
+    },
+    {
+      "id": "img-14",
+      "description": "Abstract animation style illustration of a human head with swirling thoughts.",
+      "imageUrl": "https://picsum.photos/seed/panic/600/400",
+      "imageHint": "anxiety mind"
+    },
+    {
+      "id": "img-15",
+      "description": "A single strong tree growing on a rocky cliff.",
+      "imageUrl": "https://picsum.photos/seed/resilience/600/400",
+      "imageHint": "resilience strong"
+    },
+    {
+      "id": "img-16",
+      "description": "A person's feet walking on a peaceful forest path.",
+      "imageUrl": "https://picsum.photos/seed/walking/600/400",
+      "imageHint": "walking path"
+    },
+    {
+      "id": "img-17",
+      "description": "A diverse group of people talking and laughing at a casual gathering.",
+      "imageUrl": "https://picsum.photos/seed/social/600/400",
+      "imageHint": "social gathering"
+    },
+    {
+      "id": "img-18",
+      "description": "A collection of different notebooks and pens.",
+      "imageUrl": "https://picsum.photos/seed/journaling/600/400",
+      "imageHint": "journal writing"
+    },
+    {
+      "id": "img-19",
+      "description": "A person looking at their reflection in a mirror with a positive expression.",
+      "imageUrl": "https://picsum.photos/seed/selfesteem/600/400",
+      "imageHint": "self esteem"
+    },
+    {
+      "id": "img-20",
+      "description": "A planner or calendar with tasks and appointments organized.",
+      "imageUrl": "https://picsum.photos/seed/timemanagement/600/400",
+      "imageHint": "planner organization"
+    }
+  ]
 }
