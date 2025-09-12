@@ -12,9 +12,11 @@ import Link from 'next/link';
 import { addStudentAssessmentData } from '@/lib/admin-data';
 import { addDays, format, isBefore, parseISO } from 'date-fns';
 import { useTranslation } from '@/context/language-context';
+import { useAuth } from '@/context/auth-context';
 
 export default function TestWizard() {
   const { t } = useTranslation();
+  const { authState } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
   const [studentDetails, setStudentDetails] = useState<StudentDetailsFormValues | null>(null);
   const [phq9Answers, setPhq9Answers] = useState<Record<string, number>>({});
@@ -25,11 +27,13 @@ export default function TestWizard() {
   const steps = [t('test_step_details'), t('test_step_phq9'), t('test_step_gad7'), t('test_step_ghq12'), t('test_step_results')];
 
   useEffect(() => {
-    const storedDate = localStorage.getItem('lastTestDate');
-    if (storedDate) {
-      setLastTestDate(storedDate);
+    if (authState.userName) {
+      const storedDate = localStorage.getItem(`lastTestDate_${authState.userName}`);
+      if (storedDate) {
+        setLastTestDate(storedDate);
+      }
     }
-  }, []);
+  }, [authState.userName]);
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -83,9 +87,11 @@ export default function TestWizard() {
         });
     }
 
-    const today = new Date().toISOString();
-    localStorage.setItem('lastTestDate', today);
-    setLastTestDate(today);
+    if (authState.userName) {
+      const today = new Date().toISOString();
+      localStorage.setItem(`lastTestDate_${authState.userName}`, today);
+      setLastTestDate(today);
+    }
   }
 
   useEffect(() => {
