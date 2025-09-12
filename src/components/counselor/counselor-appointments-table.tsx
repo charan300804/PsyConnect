@@ -13,17 +13,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { appointmentRequestsData, AppointmentRequest } from "@/lib/admin-data"
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+
+type CounselorAppointmentsTableProps = {
+    counselorId: string;
+};
   
-export function AppointmentsTable() {
+export default function CounselorAppointmentsTable({ counselorId }: CounselorAppointmentsTableProps) {
+    const filteredAppointments = appointmentRequestsData.filter(
+        (request) => request.counselor.id === counselorId
+    );
+    
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Appointment Requests</CardTitle>
+                <CardTitle>Your Appointment Requests</CardTitle>
             </CardHeader>
             <CardContent>
-                {appointmentRequestsData.length === 0 ? (
+                {filteredAppointments.length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
-                        No appointment requests found.
+                        You have no pending appointment requests.
                     </div>
                 ) : (
                     <Table>
@@ -31,18 +39,16 @@ export function AppointmentsTable() {
                         <TableRow>
                             <TableHead>Student Name</TableHead>
                             <TableHead>Student ID</TableHead>
-                            <TableHead>Counselor</TableHead>
                             <TableHead>Requested Date</TableHead>
                             <TableHead>Reason</TableHead>
                             <TableHead>Status</TableHead>
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {appointmentRequestsData.map((request: AppointmentRequest) => (
+                        {filteredAppointments.map((request: AppointmentRequest) => (
                             <TableRow key={request.id}>
                             <TableCell className="font-medium">{request.studentName}</TableCell>
                             <TableCell>{request.studentId}</TableCell>
-                            <TableCell>{request.counselor.name}</TableCell>
                             <TableCell>{request.date}</TableCell>
                             <TableCell className="max-w-xs truncate">{request.reason}</TableCell>
                             <TableCell>

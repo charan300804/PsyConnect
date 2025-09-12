@@ -37,7 +37,7 @@ export default function CounselorLoginForm() {
       title: 'Logged In!',
       description: 'You have successfully logged in as a counselor.',
     });
-    router.push('/admin'); // Redirect to a counselor-specific dashboard in the future
+    router.push('/counselor');
   };
 
   return (

@@ -1,4 +1,5 @@
 
+import { Counselor, registeredCounselors } from "./counselor-data";
 
 export const assessmentResultsData: { name: string; phq9: number; gad7: number; fill: string; }[] = [];
 
@@ -13,9 +14,20 @@ export type AppointmentRequest = {
     date: string;
     reason: string;
     status: 'Pending' | 'Confirmed' | 'Completed';
+    counselor: Counselor;
 }
 
 export const appointmentRequestsData: AppointmentRequest[] = [];
+
+export function addAppointmentRequest(request: Omit<AppointmentRequest, 'id' | 'status'>) {
+    const newRequest: AppointmentRequest = {
+        ...request,
+        id: `apt-${Date.now()}`,
+        status: 'Pending',
+    };
+    appointmentRequestsData.push(newRequest);
+}
+
 
 export type StudentAssessmentData = {
     id: string;

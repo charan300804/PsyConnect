@@ -17,6 +17,7 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { registeredCounselors } from '@/lib/counselor-data';
+import { addAppointmentRequest } from '@/lib/admin-data';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -45,7 +46,25 @@ export default function BookingForm() {
   });
 
   const onSubmit = (data: BookingFormValues) => {
-    console.log(data);
+    const selectedCounselor = registeredCounselors.find(c => c.id === data.counselorId);
+    
+    if (!selectedCounselor) {
+        toast({
+            title: 'Error',
+            description: 'Selected counselor not found.',
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    addAppointmentRequest({
+        studentName: data.name,
+        studentId: data.studentId,
+        date: format(data.date, 'yyyy-MM-dd'),
+        reason: data.reason,
+        counselor: selectedCounselor,
+    });
+    
     toast({
       title: 'Appointment Booked!',
       description: `Your appointment on ${format(data.date, 'PPP')} has been successfully scheduled.`,
