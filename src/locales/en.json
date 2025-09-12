@@ -1,0 +1,8 @@
+
+{
+  "welcome_title": "Welcome to EmotiCare",
+  "welcome_subtitle": "Please select your login type.",
+  "login_student": "Login as Student",
+  "login_counselor": "Login as Counselor",
+  "login_admin": "Login as Admin"
+}

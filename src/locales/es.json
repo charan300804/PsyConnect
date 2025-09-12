@@ -1,0 +1,8 @@
+
+{
+  "welcome_title": "Bienvenido a EmotiCare",
+  "welcome_subtitle": "Por favor, seleccione su tipo de inicio de sesión.",
+  "login_student": "Iniciar sesión como estudiante",
+  "login_counselor": "Iniciar sesión como consejero",
+  "login_admin": "Iniciar sesión como administrador"
+}
