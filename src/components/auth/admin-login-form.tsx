@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
+import { useAuth } from '@/context/auth-context';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -25,6 +26,7 @@ export default function AdminLoginForm() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
+    const { login } = useAuth();
     const form = useForm<AdminLoginFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -34,7 +36,9 @@ export default function AdminLoginForm() {
     });
 
   const onSubmit = (data: AdminLoginFormValues) => {
-    console.log(data);
+    // In a real app, you'd validate credentials against a backend.
+    login('admin', 'Admin');
+
     toast({
       title: t('toast_admin_logged_in_title'),
       description: t('toast_admin_logged_in_description'),

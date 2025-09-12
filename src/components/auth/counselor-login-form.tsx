@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { Briefcase } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
+import { useAuth } from '@/context/auth-context';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -25,6 +26,7 @@ export default function CounselorLoginForm() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
+    const { login } = useAuth();
     const form = useForm<CounselorLoginFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -34,7 +36,10 @@ export default function CounselorLoginForm() {
     });
 
   const onSubmit = (data: CounselorLoginFormValues) => {
-    console.log(data);
+    // In a real app, you'd validate credentials against a backend.
+    const counselorName = data.email.split('@')[0]; // Simulate getting user name
+    login('counselor', counselorName);
+    
     toast({
       title: t('toast_logged_in_title'),
       description: t('toast_counselor_logged_in_description'),

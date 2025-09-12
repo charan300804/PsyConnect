@@ -5,6 +5,8 @@ import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/context/language-context';
+import { AuthProvider } from '@/context/auth-context';
+import RouteGuard from '@/components/auth/route-guard';
 
 export const metadata: Metadata = {
   title: 'EmotiCare',
@@ -37,9 +39,13 @@ export default function RootLayout({
         )}
       >
         <LanguageProvider>
-          <Header />
-          <main className="flex-1 flex flex-col">{children}</main>
-          <Toaster />
+          <AuthProvider>
+            <Header />
+            <main className="flex-1 flex flex-col">
+              <RouteGuard>{children}</RouteGuard>
+            </main>
+            <Toaster />
+          </AuthProvider>
         </LanguageProvider>
       </body>
     </html>

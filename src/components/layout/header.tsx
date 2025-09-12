@@ -3,28 +3,43 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { HeartHandshake, LogIn } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { HeartHandshake, LogIn, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from './language-selector';
 import { useTranslation } from '@/context/language-context';
+import { useAuth } from '@/context/auth-context';
+import { Button } from '../ui/button';
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const { t } = useTranslation();
+  const { authState, logout } = useAuth();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
   const navItems = [
-    { href: '/test', label: t('nav_test') },
-    { href: '/chat', label: t('nav_chat') },
-    { href: '/resources', label: t('nav_resources') },
-    { href: '/booking', label: t('nav_booking') },
-    { href: '/forum', label: t('nav_forum') },
+    { href: '/test', label: t('nav_test'), roles: ['student'] },
+    { href: '/chat', label: t('nav_chat'), roles: ['student'] },
+    { href: '/resources', label: t('nav_resources'), roles: ['student'] },
+    { href: '/booking', label: t('nav_booking'), roles: ['student'] },
+    { href: '/forum', label: t('nav_forum'), roles: ['student', 'counselor', 'admin'] },
+    { href: '/admin', label: t('nav_admin'), roles: ['admin'] },
+    { href: '/counselor', label: t('nav_counselor'), roles: ['counselor'] },
   ];
+
+  const filteredNavItems = navItems.filter(item => authState.userRole && item.roles.includes(authState.userRole));
+
+  const isLoginPage = pathname.startsWith('/login');
 
   return (
     <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
@@ -39,7 +54,7 @@ export function Header() {
             </Link>
           </div>
           <nav className="hidden md:flex items-center space-x-4">
-            {isClient && navItems.map((item) => (
+            {isClient && authState.isAuthenticated && filteredNavItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -57,10 +72,17 @@ export function Header() {
             {isClient && (
               <>
                 <LanguageSelector />
-                <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
-                    <LogIn className="w-4 h-4 mr-2" />
-                    {t('nav_login')}
-                </Link>
+                {authState.isAuthenticated ? (
+                  <Button variant="ghost" onClick={handleLogout} className="text-muted-foreground hover:text-foreground">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    {t('nav_logout')}
+                  </Button>
+                ) : (
+                  <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', isLoginPage ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
+                      <LogIn className="w-4 h-4 mr-2" />
+                      {t('nav_login')}
+                  </Link>
+                )}
               </>
             )}
           </nav>

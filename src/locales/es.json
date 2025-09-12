@@ -12,6 +12,9 @@
   "nav_booking": "Reservar",
   "nav_forum": "Foro",
   "nav_login": "Iniciar sesión",
+  "nav_logout": "Cerrar sesión",
+  "nav_admin": "Administración",
+  "nav_counselor": "Panel",
   
   "admin_dashboard_title": "Panel de Administración",
   "admin_dashboard_subtitle": "Análisis anónimos para monitorear las tendencias de bienestar de los estudiantes.",

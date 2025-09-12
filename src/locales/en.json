@@ -12,6 +12,9 @@
   "nav_booking": "Booking",
   "nav_forum": "Forum",
   "nav_login": "Login",
+  "nav_logout": "Logout",
+  "nav_admin": "Admin",
+  "nav_counselor": "Dashboard",
 
   "admin_dashboard_title": "Admin Dashboard",
   "admin_dashboard_subtitle": "Anonymous analytics for monitoring student well-being trends.",
