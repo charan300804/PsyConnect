@@ -1,7 +1,7 @@
 
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import en from '@/locales/en.json';
 import es from '@/locales/es.json';
 import fr from '@/locales/fr.json';
@@ -31,29 +31,55 @@ type LanguageContextType = {
   setLanguage: (language: string) => void;
   region: string;
   setRegion: (region: string) => void;
-  t: (key: string) => string;
+  t: (key: string, options?: { [key: string]: string | number }) => string;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState('en-US');
-  const [region, setRegion] = useState(() => {
+  const [language, setLanguageState] = useState('en-US');
+  const [region, setRegionState] = useState('US');
+
+  useEffect(() => {
     if (typeof window !== 'undefined') {
+      const browserLang = navigator.language;
+      // Find a matching language or default to en-US
+      const bestMatch = Object.keys(translations).find(l => l === browserLang) || 
+                        Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) || 
+                        'en-US';
+      setLanguageState(bestMatch);
+
       try {
-        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const browserRegion = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[1] || 'US';
+         setRegionState(browserRegion);
       } catch (e) {
-        return 'UTC';
+        setRegionState('US');
       }
     }
-    return 'UTC';
-  });
-  
-  const t = (key: string) => {
-    const langKey = language.split('-')[0];
-    const langFile = translations[language] || translations['en-US'];
-    return langFile[key] || key;
+  }, []);
+
+  const setLanguage = (lang: string) => {
+    setLanguageState(lang);
+    const newRegion = lang.split('-')[1] || 'US';
+    setRegion(newRegion);
   };
+  
+  const setRegion = (reg: string) => {
+    setRegionState(reg);
+  };
+  
+  const t = useCallback((key: string, options?: { [key: string]: string | number }) => {
+    const langFile = translations[language] || translations['en-US'];
+    let translation = langFile[key] || key;
+
+    if (options) {
+      Object.keys(options).forEach(k => {
+        translation = translation.replace(`{${k}}`, options[k]);
+      });
+    }
+
+    return translation;
+  }, [language]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, region, setRegion, t }}>
@@ -71,6 +97,6 @@ export function useLanguage() {
 }
 
 export function useTranslation() {
-  const { t } = useLanguage();
-  return { t };
+  const context = useLanguage();
+  return { t: context.t };
 }
