@@ -30,38 +30,32 @@ type LanguageContextType = {
   language: string;
   setLanguage: (language: string) => void;
   region: string;
-  setRegion: (region: string) => void;
   t: (key: string, options?: { [key: string]: string | number }) => string;
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState('en-US');
+  const [language, setLanguageState] = useState('en-US'); // Default language
   const [region, setRegionState] = useState('US');
 
+  // This effect runs only on the client after hydration
   useEffect(() => {
     const detectLanguage = () => {
-        if (typeof window !== 'undefined' && navigator) {
-            const browserLang = navigator.language;
-            const bestMatch = Object.keys(translations).find(l => l === browserLang) ||
-                              Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) ||
-                              'en-US';
-            setLanguage(bestMatch);
-        }
+      const browserLang = navigator.language;
+      const bestMatch = Object.keys(translations).find(l => l === browserLang) ||
+                        Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) ||
+                        'en-US';
+      setLanguageState(bestMatch);
+      setRegionState(bestMatch.split('-')[1] || 'US');
     };
+    
     detectLanguage();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setLanguage = (lang: string) => {
     setLanguageState(lang);
-    const newRegion = lang.split('-')[1] || 'US';
-    setRegionState(newRegion);
-  };
-  
-  const setRegion = (reg: string) => {
-    setRegionState(reg);
+    setRegionState(lang.split('-')[1] || 'US');
   };
   
   const t = useCallback((key: string, options?: { [key: string]: string | number }) => {
@@ -78,8 +72,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return translation;
   }, [language]);
 
+  const contextValue = {
+    language,
+    setLanguage,
+    region,
+    t,
+  };
+  
+  // By passing a key that changes with the language, we force a re-render of consumers
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, region, setRegion, t }}>
+    <LanguageContext.Provider value={contextValue} key={language}>
       {children}
     </LanguageContext.Provider>
   );
@@ -93,7 +95,8 @@ export function useLanguage() {
   return context;
 }
 
+// A separate hook for translation simplifies component logic
 export function useTranslation() {
-  const context = useLanguage();
-  return { t: context.t };
+    const context = useLanguage();
+    return { t: context.t };
 }
