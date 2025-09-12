@@ -41,14 +41,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [region, setRegionState] = useState('US');
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const browserLang = navigator.language;
-      // Find a matching language or default to en-US
-      const bestMatch = Object.keys(translations).find(l => l === browserLang) || 
-                        Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) || 
-                        'en-US';
-      setLanguage(bestMatch);
-    }
+    const detectLanguage = () => {
+        if (typeof window !== 'undefined' && navigator) {
+            const browserLang = navigator.language;
+            const bestMatch = Object.keys(translations).find(l => l === browserLang) ||
+                              Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) ||
+                              'en-US';
+            setLanguage(bestMatch);
+        }
+    };
+    detectLanguage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -66,10 +68,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     const langFile = translations[language] || translations['en-US'];
     let translation = langFile[key] || key;
 
-    if (options) {
+    if (options && typeof translation === 'string') {
       Object.keys(options).forEach(k => {
         const regex = new RegExp(`\\{${k}\\}`, 'g');
-        translation = translation.replace(regex, options[k]);
+        translation = translation.replace(regex, String(options[k]));
       });
     }
 
