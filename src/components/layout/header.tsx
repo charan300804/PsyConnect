@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { HeartHandshake, LogIn, LogOut, PanelLeft } from 'lucide-react';
+import { BrainCircuit, LogIn, LogOut, PanelLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from './language-selector';
 import { useTranslation } from '@/context/language-context';
@@ -65,9 +65,9 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex items-center gap-2 text-primary">
-              <HeartHandshake className="w-7 h-7" />
-              <span className="text-xl font-bold text-foreground">
-                EmotiCare
+              <BrainCircuit className="w-7 h-7" />
+              <span className="text-xl font-bold font-headline text-foreground">
+                Psyconnect
               </span>
             </Link>
           </div>
@@ -105,9 +105,9 @@ export function Header() {
               <SheetContent side="left" className="w-64">
                 <div className="p-4">
                   <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center gap-2 text-primary mb-6">
-                    <HeartHandshake className="w-7 h-7" />
-                    <span className="text-xl font-bold text-foreground">
-                      EmotiCare
+                    <BrainCircuit className="w-7 h-7" />
+                    <span className="text-xl font-bold font-headline text-foreground">
+                      Psyconnect
                     </span>
                   </Link>
                   <nav className="flex flex-col gap-2">

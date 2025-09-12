@@ -1,6 +1,6 @@
 
 {
-  "welcome_title": "Welcome to EmotiCare",
+  "welcome_title": "Welcome to Psyconnect",
   "welcome_subtitle": "Please select your login type.",
   "login_student": "Login as Student",
   "login_counselor": "Login as Counselor",
@@ -131,7 +131,7 @@
   "chat_initial_error": "Hello! I am here to help. How are you feeling today?",
   "chat_response_error": "I had a little trouble understanding that. Could you please try rephrasing?",
   "chat_no_messages": "Your chat history is empty.",
-  "chat_assistant_title": "EmotiCare Assistant",
+  "chat_assistant_title": "Psyconnect Assistant",
   "chat_assistant_subtitle": "Psychological First-Aid Chat",
   "chat_input_placeholder": "Tell me what's on your mind...",
   "chat_disclaimer": "This chat is anonymous and for supportive purposes. It is not a substitute for professional medical advice.",

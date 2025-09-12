@@ -1,6 +1,6 @@
 
 {
-  "welcome_title": "Bienvenido a EmotiCare",
+  "welcome_title": "Bienvenido a Psyconnect",
   "welcome_subtitle": "Por favor, seleccione su tipo de inicio de sesión.",
   "login_student": "Iniciar sesión como Estudiante",
   "login_counselor": "Iniciar sesión como Consejero",
@@ -131,7 +131,7 @@
   "chat_initial_error": "¡Hola! Estoy aquí para ayudar. ¿Cómo te sientes hoy?",
   "chat_response_error": "Tuve un pequeño problema para entender eso. ¿Podrías intentar reformularlo?",
   "chat_no_messages": "Tu historial de chat está vacío.",
-  "chat_assistant_title": "Asistente EmotiCare",
+  "chat_assistant_title": "Asistente Psyconnect",
   "chat_assistant_subtitle": "Chat de Primeros Auxilios Psicológicos",
   "chat_input_placeholder": "Cuéntame qué tienes en mente...",
   "chat_disclaimer": "Este chat es anónimo y tiene fines de apoyo. No sustituye el consejo médico profesional.",
