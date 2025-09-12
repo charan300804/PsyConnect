@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StudentDetailsForm from './student-details-form';
 import Questionnaire from './questionnaire';
 import { phq9Questions, gad7Questions, ghq12Questions, questionnaireOptions, ghqOptions } from '@/lib/questionnaires';
@@ -9,6 +9,8 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../ui/card';
 import type { StudentDetailsFormValues } from './student-details-form';
 import Link from 'next/link';
+import { addStudentAssessmentData } from '@/lib/admin-data';
+import { addDays, format, isBefore, parseISO } from 'date-fns';
 
 const steps = ['Student Details', 'PHQ-9', 'GAD-7', 'GHQ-12', 'Results'];
 
@@ -18,6 +20,14 @@ export default function TestWizard() {
   const [phq9Answers, setPhq9Answers] = useState<Record<string, number>>({});
   const [gad7Answers, setGad7Answers] = useState<Record<string, number>>({});
   const [ghq12Answers, setGhq12Answers] = useState<Record<string, number>>({});
+  const [lastTestDate, setLastTestDate] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedDate = localStorage.getItem('lastTestDate');
+    if (storedDate) {
+      setLastTestDate(storedDate);
+    }
+  }, []);
 
   const handleNext = () => {
     setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
@@ -52,8 +62,41 @@ export default function TestWizard() {
     }
     return '';
   };
+
+  const handleTestCompletion = () => {
+    const phq9Score = calculateScore(phq9Answers);
+    const gad7Score = calculateScore(gad7Answers);
+    const ghq12Score = calculateScore(ghq12Answers);
+
+    if (studentDetails) {
+        addStudentAssessmentData({
+            id: studentDetails.studentId + Date.now(),
+            studentName: studentDetails.name,
+            studentId: studentDetails.studentId,
+            school: studentDetails.school,
+            phq9Score,
+            gad7Score,
+            ghq12Score,
+            assessmentDate: format(new Date(), 'yyyy-MM-dd'),
+        });
+    }
+
+    const today = new Date().toISOString();
+    localStorage.setItem('lastTestDate', today);
+    setLastTestDate(today);
+  }
+
+  useEffect(() => {
+    if (steps[currentStep] === 'Results') {
+        handleTestCompletion();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep]);
   
   const renderStep = () => {
+    const canRetakeTest = !lastTestDate || isBefore(addDays(parseISO(lastTestDate), 15), new Date());
+    const nextTestDate = lastTestDate ? format(addDays(parseISO(lastTestDate), 15), 'PPP') : '';
+
     switch (steps[currentStep]) {
       case 'Student Details':
         return <StudentDetailsForm onSubmit={handleStudentDetailsSubmit} />;
@@ -134,8 +177,14 @@ export default function TestWizard() {
                             Disclaimer: These results are not a diagnosis. Please consult a healthcare professional for a formal diagnosis and treatment.
                         </p>
                         
+                        {!canRetakeTest && (
+                           <p className="text-sm text-center text-muted-foreground pt-4">
+                                You can take the assessment again after {nextTestDate}.
+                           </p>
+                        )}
+                        
                         <CardFooter className="flex justify-between p-0">
-                           <Button variant="outline" onClick={() => setCurrentStep(0)}>Start Over</Button>
+                           <Button variant="outline" onClick={() => setCurrentStep(0)} disabled={!canRetakeTest}>Start Over</Button>
                            <Button asChild>
                              <Link href="/booking">Book an Appointment</Link>
                            </Button>

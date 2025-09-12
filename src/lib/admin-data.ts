@@ -1,4 +1,5 @@
 
+
 export const assessmentResultsData: { name: string; phq9: number; gad7: number; fill: string; }[] = [];
 
 export const appointmentsData: { month: string; count: number; }[] = [];
@@ -28,3 +29,8 @@ export type StudentAssessmentData = {
 }
 
 export const studentAssessmentData: StudentAssessmentData[] = [];
+
+// Function to add new student data
+export function addStudentAssessmentData(data: StudentAssessmentData) {
+    studentAssessmentData.push(data);
+}
