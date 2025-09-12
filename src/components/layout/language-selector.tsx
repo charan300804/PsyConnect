@@ -32,6 +32,27 @@ export default function LanguageSelector() {
         <DropdownMenuItem onClick={() => setLanguage('fr-FR')}>
           Français
         </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('hi-IN')}>
+          हिन्दी (Hindi)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('bn-IN')}>
+          বাংলা (Bengali)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('ta-IN')}>
+          தமிழ் (Tamil)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('te-IN')}>
+          తెలుగు (Telugu)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('mr-IN')}>
+          मराठी (Marathi)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('gu-IN')}>
+          ગુજરાતી (Gujarati)
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('kn-IN')}>
+          ಕನ್ನಡ (Kannada)
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
