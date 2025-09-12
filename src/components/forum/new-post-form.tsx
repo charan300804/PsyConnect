@@ -12,6 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/context/language-context';
+import { useAuth } from '@/context/auth-context';
+import { addForumPost } from '@/lib/forum-data';
 
 const formSchema = z.object({
   title: z.string().min(5, { message: 'Title must be at least 5 characters.' }),
@@ -24,6 +26,7 @@ export default function NewPostForm() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
+    const { authState } = useAuth();
     const form = useForm<NewPostFormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -33,7 +36,21 @@ export default function NewPostForm() {
     });
 
   const onSubmit = (data: NewPostFormValues) => {
-    console.log(data);
+    if (!authState.userName || !authState.userRole) {
+        toast({
+            title: t('toast_error_title'),
+            description: "You must be logged in to create a post.",
+            variant: 'destructive',
+        });
+        return;
+    }
+
+    addForumPost({
+        ...data,
+        authorName: authState.userName,
+        authorRole: authState.userRole,
+    });
+    
     toast({
       title: t('toast_post_created_title'),
       description: t('toast_post_created_description'),
