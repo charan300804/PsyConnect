@@ -21,7 +21,7 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
   const placeholder = PlaceHolderImages.find(p => p.id === resource.imagePlaceholderId);
 
   return (
-    <Link href={resource.url} className="group block">
+    <Link href={resource.url} className="group block" target="_blank" rel="noopener noreferrer">
       <Card className="h-full flex flex-col transition-shadow duration-300 hover:shadow-lg hover:border-primary/50">
         <CardHeader className="p-0">
           <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
@@ -41,7 +41,7 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
           </div>
         </CardHeader>
         <CardContent className="p-4 flex-1">
-          <CardTitle className="text-lg font-headline mb-2 leading-tight group-hover:text-primary transition-colors">
+          <CardTitle className="text-lg mb-2 leading-tight group-hover:text-primary transition-colors">
             {resource.title}
           </CardTitle>
           <p className="text-sm text-muted-foreground line-clamp-3">

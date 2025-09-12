@@ -6,7 +6,7 @@
   "login_counselor": "Login as Counselor",
   "login_admin": "Login as Admin",
 
-  "nav_test": "Test",
+  "nav_test": "Assessment",
   "nav_chat": "Chat",
   "nav_resources": "Resources",
   "nav_booking": "Booking",
@@ -130,6 +130,7 @@
 
   "chat_initial_error": "Hello! I am here to help. How are you feeling today?",
   "chat_response_error": "I had a little trouble understanding that. Could you please try rephrasing?",
+  "chat_no_messages": "Your chat history is empty.",
   "chat_assistant_title": "EmotiCare Assistant",
   "chat_assistant_subtitle": "Psychological First-Aid Chat",
   "chat_input_placeholder": "Tell me what's on your mind...",
@@ -163,12 +164,12 @@
   "gender_other": "Other",
   "gender_prefer_not_to_say": "Prefer not to say",
   "form_school": "School/University",
-  "start_test_button": "Start Test",
+  "start_test_button": "Start Assessment",
 
-  "test_step_details": "Student Details",
-  "test_step_phq9": "PHQ-9",
-  "test_step_gad7": "GAD-7",
-  "test_step_ghq12": "GHQ-12",
+  "test_step_details": "Details",
+  "test_step_phq9": "Depression (PHQ-9)",
+  "test_step_gad7": "Anxiety (GAD-7)",
+  "test_step_ghq12": "Well-Being (GHQ-12)",
   "test_step_results": "Results",
   
   "questionnaire_phq9_title": "PHQ-9: Over the last 2 weeks, how often have you been bothered by any of the following problems?",

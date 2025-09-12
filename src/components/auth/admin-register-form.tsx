@@ -81,7 +81,7 @@ export default function AdminRegisterForm() {
             <div className="flex justify-center mb-2">
                 <ShieldCheck className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('admin_register_title')}</CardTitle>
+            <CardTitle>{t('admin_register_title')}</CardTitle>
             <CardDescription>
               {isRegistered 
                 ? t('admin_register_already_exists')
@@ -157,6 +157,9 @@ export default function AdminRegisterForm() {
                 {t('login_here_link')}
             </Link>
         </div>
+         <Button type="button" variant="link" size="sm" asChild>
+            <Link href="/login">{t('back_to_login_selection')}</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

@@ -2,11 +2,11 @@
 {
   "welcome_title": "Bienvenido a EmotiCare",
   "welcome_subtitle": "Por favor, seleccione su tipo de inicio de sesión.",
-  "login_student": "Iniciar sesión como estudiante",
-  "login_counselor": "Iniciar sesión como consejero",
-  "login_admin": "Iniciar sesión como administrador",
+  "login_student": "Iniciar sesión como Estudiante",
+  "login_counselor": "Iniciar sesión como Consejero",
+  "login_admin": "Iniciar sesión como Administrador",
 
-  "nav_test": "Prueba",
+  "nav_test": "Evaluación",
   "nav_chat": "Chat",
   "nav_resources": "Recursos",
   "nav_booking": "Reservar",
@@ -130,6 +130,7 @@
 
   "chat_initial_error": "¡Hola! Estoy aquí para ayudar. ¿Cómo te sientes hoy?",
   "chat_response_error": "Tuve un pequeño problema para entender eso. ¿Podrías intentar reformularlo?",
+  "chat_no_messages": "Tu historial de chat está vacío.",
   "chat_assistant_title": "Asistente EmotiCare",
   "chat_assistant_subtitle": "Chat de Primeros Auxilios Psicológicos",
   "chat_input_placeholder": "Cuéntame qué tienes en mente...",
@@ -163,12 +164,12 @@
   "gender_other": "Otro",
   "gender_prefer_not_to_say": "Prefiero no decirlo",
   "form_school": "Escuela/Universidad",
-  "start_test_button": "Comenzar Prueba",
+  "start_test_button": "Comenzar Evaluación",
 
-  "test_step_details": "Detalles del Estudiante",
-  "test_step_phq9": "PHQ-9",
-  "test_step_gad7": "GAD-7",
-  "test_step_ghq12": "GHQ-12",
+  "test_step_details": "Detalles",
+  "test_step_phq9": "Depresión (PHQ-9)",
+  "test_step_gad7": "Ansiedad (GAD-7)",
+  "test_step_ghq12": "Bienestar (GHQ-12)",
   "test_step_results": "Resultados",
   
   "questionnaire_phq9_title": "PHQ-9: Durante las últimas 2 semanas, ¿con qué frecuencia le han molestado alguno de los siguientes problemas?",

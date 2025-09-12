@@ -84,7 +84,7 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
             </div>
             <Card>
                 <CardHeader>
-                <CardTitle className="text-2xl md:text-3xl font-bold font-headline">{post.title}</CardTitle>
+                <CardTitle className="text-2xl md:text-3xl font-bold">{post.title}</CardTitle>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground pt-2">
                     <Avatar className="w-8 h-8">
                         <AvatarFallback className="bg-accent/20 text-accent">
@@ -134,10 +134,10 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
                     <CardTitle>{t('forum_leave_reply')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <Textarea placeholder={t('forum_reply_placeholder')} className="min-h-[120px]" />
+                    <Textarea placeholder={t('forum_reply_placeholder')} className="min-h-[120px]" disabled />
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                    <Button>{t('forum_post_reply')}</Button>
+                    <Button disabled>{t('forum_post_reply')}</Button>
                 </CardFooter>
             </Card>
         </div>

@@ -64,7 +64,7 @@ export default function StudentRegisterForm() {
             <div className="flex justify-center mb-2">
                 <UserPlus className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('student_register_title')}</CardTitle>
+            <CardTitle>{t('student_register_title')}</CardTitle>
             <CardDescription>{t('student_register_subtitle')}</CardDescription>
         </CardHeader>
       <CardContent>
@@ -135,6 +135,9 @@ export default function StudentRegisterForm() {
                 {t('login_here_link')}
             </Link>
         </div>
+        <Button type="button" variant="link" size="sm" asChild>
+            <Link href="/login">{t('back_to_login_selection')}</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

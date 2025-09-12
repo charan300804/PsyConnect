@@ -32,12 +32,15 @@ export default function CounselorRegisterForm() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
-    const [isLimitReached, setIsLimitReached] = React.useState(true);
+    const [isLimitReached, setIsLimitReached] = React.useState(false);
     const [counselorCount, setCounselorCount] = React.useState(0);
 
     React.useEffect(() => {
-        setIsLimitReached(hasReachedUserLimit('counselor'));
-        setCounselorCount(getUserCount('counselor'));
+        const limitReached = hasReachedUserLimit('counselor');
+        setIsLimitReached(limitReached);
+        if (!limitReached) {
+            setCounselorCount(getUserCount('counselor'));
+        }
     }, []);
 
     const form = useForm<CounselorRegisterFormValues>({
@@ -84,7 +87,7 @@ export default function CounselorRegisterForm() {
             <div className="flex justify-center mb-2">
                 <Briefcase className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('counselor_register_title')}</CardTitle>
+            <CardTitle>{t('counselor_register_title')}</CardTitle>
             <CardDescription>
               {isLimitReached 
                 ? t('counselor_register_limit_reached')
@@ -160,6 +163,9 @@ export default function CounselorRegisterForm() {
                 {t('login_here_link')}
             </Link>
         </div>
+         <Button type="button" variant="link" size="sm" asChild>
+            <Link href="/login">{t('back_to_login_selection')}</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

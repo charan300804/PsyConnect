@@ -16,10 +16,10 @@ type ForumPostItemProps = {
 export default function ForumPostItem({ post }: ForumPostItemProps) {
   const { t } = useTranslation();
   return (
-    <Link href={`/forum/${post.id}`}>
+    <Link href={`/forum/${post.id}`} className="block">
       <Card className="hover:bg-muted/50 transition-colors">
         <CardHeader>
-          <CardTitle className="text-lg font-headline">{post.title}</CardTitle>
+          <CardTitle className="text-lg">{post.title}</CardTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground pt-1">
               <Avatar className="w-6 h-6">
                   <AvatarFallback className="bg-accent/20 text-accent text-xs">

@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../ui/card
 import type { StudentDetailsFormValues } from './student-details-form';
 import Link from 'next/link';
 import { addStudentAssessmentData } from '@/lib/admin-data';
-import { addDays, format, isBefore, parseISO } from 'date-fns';
+import { addDays, format, isBefore, parseISO, isValid } from 'date-fns';
 import { useTranslation } from '@/context/language-context';
 import { useAuth } from '@/context/auth-context';
 
@@ -29,7 +29,7 @@ export default function TestWizard() {
   useEffect(() => {
     if (authState.userName) {
       const storedDate = localStorage.getItem(`lastTestDate_${authState.userName}`);
-      if (storedDate) {
+      if (storedDate && isValid(parseISO(storedDate))) {
         setLastTestDate(storedDate);
       }
     }
@@ -102,8 +102,9 @@ export default function TestWizard() {
   }, [currentStep, t]);
   
   const renderStep = () => {
-    const canRetakeTest = !lastTestDate || isBefore(addDays(parseISO(lastTestDate), 15), new Date());
-    const nextTestDate = lastTestDate ? format(addDays(parseISO(lastTestDate), 15), 'PPP') : '';
+    const lastTestDateObj = lastTestDate ? parseISO(lastTestDate) : null;
+    const canRetakeTest = !lastTestDateObj || !isValid(lastTestDateObj) || isBefore(addDays(lastTestDateObj, 15), new Date());
+    const nextTestDate = lastTestDateObj && isValid(lastTestDateObj) ? format(addDays(lastTestDateObj, 15), 'PPP') : '';
 
     switch (steps[currentStep]) {
       case t('test_step_details'):
@@ -190,13 +191,13 @@ export default function TestWizard() {
                            </p>
                         )}
                         
-                        <CardFooter className="flex justify-between p-0">
+                    </CardContent>
+                     <CardFooter className="flex justify-between">
                            <Button variant="outline" onClick={() => setCurrentStep(0)} disabled={!canRetakeTest}>{t('start_over_button')}</Button>
                            <Button asChild>
                              <Link href="/booking">{t('book_appointment_button')}</Link>
                            </Button>
                         </CardFooter>
-                    </CardContent>
                 </Card>
             );
       default:
@@ -206,21 +207,21 @@ export default function TestWizard() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-8">
-        <div className="flex items-center justify-center">
+      <div className="mb-8 overflow-x-auto pb-4">
+        <div className="flex items-start justify-center min-w-max">
           {steps.map((step, index) => (
-            <div key={step} className="flex items-center">
-              <div className="flex flex-col items-center">
+            <div key={step} className="flex items-center w-36">
+              <div className="flex flex-col items-center text-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
                     index <= currentStep ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                   }`}
                 >
                   {index + 1}
                 </div>
-                <p className={`mt-2 text-sm text-center ${index <= currentStep ? 'text-foreground' : 'text-muted-foreground'}`}>{step}</p>
+                <p className={`mt-2 text-sm ${index <= currentStep ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>{step}</p>
               </div>
-              {index < steps.length - 1 && <div className={`w-16 h-px ${index < currentStep ? 'bg-primary' : 'bg-muted'} mx-4`}></div>}
+              {index < steps.length - 1 && <div className={`flex-1 h-px mx-2 transition-colors ${index < currentStep ? 'bg-primary' : 'bg-muted'}`}></div>}
             </div>
           ))}
         </div>

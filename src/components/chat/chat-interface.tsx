@@ -2,11 +2,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Bot, SendHorizonal } from 'lucide-react';
+import { Bot, SendHorizonal, Frown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import ChatMessage from './chat-message';
 import { initialChatbotPrompt } from '@/ai/flows/initial-chatbot-prompt';
 import { generateChatResponse } from '@/ai/flows/generate-chat-response';
@@ -29,6 +29,7 @@ export default function ChatInterface() {
 
   useEffect(() => {
     const fetchInitialMessage = async () => {
+      setIsLoading(true);
       try {
         const response = await initialChatbotPrompt({});
         setMessages([
@@ -53,20 +54,25 @@ export default function ChatInterface() {
     };
     fetchInitialMessage();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
+      // Use `setTimeout` to allow the DOM to update before scrolling
+      setTimeout(() => {
+         if (scrollAreaRef.current) {
+            scrollAreaRef.current.scrollTo({
+                top: scrollAreaRef.current.scrollHeight,
+                behavior: 'smooth',
+            });
+         }
+      }, 100);
     }
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -79,10 +85,8 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      // Map ReactNode to string for the history
       const history = newMessages.slice(0, -1).map(m => ({
         role: m.role,
-        // This is a simplification. If the bot returns complex JSX, this could be lossy.
         text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
       }));
 
@@ -112,7 +116,6 @@ export default function ChatInterface() {
     <div className="flex flex-col w-full max-w-2xl mx-auto h-full max-h-[70vh] bg-card border rounded-lg shadow-lg">
       <div className="p-4 border-b flex items-center gap-3">
         <Avatar>
-          <AvatarImage src="/placeholder.svg" alt="EmotiCare Bot" />
           <AvatarFallback className="bg-primary/20">
             <Bot className="text-primary" />
           </AvatarFallback>
@@ -124,9 +127,29 @@ export default function ChatInterface() {
       </div>
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
-          {messages.map((message) => (
-            <ChatMessage key={message.id} message={message} />
-          ))}
+          {isLoading && messages.length === 0 ? (
+            <div className="flex items-start gap-3">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-primary/20">
+                  <Bot className="w-4 h-4 text-primary" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex items-center space-x-2 pt-2">
+                <Skeleton className="w-3 h-3 rounded-full" />
+                <Skeleton className="w-3 h-3 rounded-full" />
+                <Skeleton className="w-3 h-3 rounded-full" />
+              </div>
+            </div>
+          ) : messages.length > 0 ? (
+            messages.map((message) => (
+                <ChatMessage key={message.id} message={message} />
+            ))
+          ) : (
+             <div className="text-center py-16 text-muted-foreground flex flex-col items-center gap-2">
+                <Frown />
+                <p>{t('chat_no_messages')}</p>
+            </div>
+          )}
           {isLoading && messages.length > 0 && (
              <div className="flex items-start gap-3">
               <Avatar className="w-8 h-8">
@@ -134,10 +157,10 @@ export default function ChatInterface() {
                   <Bot className="w-4 h-4 text-primary" />
                 </AvatarFallback>
               </Avatar>
-              <div className="flex items-center space-x-2">
-                <Skeleton className="w-4 h-4 rounded-full" />
-                <Skeleton className="w-4 h-4 rounded-full" />
-                <Skeleton className="w-4 h-4 rounded-full" />
+              <div className="flex items-center space-x-2 pt-2">
+                <Skeleton className="w-3 h-3 rounded-full" />
+                <Skeleton className="w-3 h-3 rounded-full" />
+                <Skeleton className="w-3 h-3 rounded-full" />
               </div>
             </div>
           )}
@@ -156,6 +179,7 @@ export default function ChatInterface() {
                 handleSendMessage(e);
               }
             }}
+            disabled={isLoading}
           />
           <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
             <SendHorizonal className="w-5 h-5" />
