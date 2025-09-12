@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Shield } from 'lucide-react';
+import { User, Shield, Briefcase } from 'lucide-react';
 
 export default function LoginPage() {
   return (
@@ -17,6 +17,12 @@ export default function LoginPage() {
             <Link href="/login/student">
               <User className="mr-2" />
               Login as Student
+            </Link>
+          </Button>
+           <Button asChild size="lg" variant="secondary">
+            <Link href="/login/counselor">
+              <Briefcase className="mr-2" />
+              Login as Counselor
             </Link>
           </Button>
           <Button asChild size="lg" variant="outline">

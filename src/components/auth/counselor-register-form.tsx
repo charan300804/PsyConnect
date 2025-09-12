@@ -1,0 +1,156 @@
+
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
+import { Briefcase } from 'lucide-react';
+import Link from 'next/link';
+import { hasReachedCounselorLimit, incrementCounselorCount, getCounselorCount } from '@/lib/auth-state';
+import React from 'react';
+
+const formSchema = z.object({
+  fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+  confirmPassword: z.string(),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+});
+
+export type CounselorRegisterFormValues = z.infer<typeof formSchema>;
+
+export default function CounselorRegisterForm() {
+    const { toast } = useToast();
+    const router = useRouter();
+    const [isLimitReached, setIsLimitReached] = React.useState(true);
+    const [counselorCount, setCounselorCount] = React.useState(0);
+
+    React.useEffect(() => {
+        setIsLimitReached(hasReachedCounselorLimit());
+        setCounselorCount(getCounselorCount());
+    }, []);
+
+    const form = useForm<CounselorRegisterFormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            fullName: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        disabled: isLimitReached,
+    });
+
+  const onSubmit = (data: CounselorRegisterFormValues) => {
+    if (hasReachedCounselorLimit()) {
+        toast({
+            title: 'Registration Error',
+            description: 'The maximum number of counselor accounts has been reached.',
+            variant: 'destructive',
+        });
+        return;
+    }
+    
+    incrementCounselorCount();
+    console.log(data);
+    toast({
+      title: 'Counselor Registration Successful!',
+      description: 'The counselor account has been created. Please log in.',
+    });
+    router.push('/login/counselor');
+  };
+
+  return (
+    <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+            <div className="flex justify-center mb-2">
+                <Briefcase className="w-10 h-10 text-primary" />
+            </div>
+            <CardTitle className="text-2xl font-bold font-headline">Counselor Registration</CardTitle>
+            <CardDescription>
+              {isLimitReached 
+                ? "All counselor positions are currently filled. No new registrations are being accepted."
+                : `Create a counselor account. ${counselorCount} of 10 positions filled.`
+              }
+            </CardDescription>
+        </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Full Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" placeholder="Confirm Password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex flex-col gap-4">
+                <Button type="submit" className="w-full" disabled={isLimitReached}>Register</Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-4">
+        <div className="text-center text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link href="/login/counselor" className="text-primary hover:underline">
+                Login here
+            </Link>
+        </div>
+      </CardFooter>
+    </Card>
+  );
+}
