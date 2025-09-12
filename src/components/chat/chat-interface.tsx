@@ -83,7 +83,7 @@ export default function ChatInterface() {
         text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
       }));
 
-      const { response } = await generateChatResponse({ text: input, history });
+      const { response } = await generateChatResponse({ text: input, history, language: navigator.language, region: (Intl as any).DateTimeFormat().resolvedOptions().timeZone });
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
