@@ -15,11 +15,14 @@ import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { registeredCounselors } from '@/lib/counselor-data';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   studentId: z.string().min(1, { message: 'Student ID is required.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }),
+  counselorId: z.string({ required_error: 'Please select a counselor.' }),
   date: z.date({
     required_error: "A date for the appointment is required.",
   }),
@@ -36,6 +39,7 @@ export default function BookingForm() {
       name: '',
       studentId: '',
       email: '',
+      counselorId: undefined,
       reason: '',
     },
   });
@@ -94,6 +98,28 @@ export default function BookingForm() {
                   <FormControl>
                     <Input placeholder="Email" {...field} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="counselorId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Select a Counselor</FormLabel>
+                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Choose a counselor..." />
+                        </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {registeredCounselors.map(counselor => (
+                                <SelectItem key={counselor.id} value={counselor.id}>{counselor.name}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                   <FormMessage />
                 </FormItem>
               )}
