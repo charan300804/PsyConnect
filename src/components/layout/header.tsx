@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { HeartHandshake, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import LanguageSelector from './language-selector';
 
 export function Header() {
   const pathname = usePathname();
@@ -51,10 +52,15 @@ export function Header() {
               </Link>
             ))}
              <div className="border-l h-6 mx-2"></div>
-             {isClient && <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
-                <LogIn className="w-4 h-4 mr-2" />
-                Login
-            </Link>}
+            {isClient && (
+              <>
+                <LanguageSelector />
+                <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Login
+                </Link>
+              </>
+            )}
           </nav>
         </div>
       </div>

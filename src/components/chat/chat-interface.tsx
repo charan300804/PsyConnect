@@ -11,7 +11,7 @@ import ChatMessage from './chat-message';
 import { initialChatbotPrompt } from '@/ai/flows/initial-chatbot-prompt';
 import { generateChatResponse } from '@/ai/flows/generate-chat-response';
 import { Skeleton } from '../ui/skeleton';
-import Link from 'next/link';
+import { useLanguage } from '@/context/language-context';
 
 type Message = {
   id: string;
@@ -24,6 +24,7 @@ export default function ChatInterface() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { language, region } = useLanguage();
 
   useEffect(() => {
     const fetchInitialMessage = async () => {
@@ -83,7 +84,7 @@ export default function ChatInterface() {
         text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
       }));
 
-      const { response } = await generateChatResponse({ text: input, history, language: navigator.language, region: (Intl as any).DateTimeFormat().resolvedOptions().timeZone });
+      const { response } = await generateChatResponse({ text: input, history, language, region });
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),

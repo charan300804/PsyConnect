@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Header } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
+import { LanguageProvider } from '@/context/language-context';
 
 export const metadata: Metadata = {
   title: 'EmotiCare',
@@ -34,9 +36,11 @@ export default function RootLayout({
           'flex flex-col'
         )}
       >
-        <Header />
-        <main className="flex-1 flex flex-col">{children}</main>
-        <Toaster />
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1 flex flex-col">{children}</main>
+          <Toaster />
+        </LanguageProvider>
       </body>
     </html>
   );
