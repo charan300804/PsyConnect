@@ -47,21 +47,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const bestMatch = Object.keys(translations).find(l => l === browserLang) || 
                         Object.keys(translations).find(l => l.startsWith(browserLang.split('-')[0])) || 
                         'en-US';
-      setLanguageState(bestMatch);
-
-      try {
-        const browserRegion = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/')[1] || 'US';
-         setRegionState(browserRegion);
-      } catch (e) {
-        setRegionState('US');
-      }
+      setLanguage(bestMatch);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const setLanguage = (lang: string) => {
     setLanguageState(lang);
     const newRegion = lang.split('-')[1] || 'US';
-    setRegion(newRegion);
+    setRegionState(newRegion);
   };
   
   const setRegion = (reg: string) => {
@@ -74,7 +68,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
     if (options) {
       Object.keys(options).forEach(k => {
-        translation = translation.replace(`{${k}}`, options[k]);
+        const regex = new RegExp(`\\{${k}\\}`, 'g');
+        translation = translation.replace(regex, options[k]);
       });
     }
 
