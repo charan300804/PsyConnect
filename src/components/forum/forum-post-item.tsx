@@ -1,16 +1,20 @@
 
+'use client';
+
 import Link from 'next/link';
 import { MessageSquare, Eye, UserCircle, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { ForumPost } from '@/lib/forum-data';
+import { useTranslation } from '@/context/language-context';
 
 type ForumPostItemProps = {
   post: ForumPost;
 };
 
 export default function ForumPostItem({ post }: ForumPostItemProps) {
+  const { t } = useTranslation();
   return (
     <Link href={`/forum/${post.id}`}>
       <Card className="hover:bg-muted/50 transition-colors">
@@ -23,7 +27,7 @@ export default function ForumPostItem({ post }: ForumPostItemProps) {
                   </AvatarFallback>
               </Avatar>
               <span>{post.author.name}</span>
-              {post.author.isModerator && <Badge variant="secondary">Moderator</Badge>}
+              {post.author.isModerator && <Badge variant="secondary">{t('forum_moderator')}</Badge>}
               <span>•</span>
               <span>{post.createdAt}</span>
           </div>
@@ -33,11 +37,11 @@ export default function ForumPostItem({ post }: ForumPostItemProps) {
           <div className="flex items-center gap-4 text-sm text-muted-foreground mt-4">
               <div className="flex items-center gap-1">
                   <MessageSquare className="w-4 h-4" />
-                  <span>{post.replies} Replies</span>
+                  <span>{post.replies} {t('forum_replies')}</span>
               </div>
               <div className="flex items-center gap-1">
                   <Eye className="w-4 h-4" />
-                  <span>{post.views} Views</span>
+                  <span>{post.views} {t('forum_views')}</span>
               </div>
           </div>
         </CardContent>

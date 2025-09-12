@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { registeredCounselors } from '@/lib/counselor-data';
 import { addAppointmentRequest } from '@/lib/admin-data';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -33,6 +34,7 @@ const formSchema = z.object({
 export type BookingFormValues = z.infer<typeof formSchema>;
 
 export default function BookingForm() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(formSchema),
@@ -50,8 +52,8 @@ export default function BookingForm() {
     
     if (!selectedCounselor) {
         toast({
-            title: 'Error',
-            description: 'Selected counselor not found.',
+            title: t('toast_error_title'),
+            description: t('toast_counselor_not_found_description'),
             variant: 'destructive',
         });
         return;
@@ -66,8 +68,8 @@ export default function BookingForm() {
     });
     
     toast({
-      title: 'Appointment Booked!',
-      description: `Your appointment on ${format(data.date, 'PPP')} has been successfully scheduled.`,
+      title: t('toast_appointment_booked_title'),
+      description: t('toast_appointment_booked_description', { date: format(data.date, 'PPP') }),
     });
     form.reset();
   };
@@ -75,7 +77,7 @@ export default function BookingForm() {
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Counsellor Appointment</CardTitle>
+        <CardTitle>{t('booking_form_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -86,9 +88,9 @@ export default function BookingForm() {
                 name="name"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>{t('form_full_name')}</FormLabel>
                     <FormControl>
-                        <Input placeholder="Full Name" {...field} />
+                        <Input placeholder={t('form_full_name')} {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -99,9 +101,9 @@ export default function BookingForm() {
                 name="studentId"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Student ID</FormLabel>
+                    <FormLabel>{t('form_student_id')}</FormLabel>
                     <FormControl>
-                        <Input placeholder="Student ID" {...field} />
+                        <Input placeholder={t('form_student_id')} {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -113,9 +115,9 @@ export default function BookingForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -126,11 +128,11 @@ export default function BookingForm() {
               name="counselorId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Select a Counselor</FormLabel>
+                  <FormLabel>{t('form_select_counselor')}</FormLabel>
                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                         <SelectTrigger>
-                            <SelectValue placeholder="Choose a counselor..." />
+                            <SelectValue placeholder={t('form_select_counselor_placeholder')} />
                         </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -148,7 +150,7 @@ export default function BookingForm() {
               name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Preferred Date</FormLabel>
+                  <FormLabel>{t('form_preferred_date')}</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -162,7 +164,7 @@ export default function BookingForm() {
                           {field.value ? (
                             format(field.value, "PPP")
                           ) : (
-                            <span>Pick a date</span>
+                            <span>{t('form_pick_date')}</span>
                           )}
                           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -181,7 +183,7 @@ export default function BookingForm() {
                     </PopoverContent>
                   </Popover>
                   <FormDescription>
-                    Select a date for your appointment. A counsellor will contact you to confirm the time.
+                    {t('form_date_description')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -192,10 +194,10 @@ export default function BookingForm() {
               name="reason"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Reason for Appointment</FormLabel>
+                  <FormLabel>{t('form_reason_for_appointment')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Briefly describe what you'd like to discuss..."
+                      placeholder={t('form_reason_placeholder')}
                       className="resize-none"
                       {...field}
                     />
@@ -204,7 +206,7 @@ export default function BookingForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">Book Appointment</Button>
+            <Button type="submit">{t('book_appointment_button')}</Button>
           </form>
         </Form>
       </CardContent>

@@ -11,7 +11,7 @@ import ChatMessage from './chat-message';
 import { initialChatbotPrompt } from '@/ai/flows/initial-chatbot-prompt';
 import { generateChatResponse } from '@/ai/flows/generate-chat-response';
 import { Skeleton } from '../ui/skeleton';
-import { useLanguage } from '@/context/language-context';
+import { useLanguage, useTranslation } from '@/context/language-context';
 
 type Message = {
   id: string;
@@ -25,6 +25,7 @@ export default function ChatInterface() {
   const [isLoading, setIsLoading] = useState(true);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { language, region } = useLanguage();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchInitialMessage = async () => {
@@ -43,7 +44,7 @@ export default function ChatInterface() {
           {
             id: 'init-error',
             role: 'bot',
-            text: 'Hello! I am here to help. How are you feeling today?',
+            text: t('chat_initial_error'),
           },
         ]);
       } finally {
@@ -51,6 +52,7 @@ export default function ChatInterface() {
       }
     };
     fetchInitialMessage();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function ChatInterface() {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'bot',
-        text: 'I had a little trouble understanding that. Could you please try rephrasing?',
+        text: t('chat_response_error'),
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
@@ -116,8 +118,8 @@ export default function ChatInterface() {
           </AvatarFallback>
         </Avatar>
         <div>
-          <h2 className="text-lg font-semibold">EmotiCare Assistant</h2>
-          <p className="text-xs text-muted-foreground">Psychological First-Aid Chat</p>
+          <h2 className="text-lg font-semibold">{t('chat_assistant_title')}</h2>
+          <p className="text-xs text-muted-foreground">{t('chat_assistant_subtitle')}</p>
         </div>
       </div>
       <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
@@ -146,7 +148,7 @@ export default function ChatInterface() {
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Tell me what's on your mind..."
+            placeholder={t('chat_input_placeholder')}
             className="flex-1 resize-none"
             rows={1}
             onKeyDown={(e) => {
@@ -160,7 +162,7 @@ export default function ChatInterface() {
           </Button>
         </form>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-            This chat is anonymous and for supportive purposes. It is not a substitute for professional medical advice.
+            {t('chat_disclaimer')}
         </p>
       </div>
     </div>

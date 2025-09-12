@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { useTranslation } from '@/context/language-context';
 
 type Question = {
   id: string;
@@ -27,6 +28,7 @@ type Props = {
 };
 
 export default function Questionnaire({ title, questions, options, answers, setAnswers, onNext, onBack }: Props) {
+  const { t } = useTranslation();
   const handleAnswerChange = (questionId: string, value: string) => {
     setAnswers({
       ...answers,
@@ -39,12 +41,12 @@ export default function Questionnaire({ title, questions, options, answers, setA
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{t(title)}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-8">
         {questions.map((question, index) => (
           <div key={question.id}>
-            <p className="font-medium mb-4">{`${index + 1}. ${question.text}`}</p>
+            <p className="font-medium mb-4">{`${index + 1}. ${t(question.text)}`}</p>
             <RadioGroup
               value={answers[question.id]?.toString()}
               onValueChange={(value) => handleAnswerChange(question.id, value)}
@@ -53,7 +55,7 @@ export default function Questionnaire({ title, questions, options, answers, setA
               {options.map((option) => (
                 <div key={option.value} className="flex items-center space-x-2">
                   <RadioGroupItem value={option.value.toString()} id={`${question.id}-${option.value}`} />
-                  <Label htmlFor={`${question.id}-${option.value}`}>{option.label}</Label>
+                  <Label htmlFor={`${question.id}-${option.value}`}>{t(option.label)}</Label>
                 </div>
               ))}
             </RadioGroup>
@@ -61,8 +63,8 @@ export default function Questionnaire({ title, questions, options, answers, setA
         ))}
       </CardContent>
       <CardFooter className="flex justify-between">
-        <Button variant="outline" onClick={onBack}>Back</Button>
-        <Button onClick={onNext} disabled={!allQuestionsAnswered}>Next</Button>
+        <Button variant="outline" onClick={onBack}>{t('back_button')}</Button>
+        <Button onClick={onNext} disabled={!allQuestionsAnswered}>{t('next_button')}</Button>
       </CardFooter>
     </Card>
   );

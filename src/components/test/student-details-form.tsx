@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -26,6 +27,7 @@ type Props = {
 };
 
 export default function StudentDetailsForm({ onSubmit }: Props) {
+  const { t } = useTranslation();
   const form = useForm<StudentDetailsFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,7 +43,7 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Student Details</CardTitle>
+        <CardTitle>{t('student_details_form_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -51,9 +53,9 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t('form_full_name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Full Name" {...field} />
+                    <Input placeholder={t('form_full_name')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -64,9 +66,9 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
               name="studentId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Student ID</FormLabel>
+                  <FormLabel>{t('form_student_id')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Student ID" {...field} />
+                    <Input placeholder={t('form_student_id')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -77,9 +79,9 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -91,9 +93,9 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 name="age"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Age</FormLabel>
+                    <FormLabel>{t('form_age')}</FormLabel>
                     <FormControl>
-                        <Input type="number" placeholder="Age" {...field} />
+                        <Input type="number" placeholder={t('form_age')} {...field} />
                     </FormControl>
                     <FormMessage />
                     </FormItem>
@@ -104,18 +106,18 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
                 name="gender"
                 render={({ field }) => (
                     <FormItem>
-                    <FormLabel>Gender</FormLabel>
+                    <FormLabel>{t('form_gender')}</FormLabel>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                         <SelectTrigger>
-                            <SelectValue placeholder="Select your gender" />
+                            <SelectValue placeholder={t('form_gender_placeholder')} />
                         </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                        <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                        <SelectItem value="male">{t('gender_male')}</SelectItem>
+                        <SelectItem value="female">{t('gender_female')}</SelectItem>
+                        <SelectItem value="other">{t('gender_other')}</SelectItem>
+                        <SelectItem value="prefer-not-to-say">{t('gender_prefer_not_to_say')}</SelectItem>
                         </SelectContent>
                     </Select>
                     <FormMessage />
@@ -128,15 +130,15 @@ export default function StudentDetailsForm({ onSubmit }: Props) {
               name="school"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>School/University</FormLabel>
+                  <FormLabel>{t('form_school')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="School/University" {...field} />
+                    <Input placeholder={t('form_school')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Start Test</Button>
+            <Button type="submit">{t('start_test_button')}</Button>
           </form>
         </Form>
       </CardContent>

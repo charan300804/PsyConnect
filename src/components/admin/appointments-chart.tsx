@@ -4,12 +4,14 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { appointmentsData } from '@/lib/admin-data';
+import { useTranslation } from '@/context/language-context';
 
 export default function AppointmentsChart() {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Appointments Booked (Last 6 Months)</CardTitle>
+        <CardTitle>{t('appointments_chart_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -18,7 +20,7 @@ export default function AppointmentsChart() {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="count" stroke="hsl(var(--primary))" name="Appointments" />
+            <Line type="monotone" dataKey="count" stroke="hsl(var(--primary))" name={t('appointments_chart_legend')} />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>

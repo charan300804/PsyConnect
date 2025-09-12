@@ -12,26 +12,28 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { studentAssessmentData, StudentAssessmentData } from "@/lib/admin-data"
 import { Badge } from "../ui/badge";
+import { useTranslation } from "@/context/language-context";
   
 export function StudentDataTable() {
+    const { t } = useTranslation();
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Student Assessment Data</CardTitle>
+                <CardTitle>{t('student_data_table_title')}</CardTitle>
             </CardHeader>
             <CardContent>
                  {studentAssessmentData.length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
-                        No student assessment data found.
+                        {t('student_data_table_no_data')}
                     </div>
                  ) : (
                     <Table>
                         <TableHeader>
                         <TableRow>
-                            <TableHead>Student Name</TableHead>
-                            <TableHead>Student ID</TableHead>
-                            <TableHead>School</TableHead>
-                            <TableHead>Assessment Date</TableHead>
+                            <TableHead>{t('table_student_name')}</TableHead>
+                            <TableHead>{t('table_student_id')}</TableHead>
+                            <TableHead>{t('table_school')}</TableHead>
+                            <TableHead>{t('table_assessment_date')}</TableHead>
                             <TableHead>PHQ-9</TableHead>
                             <TableHead>GAD-7</TableHead>
                             <TableHead>GHQ-12</TableHead>

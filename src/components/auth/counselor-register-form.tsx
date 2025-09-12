@@ -14,6 +14,7 @@ import { Briefcase } from 'lucide-react';
 import Link from 'next/link';
 import { hasReachedCounselorLimit, incrementCounselorCount, getCounselorCount } from '@/lib/auth-state';
 import React from 'react';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -28,6 +29,7 @@ const formSchema = z.object({
 export type CounselorRegisterFormValues = z.infer<typeof formSchema>;
 
 export default function CounselorRegisterForm() {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
     const [isLimitReached, setIsLimitReached] = React.useState(true);
@@ -52,8 +54,8 @@ export default function CounselorRegisterForm() {
   const onSubmit = (data: CounselorRegisterFormValues) => {
     if (hasReachedCounselorLimit()) {
         toast({
-            title: 'Registration Error',
-            description: 'The maximum number of counselor accounts has been reached.',
+            title: t('toast_registration_error_title'),
+            description: t('toast_counselor_limit_reached_description'),
             variant: 'destructive',
         });
         return;
@@ -62,8 +64,8 @@ export default function CounselorRegisterForm() {
     incrementCounselorCount();
     console.log(data);
     toast({
-      title: 'Counselor Registration Successful!',
-      description: 'The counselor account has been created. Please log in.',
+      title: t('toast_counselor_registration_success_title'),
+      description: t('toast_counselor_registration_success_description'),
     });
     router.push('/login/counselor');
   };
@@ -74,11 +76,11 @@ export default function CounselorRegisterForm() {
             <div className="flex justify-center mb-2">
                 <Briefcase className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Counselor Registration</CardTitle>
+            <CardTitle className="text-2xl font-bold font-headline">{t('counselor_register_title')}</CardTitle>
             <CardDescription>
               {isLimitReached 
-                ? "All counselor positions are currently filled. No new registrations are being accepted."
-                : `Create a counselor account. ${counselorCount} of 10 positions filled.`
+                ? t('counselor_register_limit_reached')
+                : t('counselor_register_subtitle', { count: counselorCount, limit: 10 })
               }
             </CardDescription>
         </CardHeader>
@@ -90,9 +92,9 @@ export default function CounselorRegisterForm() {
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t('form_full_name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Full Name" {...field} />
+                    <Input placeholder={t('form_full_name')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,9 +105,9 @@ export default function CounselorRegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,9 +118,9 @@ export default function CounselorRegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,25 +131,25 @@ export default function CounselorRegisterForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t('form_confirm_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Confirm Password" {...field} />
+                    <Input type="password" placeholder={t('form_confirm_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full" disabled={isLimitReached}>Register</Button>
+                <Button type="submit" className="w-full" disabled={isLimitReached}>{t('register_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
+            {t('already_have_account')}{' '}
             <Link href="/login/counselor" className="text-primary hover:underline">
-                Login here
+                {t('login_here_link')}
             </Link>
         </div>
       </CardFooter>

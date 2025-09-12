@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Shield } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -21,6 +22,7 @@ const formSchema = z.object({
 export type AdminLoginFormValues = z.infer<typeof formSchema>;
 
 export default function AdminLoginForm() {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
     const form = useForm<AdminLoginFormValues>({
@@ -34,8 +36,8 @@ export default function AdminLoginForm() {
   const onSubmit = (data: AdminLoginFormValues) => {
     console.log(data);
     toast({
-      title: 'Admin Logged In!',
-      description: 'You have successfully logged in as an admin.',
+      title: t('toast_admin_logged_in_title'),
+      description: t('toast_admin_logged_in_description'),
     });
     router.push('/admin');
   };
@@ -46,8 +48,8 @@ export default function AdminLoginForm() {
              <div className="flex justify-center mb-2">
                 <Shield className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Admin Login</CardTitle>
-            <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline">{t('admin_login_title')}</CardTitle>
+            <CardDescription>{t('login_form_subtitle')}</CardDescription>
         </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -57,9 +59,9 @@ export default function AdminLoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,29 +72,29 @@ export default function AdminLoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">Login</Button>
+                <Button type="submit" className="w-full">{t('login_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
        <CardFooter className="flex flex-col gap-4 text-center">
         <div className="text-center text-sm text-muted-foreground">
-            Only one admin can be registered.{' '}
+            {t('admin_login_register_prompt')}{' '}
             <Link href="/login/admin/register" className="text-primary hover:underline">
-                Register here
+                {t('admin_login_register_link')}
             </Link>
         </div>
         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">Back to login selection</Link>
+            <Link href="/login">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

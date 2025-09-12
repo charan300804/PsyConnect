@@ -13,12 +13,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { appointmentRequestsData, AppointmentRequest } from "@/lib/admin-data"
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/context/language-context";
 
 type CounselorAppointmentsTableProps = {
     counselorId: string;
 };
   
 export default function CounselorAppointmentsTable({ counselorId }: CounselorAppointmentsTableProps) {
+    const { t } = useTranslation();
     const filteredAppointments = appointmentRequestsData.filter(
         (request) => request.counselor.id === counselorId
     );
@@ -26,22 +28,22 @@ export default function CounselorAppointmentsTable({ counselorId }: CounselorApp
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Your Appointment Requests</CardTitle>
+                <CardTitle>{t('counselor_appointments_table_title')}</CardTitle>
             </CardHeader>
             <CardContent>
                 {filteredAppointments.length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
-                        You have no pending appointment requests.
+                        {t('counselor_appointments_table_no_requests')}
                     </div>
                 ) : (
                     <Table>
                         <TableHeader>
                         <TableRow>
-                            <TableHead>Student Name</TableHead>
-                            <TableHead>Student ID</TableHead>
-                            <TableHead>Requested Date</TableHead>
-                            <TableHead>Reason</TableHead>
-                            <TableHead>Status</TableHead>
+                            <TableHead>{t('table_student_name')}</TableHead>
+                            <TableHead>{t('table_student_id')}</TableHead>
+                            <TableHead>{t('table_requested_date')}</TableHead>
+                            <TableHead>{t('table_reason')}</TableHead>
+                            <TableHead>{t('table_status')}</TableHead>
                         </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -59,7 +61,7 @@ export default function CounselorAppointmentsTable({ counselorId }: CounselorApp
                                     'bg-gray-400 text-gray-900': request.status === 'Completed',
                                 })}
                                 >
-                                {request.status}
+                                {t(`status_${request.status.toLowerCase()}`)}
                                 </Badge>
                             </TableCell>
                             </TableRow>

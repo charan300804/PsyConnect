@@ -1,4 +1,6 @@
 
+'use client';
+
 import { forumPosts } from '@/lib/forum-data';
 import { notFound } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
@@ -8,17 +10,19 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { UserCircle, Shield, MessageSquare, Eye, Flag, ThumbsUp } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/context/language-context';
 
 // This is a dummy component for replies. In a real app, this would be more complex.
 const ForumReplies = () => {
+    const { t } = useTranslation();
     const replies: any[] = [];
 
     if (replies.length === 0) {
         return (
             <div className="space-y-6 mt-8">
-                <h3 className="text-xl font-bold">Replies</h3>
+                <h3 className="text-xl font-bold">{t('forum_replies')}</h3>
                 <div className="text-center text-muted-foreground py-8">
-                    No replies yet. Be the first to reply!
+                    {t('forum_no_replies')}
                 </div>
             </div>
         );
@@ -27,7 +31,7 @@ const ForumReplies = () => {
 
     return (
         <div className="space-y-6 mt-8">
-            <h3 className="text-xl font-bold">Replies</h3>
+            <h3 className="text-xl font-bold">{t('forum_replies')}</h3>
             {replies.map(reply => (
                 <Card key={reply.id}>
                     <CardHeader className="flex flex-row items-center gap-3 space-y-0">
@@ -39,7 +43,7 @@ const ForumReplies = () => {
                         <div>
                             <div className="flex items-center gap-2">
                                 <span className="font-semibold">{reply.author.name}</span>
-                                {reply.author.isModerator && <Badge variant="secondary">Moderator</Badge>}
+                                {reply.author.isModerator && <Badge variant="secondary">{t('forum_moderator')}</Badge>}
                             </div>
                             <p className="text-xs text-muted-foreground">{reply.createdAt}</p>
                         </div>
@@ -49,10 +53,10 @@ const ForumReplies = () => {
                     </CardContent>
                     <CardFooter className="gap-4">
                         <Button variant="ghost" size="sm" className="flex items-center gap-1 text-muted-foreground">
-                            <ThumbsUp className="w-4 h-4" /> 2 Likes
+                            <ThumbsUp className="w-4 h-4" /> 2 {t('forum_likes')}
                         </Button>
                         <Button variant="ghost" size="sm" className="flex items-center gap-1 text-muted-foreground">
-                            <Flag className="w-4 h-4" /> Report
+                            <Flag className="w-4 h-4" /> {t('forum_report')}
                         </Button>
                     </CardFooter>
                 </Card>
@@ -63,6 +67,7 @@ const ForumReplies = () => {
 
 
 export default function ForumPostPage({ params }: { params: { id: string } }) {
+  const { t } = useTranslation();
   const post = forumPosts.find((p) => p.id === params.id);
 
   if (!post) {
@@ -74,7 +79,7 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
         <div className="max-w-3xl mx-auto">
             <div className="mb-4">
                 <Link href="/forum" className="text-sm text-primary hover:underline">
-                    &larr; Back to Forum
+                    &larr; {t('forum_back_to_forum')}
                 </Link>
             </div>
             <Card>
@@ -89,7 +94,7 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
                     <div>
                         <div className="flex items-center gap-2">
                             <span className="font-semibold">{post.author.name}</span>
-                            {post.author.isModerator && <Badge variant="secondary">Moderator</Badge>}
+                            {post.author.isModerator && <Badge variant="secondary">{t('forum_moderator')}</Badge>}
                         </div>
                         <p className="text-xs">{post.createdAt}</p>
                     </div>
@@ -109,15 +114,15 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                             <MessageSquare className="w-4 h-4" />
-                            <span>{post.replies} Replies</span>
+                            <span>{post.replies} {t('forum_replies')}</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <Eye className="w-4 h-4" />
-                            <span>{post.views} Views</span>
+                            <span>{post.views} {t('forum_views')}</span>
                         </div>
                     </div>
                     <Button variant="outline">
-                        <Flag className="w-4 h-4 mr-2" /> Report Post
+                        <Flag className="w-4 h-4 mr-2" /> {t('forum_report_post')}
                     </Button>
                 </CardFooter>
             </Card>
@@ -126,13 +131,13 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
 
             <Card className="mt-8">
                 <CardHeader>
-                    <CardTitle>Leave a Reply</CardTitle>
+                    <CardTitle>{t('forum_leave_reply')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <Textarea placeholder="Share your thoughts or offer support..." className="min-h-[120px]" />
+                    <Textarea placeholder={t('forum_reply_placeholder')} className="min-h-[120px]" />
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                    <Button>Post Reply</Button>
+                    <Button>{t('forum_post_reply')}</Button>
                 </CardFooter>
             </Card>
         </div>

@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   title: z.string().min(5, { message: 'Title must be at least 5 characters.' }),
@@ -20,6 +21,7 @@ const formSchema = z.object({
 export type NewPostFormValues = z.infer<typeof formSchema>;
 
 export default function NewPostForm() {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
     const form = useForm<NewPostFormValues>({
@@ -33,8 +35,8 @@ export default function NewPostForm() {
   const onSubmit = (data: NewPostFormValues) => {
     console.log(data);
     toast({
-      title: 'Post Created!',
-      description: 'Your new post has been successfully added to the forum.',
+      title: t('toast_post_created_title'),
+      description: t('toast_post_created_description'),
     });
     router.push('/forum');
   };
@@ -42,7 +44,7 @@ export default function NewPostForm() {
   return (
     <Card className="max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle>Create Post</CardTitle>
+        <CardTitle>{t('forum_create_post_form_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -52,9 +54,9 @@ export default function NewPostForm() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>{t('form_title')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Title" {...field} />
+                    <Input placeholder={t('form_title')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -65,10 +67,10 @@ export default function NewPostForm() {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
+                  <FormLabel>{t('form_content')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Share your thoughts here..."
+                      placeholder={t('form_content_placeholder')}
                       className="resize-y min-h-[150px]"
                       {...field}
                     />
@@ -78,8 +80,8 @@ export default function NewPostForm() {
               )}
             />
             <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
-                <Button type="submit">Create Post</Button>
+                <Button type="button" variant="outline" onClick={() => router.back()}>{t('cancel_button')}</Button>
+                <Button type="submit">{t('create_post_button')}</Button>
             </div>
           </form>
         </Form>

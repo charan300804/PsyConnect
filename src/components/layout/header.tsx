@@ -7,21 +7,23 @@ import { usePathname } from 'next/navigation';
 import { HeartHandshake, LogIn } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import LanguageSelector from './language-selector';
+import { useTranslation } from '@/context/language-context';
 
 export function Header() {
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   const navItems = [
-    { href: '/test', label: 'Test' },
-    { href: '/chat', label: 'Chat' },
-    { href: '/resources', label: 'Resources' },
-    { href: '/booking', label: 'Booking' },
-    { href: '/forum', label: 'Forum' },
+    { href: '/test', label: t('nav_test') },
+    { href: '/chat', label: t('nav_chat') },
+    { href: '/resources', label: t('nav_resources') },
+    { href: '/booking', label: t('nav_booking') },
+    { href: '/forum', label: t('nav_forum') },
   ];
 
   return (
@@ -57,7 +59,7 @@ export function Header() {
                 <LanguageSelector />
                 <Link href="/login" className={cn('px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center', pathname.startsWith('/login') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:text-foreground' )}>
                     <LogIn className="w-4 h-4 mr-2" />
-                    Login
+                    {t('nav_login')}
                 </Link>
               </>
             )}

@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { User } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -21,6 +22,7 @@ const formSchema = z.object({
 export type StudentLoginFormValues = z.infer<typeof formSchema>;
 
 export default function StudentLoginForm() {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
     const form = useForm<StudentLoginFormValues>({
@@ -34,8 +36,8 @@ export default function StudentLoginForm() {
   const onSubmit = (data: StudentLoginFormValues) => {
     console.log(data);
     toast({
-      title: 'Logged In!',
-      description: 'You have successfully logged in as a student.',
+      title: t('toast_logged_in_title'),
+      description: t('toast_student_logged_in_description'),
     });
     router.push('/test');
   };
@@ -46,8 +48,8 @@ export default function StudentLoginForm() {
             <div className="flex justify-center mb-2">
                 <User className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Student Login</CardTitle>
-            <CardDescription>Enter your credentials to access your account.</CardDescription>
+            <CardTitle className="text-2xl font-bold font-headline">{t('student_login_title')}</CardTitle>
+            <CardDescription>{t('login_form_subtitle')}</CardDescription>
         </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -57,9 +59,9 @@ export default function StudentLoginForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,29 +72,29 @@ export default function StudentLoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">Login</Button>
+                <Button type="submit" className="w-full">{t('login_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
+            {t('dont_have_account')}{' '}
             <Link href="/login/student/register" className="text-primary hover:underline">
-                Register here
+                {t('register_here_link')}
             </Link>
         </div>
         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">Back to login selection</Link>
+            <Link href="/login">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { hasAdminAccount, createAdminAccount } from '@/lib/auth-state';
+import { useTranslation } from '@/context/language-context';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -27,6 +28,7 @@ const formSchema = z.object({
 export type AdminRegisterFormValues = z.infer<typeof formSchema>;
 
 export default function AdminRegisterForm() {
+    const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
     const isRegistered = hasAdminAccount();
@@ -45,8 +47,8 @@ export default function AdminRegisterForm() {
   const onSubmit = (data: AdminRegisterFormValues) => {
     if (isRegistered) {
         toast({
-            title: 'Registration Error',
-            description: 'An admin account has already been registered.',
+            title: t('toast_registration_error_title'),
+            description: t('toast_admin_already_registered_description'),
             variant: 'destructive',
         });
         return;
@@ -55,8 +57,8 @@ export default function AdminRegisterForm() {
     createAdminAccount();
     console.log(data);
     toast({
-      title: 'Admin Registration Successful!',
-      description: 'The admin account has been created. Please log in.',
+      title: t('toast_admin_registration_success_title'),
+      description: t('toast_admin_registration_success_description'),
     });
     router.push('/login/admin');
   };
@@ -67,11 +69,11 @@ export default function AdminRegisterForm() {
             <div className="flex justify-center mb-2">
                 <ShieldCheck className="w-10 h-10 text-primary" />
             </div>
-            <CardTitle className="text-2xl font-bold font-headline">Admin Registration</CardTitle>
+            <CardTitle className="text-2xl font-bold font-headline">{t('admin_register_title')}</CardTitle>
             <CardDescription>
               {isRegistered 
-                ? "An admin account has already been registered. No further registrations are allowed." 
-                : "Create the single administrator account for the application."
+                ? t('admin_register_already_exists')
+                : t('admin_register_subtitle')
               }
             </CardDescription>
         </CardHeader>
@@ -83,9 +85,9 @@ export default function AdminRegisterForm() {
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t('form_full_name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Full Name" {...field} />
+                    <Input placeholder={t('form_full_name')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -96,9 +98,9 @@ export default function AdminRegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Email" {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,9 +111,9 @@ export default function AdminRegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -122,25 +124,25 @@ export default function AdminRegisterForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t('form_confirm_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="Confirm Password" {...field} />
+                    <Input type="password" placeholder={t('form_confirm_password')} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full" disabled={isRegistered}>Register Admin</Button>
+                <Button type="submit" className="w-full" disabled={isRegistered}>{t('register_admin_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            Already have an account?{' '}
+            {t('already_have_account')}{' '}
             <Link href="/login/admin" className="text-primary hover:underline">
-                Login here
+                {t('login_here_link')}
             </Link>
         </div>
       </CardFooter>

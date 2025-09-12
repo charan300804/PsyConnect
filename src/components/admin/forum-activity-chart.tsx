@@ -4,12 +4,14 @@
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { forumActivityData } from '@/lib/admin-data';
+import { useTranslation } from '@/context/language-context';
 
 export default function ForumActivityChart() {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Forum Post Categories</CardTitle>
+        <CardTitle>{t('forum_activity_chart_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
