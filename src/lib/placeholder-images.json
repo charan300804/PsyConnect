@@ -120,6 +120,126 @@
       "description": "A planner or calendar with tasks and appointments organized.",
       "imageUrl": "https://picsum.photos/seed/timemanagement/600/400",
       "imageHint": "planner organization"
+    },
+    {
+      "id": "img-21",
+      "description": "A person practicing gratitude by writing in a journal in a calm setting.",
+      "imageUrl": "https://picsum.photos/seed/gratitude/600/400",
+      "imageHint": "gratitude journal"
+    },
+    {
+      "id": "img-22",
+      "description": "An illustration of a brain with ideas and creative thoughts.",
+      "imageUrl": "https://picsum.photos/seed/creativity/600/400",
+      "imageHint": "creativity ideas"
+    },
+    {
+      "id": "img-23",
+      "description": "A person exercising outdoors, jogging in a park.",
+      "imageUrl": "https://picsum.photos/seed/exercise/600/400",
+      "imageHint": "exercise running"
+    },
+    {
+      "id": "img-24",
+      "description": "A group of friends supporting each other.",
+      "imageUrl": "https://picsum.photos/seed/support/600/400",
+      "imageHint": "support friends"
+    },
+    {
+      "id": "img-25",
+      "description": "A quiet and peaceful library or study space.",
+      "imageUrl": "https://picsum.photos/seed/quiet/600/400",
+      "imageHint": "quiet library"
+    },
+    {
+      "id": "img-26",
+      "description": "A person listening to music with headphones.",
+      "imageUrl": "https://picsum.photos/seed/music/600/400",
+      "imageHint": "music headphones"
+    },
+    {
+      "id": "img-27",
+      "description": "A person painting on a canvas.",
+      "imageUrl": "https://picsum.photos/seed/hobby/600/400",
+      "imageHint": "hobby painting"
+    },
+    {
+      "id": "img-28",
+      "description": "An organized and tidy workspace.",
+      "imageUrl": "https://picsum.photos/seed/organization/600/400",
+      "imageHint": "organization tidy"
+    },
+    {
+      "id": "img-29",
+      "description": "A close-up of a person's smiling face.",
+      "imageUrl": "https://picsum.photos/seed/happiness/600/400",
+      "imageHint": "happiness smile"
+    },
+    {
+      "id": "img-30",
+      "description": "A beautiful sunset over a calm lake.",
+      "imageUrl": "https://picsum.photos/seed/sunset/600/400",
+      "imageHint": "sunset lake"
+    },
+    {
+      "id": "img-31",
+      "description": "A lightbulb symbolizing a new idea.",
+      "imageUrl": "https://picsum.photos/seed/inspiration/600/400",
+      "imageHint": "inspiration idea"
+    },
+    {
+      "id": "img-32",
+      "description": "A person climbing a mountain, symbolizing challenges.",
+      "imageUrl": "https://picsum.photos/seed/challenge/600/400",
+      "imageHint": "challenge mountain"
+    },
+    {
+      "id": "img-33",
+      "description": "A person successfully reaching a goal or milestone.",
+      "imageUrl": "https://picsum.photos/seed/achievement/600/400",
+      "imageHint": "achievement success"
+    },
+    {
+      "id": "img-34",
+      "description": "A person relaxing in a hammock.",
+      "imageUrl": "https://picsum.photos/seed/relaxation/600/400",
+      "imageHint": "relaxation hammock"
+    },
+    {
+      "id": "img-35",
+      "description": "A winding path through a forest, representing a journey.",
+      "imageUrl": "https://picsum.photos/seed/journey/600/400",
+      "imageHint": "journey path"
+    },
+    {
+      "id": "img-36",
+      "description": "A group of diverse hands coming together.",
+      "imageUrl": "https://picsum.photos/seed/community/600/400",
+      "imageHint": "community together"
+    },
+    {
+      "id": "img-37",
+      "description": "A sprouting plant, symbolizing growth.",
+      "imageUrl": "https://picsum.photos/seed/growth/600/400",
+      "imageHint": "growth plant"
+    },
+    {
+      "id": "img-38",
+      "description": "A person looking out at a vast landscape.",
+      "imageUrl": "https://picsum.photos/seed/reflection/600/400",
+      "imageHint": "reflection landscape"
+    },
+    {
+      "id": "img-39",
+      "description": "A compass pointing in a direction.",
+      "imageUrl": "https://picsum.photos/seed/direction/600/400",
+      "imageHint": "direction compass"
+    },
+    {
+      "id": "img-40",
+      "description": "A calm and serene zen garden.",
+      "imageUrl": "https://picsum.photos/seed/zen/600/400",
+      "imageHint": "zen garden"
     }
   ]
 }
