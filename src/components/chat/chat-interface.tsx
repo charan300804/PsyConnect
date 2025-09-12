@@ -9,7 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ChatMessage from './chat-message';
 import { initialChatbotPrompt } from '@/ai/flows/initial-chatbot-prompt';
-import { detectUserSentiment } from '@/ai/flows/detect-user-sentiment';
+import { generateChatResponse } from '@/ai/flows/generate-chat-response';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 
@@ -70,40 +70,30 @@ export default function ChatInterface() {
       role: 'user',
       text: input,
     };
-    setMessages((prev) => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setIsLoading(true);
 
     try {
-      const { sentiment, severity } = await detectUserSentiment({ text: input });
+      // Map ReactNode to string for the history
+      const history = newMessages.slice(0, -1).map(m => ({
+        role: m.role,
+        // This is a simplification. If the bot returns complex JSX, this could be lossy.
+        text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
+      }));
 
-      let botResponseText: string | React.ReactNode;
-
-      if (severity === 'high') {
-        botResponseText = (
-          <span>
-            It sounds like you're going through a very difficult time. Your feelings are valid, and it's brave of you to share.
-            For immediate and professional support, it might be best to connect with a trained counsellor. You can explore our{' '}
-            <Link href="/resources" className="text-accent underline">Resource Hub</Link> for helplines and booking options. Please remember, you are not alone.
-          </span>
-        );
-      } else if (sentiment === 'negative') {
-        botResponseText = "I'm sorry to hear that you're feeling this way. It's okay to not be okay. Thank you for sharing with me. I'm here to listen if you want to talk more about it.";
-      } else if (sentiment === 'positive') {
-        botResponseText = "That's wonderful to hear! I'm glad you're feeling positive. It's great to cherish these moments.";
-      } else {
-        botResponseText = "Thank you for sharing that with me. Every feeling is valid. Is there anything specific on your mind?";
-      }
+      const { response } = await generateChatResponse({ text: input, history });
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'bot',
-        text: botResponseText,
+        text: response,
       };
 
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
-      console.error('Failed to get sentiment:', error);
+      console.error('Failed to generate chat response:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'bot',
