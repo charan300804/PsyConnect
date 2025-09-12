@@ -12,9 +12,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Briefcase } from 'lucide-react';
 import Link from 'next/link';
-import { hasReachedCounselorLimit, incrementCounselorCount, getCounselorCount } from '@/lib/auth-state';
 import React from 'react';
 import { useTranslation } from '@/context/language-context';
+import { addUser, hasReachedUserLimit, getUserCount, COUNSELOR_LIMIT } from '@/lib/user-store';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -36,8 +36,8 @@ export default function CounselorRegisterForm() {
     const [counselorCount, setCounselorCount] = React.useState(0);
 
     React.useEffect(() => {
-        setIsLimitReached(hasReachedCounselorLimit());
-        setCounselorCount(getCounselorCount());
+        setIsLimitReached(hasReachedUserLimit('counselor'));
+        setCounselorCount(getUserCount('counselor'));
     }, []);
 
     const form = useForm<CounselorRegisterFormValues>({
@@ -52,7 +52,7 @@ export default function CounselorRegisterForm() {
     });
 
   const onSubmit = (data: CounselorRegisterFormValues) => {
-    if (hasReachedCounselorLimit()) {
+    if (hasReachedUserLimit('counselor')) {
         toast({
             title: t('toast_registration_error_title'),
             description: t('toast_counselor_limit_reached_description'),
@@ -61,13 +61,21 @@ export default function CounselorRegisterForm() {
         return;
     }
     
-    incrementCounselorCount();
-    console.log(data);
-    toast({
-      title: t('toast_counselor_registration_success_title'),
-      description: t('toast_counselor_registration_success_description'),
-    });
-    router.push('/login/counselor');
+    const success = addUser('counselor', data);
+    
+    if (success) {
+        toast({
+            title: t('toast_counselor_registration_success_title'),
+            description: t('toast_counselor_registration_success_description'),
+        });
+        router.push('/login/counselor');
+    } else {
+        toast({
+            title: t('toast_registration_error_title'),
+            description: t('toast_user_already_exists_description'),
+            variant: 'destructive',
+        });
+    }
   };
 
   return (
@@ -80,7 +88,7 @@ export default function CounselorRegisterForm() {
             <CardDescription>
               {isLimitReached 
                 ? t('counselor_register_limit_reached')
-                : t('counselor_register_subtitle', { count: counselorCount, limit: 10 })
+                : t('counselor_register_subtitle', { count: counselorCount, limit: COUNSELOR_LIMIT })
               }
             </CardDescription>
         </CardHeader>

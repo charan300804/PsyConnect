@@ -78,6 +78,7 @@
   "toast_admin_logged_in_title": "¡Administrador ha iniciado sesión!",
   "toast_admin_logged_in_description": "Ha iniciado sesión correctamente como administrador.",
   "toast_registration_error_title": "Error de Registro",
+  "toast_user_already_exists_description": "Ya existe un usuario con este correo electrónico.",
   "toast_admin_already_registered_description": "Ya se ha registrado una cuenta de administrador.",
   "toast_admin_registration_success_title": "¡Registro de Administrador Exitoso!",
   "toast_admin_registration_success_description": "La cuenta de administrador ha sido creada. Por favor, inicie sesión.",
@@ -109,6 +110,8 @@
   "toast_registration_success_description": "Su cuenta ha sido creada. Por favor, inicie sesión.",
   "student_register_title": "Registro de Estudiante",
   "student_register_subtitle": "Cree su cuenta para comenzar.",
+  "toast_login_failed_title": "Inicio de Sesión Fallido",
+  "toast_login_failed_description": "Correo electrónico o contraseña no válidos. Por favor, inténtelo de nuevo.",
 
   "booking_form_title": "Cita con el Consejero",
   "form_student_id": "ID de Estudiante",

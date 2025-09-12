@@ -14,6 +14,7 @@ import { Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
 import { useAuth } from '@/context/auth-context';
+import { validateUser } from '@/lib/user-store';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -36,14 +37,22 @@ export default function AdminLoginForm() {
     });
 
   const onSubmit = (data: AdminLoginFormValues) => {
-    // In a real app, you'd validate credentials against a backend.
-    login('admin', 'Admin');
+    const user = validateUser('admin', data.email, data.password);
 
-    toast({
-      title: t('toast_admin_logged_in_title'),
-      description: t('toast_admin_logged_in_description'),
-    });
-    router.push('/admin');
+    if (user) {
+      login('admin', user.fullName);
+      toast({
+        title: t('toast_admin_logged_in_title'),
+        description: t('toast_admin_logged_in_description'),
+      });
+      router.push('/admin');
+    } else {
+       toast({
+        title: t('toast_login_failed_title'),
+        description: t('toast_login_failed_description'),
+        variant: 'destructive',
+      });
+    }
   };
 
   return (

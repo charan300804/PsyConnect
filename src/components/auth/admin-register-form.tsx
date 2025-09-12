@@ -12,8 +12,9 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
-import { hasAdminAccount, createAdminAccount } from '@/lib/auth-state';
 import { useTranslation } from '@/context/language-context';
+import { addUser, hasUser } from '@/lib/user-store';
+import React from 'react';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -31,7 +32,11 @@ export default function AdminRegisterForm() {
     const { t } = useTranslation();
     const { toast } = useToast();
     const router = useRouter();
-    const isRegistered = hasAdminAccount();
+    const [isRegistered, setIsRegistered] = React.useState(true);
+
+    React.useEffect(() => {
+        setIsRegistered(hasUser('admin'));
+    }, []);
     
     const form = useForm<AdminRegisterFormValues>({
         resolver: zodResolver(formSchema),
@@ -54,13 +59,20 @@ export default function AdminRegisterForm() {
         return;
     }
     
-    createAdminAccount();
-    console.log(data);
-    toast({
-      title: t('toast_admin_registration_success_title'),
-      description: t('toast_admin_registration_success_description'),
-    });
-    router.push('/login/admin');
+    const success = addUser('admin', data);
+    if (success) {
+        toast({
+            title: t('toast_admin_registration_success_title'),
+            description: t('toast_admin_registration_success_description'),
+        });
+        router.push('/login/admin');
+    } else {
+        toast({
+            title: t('toast_registration_error_title'),
+            description: t('toast_user_already_exists_description'),
+            variant: 'destructive',
+        });
+    }
   };
 
   return (

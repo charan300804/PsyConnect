@@ -78,6 +78,7 @@
   "toast_admin_logged_in_title": "Admin Logged In!",
   "toast_admin_logged_in_description": "You have successfully logged in as an admin.",
   "toast_registration_error_title": "Registration Error",
+  "toast_user_already_exists_description": "A user with this email already exists.",
   "toast_admin_already_registered_description": "An admin account has already been registered.",
   "toast_admin_registration_success_title": "Admin Registration Successful!",
   "toast_admin_registration_success_description": "The admin account has been created. Please log in.",
@@ -109,6 +110,8 @@
   "toast_registration_success_description": "Your account has been created. Please log in.",
   "student_register_title": "Student Registration",
   "student_register_subtitle": "Create your account to get started.",
+  "toast_login_failed_title": "Login Failed",
+  "toast_login_failed_description": "Invalid email or password. Please try again.",
 
   "booking_form_title": "Counsellor Appointment",
   "form_student_id": "Student ID",

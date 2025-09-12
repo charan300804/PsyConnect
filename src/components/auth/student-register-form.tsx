@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { UserPlus } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
+import { addUser } from '@/lib/user-store';
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -41,12 +42,20 @@ export default function StudentRegisterForm() {
     });
 
   const onSubmit = (data: StudentRegisterFormValues) => {
-    console.log(data);
-    toast({
-      title: t('toast_registration_success_title'),
-      description: t('toast_registration_success_description'),
-    });
-    router.push('/login/student');
+    const success = addUser('student', data);
+    if (success) {
+        toast({
+            title: t('toast_registration_success_title'),
+            description: t('toast_registration_success_description'),
+        });
+        router.push('/login/student');
+    } else {
+        toast({
+            title: t('toast_registration_error_title'),
+            description: t('toast_user_already_exists_description'),
+            variant: 'destructive',
+        });
+    }
   };
 
   return (

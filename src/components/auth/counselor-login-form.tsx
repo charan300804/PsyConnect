@@ -14,6 +14,7 @@ import { Briefcase } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
 import { useAuth } from '@/context/auth-context';
+import { validateUser } from '@/lib/user-store';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -36,15 +37,22 @@ export default function CounselorLoginForm() {
     });
 
   const onSubmit = (data: CounselorLoginFormValues) => {
-    // In a real app, you'd validate credentials against a backend.
-    const counselorName = data.email.split('@')[0]; // Simulate getting user name
-    login('counselor', counselorName);
+    const user = validateUser('counselor', data.email, data.password);
     
-    toast({
-      title: t('toast_logged_in_title'),
-      description: t('toast_counselor_logged_in_description'),
-    });
-    router.push('/counselor');
+    if (user) {
+      login('counselor', user.fullName);
+      toast({
+        title: t('toast_logged_in_title'),
+        description: t('toast_counselor_logged_in_description'),
+      });
+      router.push('/counselor');
+    } else {
+        toast({
+            title: t('toast_login_failed_title'),
+            description: t('toast_login_failed_description'),
+            variant: 'destructive',
+        });
+    }
   };
 
   return (

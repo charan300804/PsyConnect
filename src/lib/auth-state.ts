@@ -1,6 +1,9 @@
 
 'use client';
 
+// This file is deprecated. User management is now handled in `src/lib/user-store.ts`.
+// The logic here is kept for reference but is no longer used by the application.
+
 // In a real application, this would be a check against a database.
 // For this prototype, we'll use a simple boolean in memory.
 let adminRegistered = false;
