@@ -95,21 +95,41 @@ export default function TestWizard() {
   }
 
   useEffect(() => {
-    if (steps[currentStep] === t('test_step_results')) {
+    if (currentStep === steps.length - 1) { // Check for the last step
         handleTestCompletion();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStep, t]);
+  }, [currentStep]);
   
   const renderStep = () => {
     const lastTestDateObj = lastTestDate ? parseISO(lastTestDate) : null;
     const canRetakeTest = !lastTestDateObj || !isValid(lastTestDateObj) || isBefore(addDays(lastTestDateObj, 15), new Date());
     const nextTestDate = lastTestDateObj && isValid(lastTestDateObj) ? format(addDays(lastTestDateObj, 15), 'PPP') : '';
 
-    switch (steps[currentStep]) {
-      case t('test_step_details'):
+    if (currentStep === 0 && !canRetakeTest) {
+      return (
+        <Card className="max-w-2xl mx-auto">
+           <CardHeader>
+                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
+            </CardHeader>
+          <CardContent>
+             <p className="text-sm text-center text-muted-foreground py-8">
+                {t('test_retake_message', { date: nextTestDate })}
+             </p>
+          </CardContent>
+          <CardFooter className="flex justify-center">
+             <Button asChild>
+                <Link href="/resources">{t('nav_resources')}</Link>
+             </Button>
+          </CardFooter>
+        </Card>
+      );
+    }
+
+    switch (currentStep) {
+      case 0:
         return <StudentDetailsForm onSubmit={handleStudentDetailsSubmit} />;
-      case t('test_step_phq9'):
+      case 1:
         return (
           <Questionnaire
             title="questionnaire_phq9_title"
@@ -121,7 +141,7 @@ export default function TestWizard() {
             onBack={handleBack}
           />
         );
-      case t('test_step_gad7'):
+      case 2:
         return (
           <Questionnaire
             title="questionnaire_gad7_title"
@@ -133,7 +153,7 @@ export default function TestWizard() {
             onBack={handleBack}
           />
         );
-      case t('test_step_ghq12'):
+      case 3:
         return (
           <Questionnaire
             title="questionnaire_ghq12_title"
@@ -145,7 +165,7 @@ export default function TestWizard() {
             onBack={handleBack}
           />
         );
-      case t('test_step_results'):
+      case 4:
             const phq9Score = calculateScore(phq9Answers);
             const gad7Score = calculateScore(gad7Answers);
             const ghq12Score = calculateScore(ghq12Answers);
@@ -210,7 +230,7 @@ export default function TestWizard() {
       <div className="mb-8 overflow-x-auto pb-4">
         <div className="flex items-start justify-center min-w-max">
           {steps.map((step, index) => (
-            <div key={step} className="flex items-center w-36">
+            <div key={index} className="flex items-center w-36">
               <div className="flex flex-col items-center text-center">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
@@ -219,7 +239,7 @@ export default function TestWizard() {
                 >
                   {index + 1}
                 </div>
-                <p className={`mt-2 text-sm ${index <= currentStep ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>{step}</p>
+                <p className={`mt-2 text-sm ${index <= currentStep ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>{steps[index]}</p>
               </div>
               {index < steps.length - 1 && <div className={`flex-1 h-px mx-2 transition-colors ${index < currentStep ? 'bg-primary' : 'bg-muted'}`}></div>}
             </div>
