@@ -16,9 +16,10 @@ import { format } from 'date-fns';
 import { Textarea } from '../ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { registeredCounselors } from '@/lib/counselor-data';
+import { getRegisteredCounselors, Counselor } from '@/lib/counselor-data';
 import { addAppointmentRequest } from '@/lib/admin-data';
 import { useTranslation } from '@/context/language-context';
+import { useState, useEffect } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -36,6 +37,14 @@ export type BookingFormValues = z.infer<typeof formSchema>;
 export default function BookingForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const [counselors, setCounselors] = useState<Counselor[]>([]);
+  const hasCounselors = counselors.length > 0;
+
+  useEffect(() => {
+    // Fetch counselors on the client side since they are stored in localStorage
+    setCounselors(getRegisteredCounselors());
+  }, []);
+
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +57,7 @@ export default function BookingForm() {
   });
 
   const onSubmit = (data: BookingFormValues) => {
-    const selectedCounselor = registeredCounselors.find(c => c.id === data.counselorId);
+    const selectedCounselor = counselors.find(c => c.id === data.counselorId);
     
     if (!selectedCounselor) {
         toast({
@@ -129,14 +138,14 @@ export default function BookingForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('form_select_counselor')}</FormLabel>
-                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!hasCounselors}>
                         <FormControl>
                         <SelectTrigger>
-                            <SelectValue placeholder={t('form_select_counselor_placeholder')} />
+                            <SelectValue placeholder={hasCounselors ? t('form_select_counselor_placeholder') : t('no_counselors_registered')} />
                         </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {registeredCounselors.map(counselor => (
+                            {counselors.map(counselor => (
                                 <SelectItem key={counselor.id} value={counselor.id}>{counselor.name}</SelectItem>
                             ))}
                         </SelectContent>
@@ -206,7 +215,7 @@ export default function BookingForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">{t('book_appointment_button')}</Button>
+            <Button type="submit" disabled={!hasCounselors}>{t('book_appointment_button')}</Button>
           </form>
         </Form>
       </CardContent>

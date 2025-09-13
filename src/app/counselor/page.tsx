@@ -3,17 +3,34 @@
 
 import CounselorAppointmentsTable from '@/components/counselor/counselor-appointments-table';
 import { StudentDataTable } from '@/components/admin/student-data-table';
-import { registeredCounselors } from '@/lib/counselor-data';
+import { getRegisteredCounselors, Counselor } from '@/lib/counselor-data';
 import { useTranslation } from '@/context/language-context';
-
-// This is a placeholder for the logged-in counselor. 
-// In a real application, this would come from an authentication context.
-const loggedInCounselor = registeredCounselors.length > 0 ? registeredCounselors[0] : null;
+import { useAuth } from '@/context/auth-context';
+import { useEffect, useState } from 'react';
 
 export default function CounselorDashboardPage() {
   const { t } = useTranslation();
+  const { authState } = useAuth();
+  const [loggedInCounselor, setLoggedInCounselor] = useState<Counselor | null>(null);
+  const [counselorsExist, setCounselorsExist] = useState(true);
 
-  if (!loggedInCounselor) {
+  useEffect(() => {
+    // In a real application, you'd get the logged-in user's info more securely.
+    // For this prototype, we find the counselor from the list stored on the client.
+    const counselors = getRegisteredCounselors();
+    if (counselors.length === 0) {
+      setCounselorsExist(false);
+    }
+    
+    if (authState.userRole === 'counselor' && authState.userName) {
+        // The 'id' for a counselor is their email address.
+        const counselor = counselors.find(c => c.name === authState.userName);
+        setLoggedInCounselor(counselor || null);
+    }
+  }, [authState]);
+
+
+  if (!counselorsExist) {
     return (
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center">
@@ -24,6 +41,14 @@ export default function CounselorDashboardPage() {
         </div>
       </div>
     );
+  }
+
+  if (!loggedInCounselor) {
+     return (
+       <div className="container mx-auto flex items-center justify-center flex-1 px-4 sm:px-6 lg:px-8">
+          <p>{t('loading_counselor_data') || 'Loading counselor data...'}</p>
+       </div>
+     )
   }
 
   return (
