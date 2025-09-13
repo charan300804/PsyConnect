@@ -3,15 +3,27 @@
 
 import CounselorAppointmentsTable from '@/components/counselor/counselor-appointments-table';
 import { StudentDataTable } from '@/components/admin/student-data-table';
-import { registeredCounselors } from '@/lib/counselor-data';
+import { getRegisteredCounselors, Counselor } from '@/lib/counselor-data';
 import { useTranslation } from '@/context/language-context';
-
-// This is a placeholder for the logged-in counselor. 
-// In a real application, this would come from an authentication context.
-const loggedInCounselor = registeredCounselors.length > 0 ? registeredCounselors[0] : null;
+import { useAuth } from '@/context/auth-context';
+import { useEffect, useState } from 'react';
 
 export default function CounselorDashboardPage() {
   const { t } = useTranslation();
+  const { authState } = useAuth();
+  const [loggedInCounselor, setLoggedInCounselor] = useState<Counselor | null>(null);
+
+  useEffect(() => {
+    // In a real application, you'd get the logged-in user's info more securely.
+    // For this prototype, we find the counselor from the list stored on the client.
+    if (authState.userRole === 'counselor' && authState.userName) {
+        const counselors = getRegisteredCounselors();
+        // The 'id' for a counselor is their email address.
+        const counselor = counselors.find(c => c.name === authState.userName);
+        setLoggedInCounselor(counselor || null);
+    }
+  }, [authState]);
+
 
   if (!loggedInCounselor) {
     return (

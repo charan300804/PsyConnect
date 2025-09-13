@@ -1,5 +1,5 @@
 
-import { Counselor, registeredCounselors } from "./counselor-data";
+import { Counselor } from "./counselor-data";
 
 export const assessmentResultsData: { name: string; phq9: number; gad7: number; fill: string; }[] = [];
 
