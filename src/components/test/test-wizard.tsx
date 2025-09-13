@@ -154,7 +154,7 @@ export default function TestWizard() {
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
-                        <CardTitle>{t('test_results_title', { name: studentDetails?.name })}</CardTitle>
+                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-4">
