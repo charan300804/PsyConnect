@@ -38,6 +38,7 @@ export default function BookingForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [counselors, setCounselors] = useState<Counselor[]>([]);
+  const hasCounselors = counselors.length > 0;
 
   useEffect(() => {
     // Fetch counselors on the client side since they are stored in localStorage
@@ -137,10 +138,10 @@ export default function BookingForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t('form_select_counselor')}</FormLabel>
-                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!hasCounselors}>
                         <FormControl>
                         <SelectTrigger>
-                            <SelectValue placeholder={counselors.length > 0 ? t('form_select_counselor_placeholder') : t('no_counselors_registered')} />
+                            <SelectValue placeholder={hasCounselors ? t('form_select_counselor_placeholder') : t('no_counselors_registered')} />
                         </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -214,7 +215,7 @@ export default function BookingForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit">{t('book_appointment_button')}</Button>
+            <Button type="submit" disabled={!hasCounselors}>{t('book_appointment_button')}</Button>
           </form>
         </Form>
       </CardContent>
