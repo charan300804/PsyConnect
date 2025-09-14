@@ -134,10 +134,10 @@ export default function ForumPostPage({ params }: { params: { id: string } }) {
                     <CardTitle>{t('forum_leave_reply')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <Textarea placeholder={t('forum_reply_placeholder')} className="min-h-[120px]" disabled />
+                    <Textarea placeholder={t('forum_reply_placeholder')} className="min-h-[120px]" />
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                    <Button disabled>{t('forum_post_reply')}</Button>
+                    <Button>{t('forum_post_reply')}</Button>
                 </CardFooter>
             </Card>
         </div>
