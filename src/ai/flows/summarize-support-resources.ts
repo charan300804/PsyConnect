@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -15,6 +16,11 @@ const SummarizeSupportResourceInputSchema = z.object({
   resourceText: z
     .string()
     .describe('The text content of the support resource to summarize.'),
+  summaryLength: z
+    .enum(['short', 'medium', 'detailed'])
+    .optional()
+    .default('medium')
+    .describe('The desired length of the summary.'),
 });
 export type SummarizeSupportResourceInput = z.infer<
   typeof SummarizeSupportResourceInputSchema
@@ -37,9 +43,23 @@ const prompt = ai.definePrompt({
   name: 'summarizeSupportResourcePrompt',
   input: {schema: SummarizeSupportResourceInputSchema},
   output: {schema: SummarizeSupportResourceOutputSchema},
-  prompt: `Summarize the following support resource text in a concise manner:
+  prompt: `You are an expert at summarizing texts for students who may be feeling stressed or overwhelmed. Your summaries should be in plain, easy-to-understand language.
 
-  {{{resourceText}}}`,
+Please summarize the following support resource text.
+
+{{#if (eq summaryLength "short")}}
+Provide a very brief, one-sentence summary.
+{{/if}}
+{{#if (eq summaryLength "medium")}}
+Provide a concise summary of about 2-3 sentences.
+{{/if}}
+{{#if (eq summaryLength "detailed")}}
+Provide a more detailed summary of 4-5 sentences, breaking down the key points.
+{{/if}}
+
+Resource Text:
+{{{resourceText}}}
+`,
 });
 
 const summarizeSupportResourceFlow = ai.defineFlow(

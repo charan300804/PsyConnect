@@ -24,33 +24,53 @@ const typeIcons = {
   guide: <FileText className="w-4 h-4" />,
 };
 
+type CachedSummary = {
+  summary: string;
+  timestamp: number;
+};
+
 export default function ResourceCard({ resource }: ResourceCardProps) {
   const { t } = useTranslation();
   const placeholder = PlaceHolderImages.find(p => p.id === resource.imagePlaceholderId);
-  const [summary, setSummary] = useState<string | null>(null);
+  const [cachedSummary, setCachedSummary] = useState<CachedSummary | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const handleSummarize = async (e: React.MouseEvent) => {
-    e.stopPropagation(); 
-    e.preventDefault();
+  // Admin-configurable setting (simulated)
+  const summaryLength: 'short' | 'medium' | 'detailed' = 'medium';
 
+  const handleSummarize = async () => {
+    // Open the dialog immediately
     setIsDialogOpen(true);
-    if (summary) return;
+
+    // Check for a valid, non-expired cache entry
+    const now = Date.now();
+    if (cachedSummary && (now - cachedSummary.timestamp) < 24 * 60 * 60 * 1000) {
+      // Use cached summary, no loading needed
+      return;
+    }
 
     setIsLoading(true);
     try {
-      // In a real app, you would pass the full resource content here.
-      // For this prototype, we'll summarize the description.
-      const result = await summarizeSupportResource({ resourceText: resource.description });
-      setSummary(result.summary);
+      // In a real app, you would pass the full resource content.
+      // For this prototype, we summarize the description.
+      const result = await summarizeSupportResource({ 
+        resourceText: resource.description,
+        summaryLength: summaryLength
+      });
+      const newSummary = { summary: result.summary, timestamp: Date.now() };
+      setCachedSummary(newSummary);
     } catch (error) {
       console.error("Failed to generate summary:", error);
-      setSummary("Sorry, we couldn't generate a summary at this time.");
+      setCachedSummary({
+        summary: "Sorry, we couldn't generate a summary at this time.",
+        timestamp: Date.now(),
+      });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <Card className="h-full flex flex-col transition-shadow duration-300 hover:shadow-lg hover:border-primary/50">
@@ -101,14 +121,14 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
             <DialogHeader>
               <DialogTitle>Summary of: {resource.title}</DialogTitle>
             </DialogHeader>
-            <div className="py-4">
+            <div className="py-4 min-h-[100px] flex items-center justify-center">
               {isLoading ? (
                 <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
                   <Loader2 className="h-8 w-8 animate-spin" />
                   <p>Generating summary...</p>
                 </div>
               ) : (
-                <p className="text-sm text-foreground">{summary}</p>
+                <p className="text-sm text-foreground">{cachedSummary?.summary}</p>
               )}
             </div>
           </DialogContent>
