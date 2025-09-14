@@ -70,3 +70,41 @@ npm run dev
 Once both servers are running, you can open your browser and navigate to the URL provided by the `npm run dev` command (usually [http://localhost:9002](http://localhost:9002)).
 
 You should now be able to use the "Psyconnect" application on your local machine.
+
+## Deploying to Firebase (Public Host)
+
+To deploy your application to a public URL so it can be accessed from any device, follow these steps.
+
+### 1. Install Firebase CLI
+
+If you don't have it already, install the Firebase Command Line Interface (CLI) globally on your machine.
+
+```bash
+npm install -g firebase-tools
+```
+
+### 2. Log in to Firebase
+
+Log in to your Google account using the Firebase CLI.
+
+```bash
+firebase login
+```
+
+### 3. Deploy the Application
+
+In your project's root directory, run the following command to start the deployment process:
+
+```bash
+firebase deploy --only apphosting
+```
+
+The CLI will guide you through the following:
+
+- **Selecting a Firebase Project**: Choose the Firebase project you want to deploy to. If you don't have one, you can create a new one from the [Firebase Console](https://console.firebase.google.com/).
+- **Creating a Backend**: The CLI will detect your `apphosting.yaml` and create a new App Hosting backend for you.
+- **Building and Deploying**: The CLI will then build your Next.js application and deploy it. This may take a few minutes.
+
+### 4. Access Your Public App
+
+Once the deployment is complete, the Firebase CLI will provide you with a public URL (e.g., `https://your-app-name.web.app`). You can now share this URL and access your application from any mobile device or computer with an internet connection.
