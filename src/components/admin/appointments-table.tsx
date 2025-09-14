@@ -10,20 +10,46 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { appointmentRequestsData, AppointmentRequest } from "@/lib/admin-data"
+import { AppointmentRequest } from "@/lib/admin-data"
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/context/language-context";
+import { useEffect, useState } from "react";
+import { getCollection } from "@/lib/firestore-service";
+import { Skeleton } from "../ui/skeleton";
   
 export function AppointmentsTable() {
     const { t } = useTranslation();
+    const [requests, setRequests] = useState<AppointmentRequest[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchRequests() {
+            try {
+                const data = await getCollection<AppointmentRequest>('appointmentRequests');
+                setRequests(data);
+            } catch (error) {
+                console.error("Failed to fetch appointment requests:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchRequests();
+    }, []);
+
     return (
         <Card>
             <CardHeader>
                 <CardTitle>{t('appointments_table_title')}</CardTitle>
             </CardHeader>
             <CardContent>
-                {appointmentRequestsData.length === 0 ? (
+                {isLoading ? (
+                    <div className="space-y-2">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                ) : requests.length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
                         {t('appointments_table_no_requests')}
                     </div>
@@ -40,7 +66,7 @@ export function AppointmentsTable() {
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {appointmentRequestsData.map((request: AppointmentRequest) => (
+                        {requests.map((request: AppointmentRequest) => (
                             <TableRow key={request.id}>
                             <TableCell className="font-medium">{request.studentName}</TableCell>
                             <TableCell>{request.studentId}</TableCell>

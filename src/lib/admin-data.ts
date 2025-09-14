@@ -1,5 +1,6 @@
 
-import { Counselor } from "./counselor-data";
+import { addDocument } from './firestore-service';
+import type { Counselor } from "./counselor-data";
 
 export const assessmentResultsData: { name: string; phq9: number; gad7: number; fill: string; }[] = [];
 
@@ -40,15 +41,13 @@ export type AppointmentRequest = {
     counselor: Counselor;
 }
 
-export const appointmentRequestsData: AppointmentRequest[] = [];
-
-export function addAppointmentRequest(request: Omit<AppointmentRequest, 'id' | 'status'>) {
-    const newRequest: AppointmentRequest = {
+// This is now a wrapper around the Firestore service
+export async function addAppointmentRequest(request: Omit<AppointmentRequest, 'id' | 'status'>) {
+    const newRequest = {
         ...request,
-        id: `apt-${Date.now()}`,
         status: 'Pending',
     };
-    appointmentRequestsData.push(newRequest);
+    return await addDocument('appointmentRequests', newRequest);
 }
 
 
@@ -63,9 +62,9 @@ export type StudentAssessmentData = {
     assessmentDate: string;
 }
 
-export const studentAssessmentData: StudentAssessmentData[] = [];
 
-// Function to add new student data
-export function addStudentAssessmentData(data: StudentAssessmentData) {
-    studentAssessmentData.push(data);
+// This is now a wrapper around the Firestore service
+export async function addStudentAssessmentData(data: Omit<StudentAssessmentData, 'id'>) {
+    return await addDocument('studentAssessments', data);
 }
+

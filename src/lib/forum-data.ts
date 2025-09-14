@@ -1,6 +1,7 @@
 
 import { format } from 'date-fns';
 import type { UserRole } from './user-store';
+import { addDocument } from './firestore-service';
 
 export type ForumPost = {
     id: string;
@@ -10,14 +11,12 @@ export type ForumPost = {
         name: string;
         isModerator: boolean;
     };
-    createdAt: string;
+    createdAt: string; // Should be ISO string
     replies: number;
     views: number;
     tags: string[];
 };
   
-export const forumPosts: ForumPost[] = [];
-
 type NewPostData = {
     title: string;
     content: string;
@@ -25,20 +24,20 @@ type NewPostData = {
     authorRole: UserRole;
 }
 
-export function addForumPost(data: NewPostData) {
-    const newPost: ForumPost = {
-        id: `post-${Date.now()}`,
+export async function addForumPost(data: NewPostData) {
+    const newPost = {
         title: data.title,
         content: data.content,
         author: {
             name: data.authorName,
             isModerator: data.authorRole === 'admin' || data.authorRole === 'counselor',
         },
-        createdAt: format(new Date(), 'PP'),
+        // createdAt is now handled by the server timestamp in addDocument
         replies: 0,
         views: 0,
         // TODO: Implement tag extraction or selection
         tags: ['discussion'], 
     };
-    forumPosts.unshift(newPost);
+
+    return await addDocument('forumPosts', newPost);
 }

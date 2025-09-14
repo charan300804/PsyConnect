@@ -35,7 +35,7 @@ export default function NewPostForm() {
         },
     });
 
-  const onSubmit = (data: NewPostFormValues) => {
+  const onSubmit = async (data: NewPostFormValues) => {
     if (!authState.userName || !authState.userRole) {
         toast({
             title: t('toast_error_title'),
@@ -45,17 +45,25 @@ export default function NewPostForm() {
         return;
     }
 
-    addForumPost({
-        ...data,
-        authorName: authState.userName,
-        authorRole: authState.userRole,
-    });
-    
-    toast({
-      title: t('toast_post_created_title'),
-      description: t('toast_post_created_description'),
-    });
-    router.push('/forum');
+    try {
+        await addForumPost({
+            ...data,
+            authorName: authState.userName,
+            authorRole: authState.userRole,
+        });
+        
+        toast({
+          title: t('toast_post_created_title'),
+          description: t('toast_post_created_description'),
+        });
+        router.push('/forum');
+    } catch (error) {
+        toast({
+            title: t('toast_error_title'),
+            description: "Failed to create post. Please try again later.",
+            variant: 'destructive',
+        });
+    }
   };
 
   return (

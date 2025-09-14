@@ -54,9 +54,10 @@ export default function BookingForm() {
       counselorId: undefined,
       reason: '',
     },
+    disabled: !hasCounselors,
   });
 
-  const onSubmit = (data: BookingFormValues) => {
+  const onSubmit = async (data: BookingFormValues) => {
     const selectedCounselor = counselors.find(c => c.id === data.counselorId);
     
     if (!selectedCounselor) {
@@ -68,19 +69,27 @@ export default function BookingForm() {
         return;
     }
 
-    addAppointmentRequest({
-        studentName: data.name,
-        studentId: data.studentId,
-        date: format(data.date, 'yyyy-MM-dd'),
-        reason: data.reason,
-        counselor: selectedCounselor,
-    });
-    
-    toast({
-      title: t('toast_appointment_booked_title'),
-      description: t('toast_appointment_booked_description', { date: format(data.date, 'PPP') }),
-    });
-    form.reset();
+    try {
+        await addAppointmentRequest({
+            studentName: data.name,
+            studentId: data.studentId,
+            date: format(data.date, 'yyyy-MM-dd'),
+            reason: data.reason,
+            counselor: selectedCounselor,
+        });
+        
+        toast({
+          title: t('toast_appointment_booked_title'),
+          description: t('toast_appointment_booked_description', { date: format(data.date, 'PPP') }),
+        });
+        form.reset();
+    } catch (error) {
+        toast({
+            title: t('toast_error_title'),
+            description: "Failed to book appointment. Please try again later.",
+            variant: 'destructive',
+        });
+    }
   };
 
   return (

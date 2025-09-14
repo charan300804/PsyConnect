@@ -10,10 +10,13 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
-import { appointmentRequestsData, AppointmentRequest } from "@/lib/admin-data"
+import { AppointmentRequest } from "@/lib/admin-data"
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "@/context/language-context";
+import { useEffect, useState } from "react";
+import { getCollectionWhere } from "@/lib/firestore-service";
+import { Skeleton } from "../ui/skeleton";
 
 type CounselorAppointmentsTableProps = {
     counselorId: string;
@@ -21,9 +24,23 @@ type CounselorAppointmentsTableProps = {
   
 export default function CounselorAppointmentsTable({ counselorId }: CounselorAppointmentsTableProps) {
     const { t } = useTranslation();
-    const filteredAppointments = appointmentRequestsData.filter(
-        (request) => request.counselor.id === counselorId
-    );
+    const [filteredAppointments, setFilteredAppointments] = useState<AppointmentRequest[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchAppointments() {
+            if (!counselorId) return;
+            try {
+                const data = await getCollectionWhere<AppointmentRequest>('appointmentRequests', 'counselor.id', '==', counselorId);
+                setFilteredAppointments(data);
+            } catch (error) {
+                console.error("Failed to fetch counselor appointments:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchAppointments();
+    }, [counselorId]);
     
     return (
         <Card>
@@ -31,7 +48,12 @@ export default function CounselorAppointmentsTable({ counselorId }: CounselorApp
                 <CardTitle>{t('counselor_appointments_table_title')}</CardTitle>
             </CardHeader>
             <CardContent>
-                {filteredAppointments.length === 0 ? (
+                {isLoading ? (
+                    <div className="space-y-2">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-10 w-full" />
+                    </div>
+                ) : filteredAppointments.length === 0 ? (
                     <div className="text-center text-muted-foreground py-8">
                         {t('counselor_appointments_table_no_requests')}
                     </div>

@@ -69,28 +69,32 @@ export default function TestWizard() {
     return '';
   };
 
-  const handleTestCompletion = () => {
+  const handleTestCompletion = async () => {
     const phq9Score = calculateScore(phq9Answers);
     const gad7Score = calculateScore(gad7Answers);
     const ghq12Score = calculateScore(ghq12Answers);
 
     if (studentDetails) {
-        addStudentAssessmentData({
-            id: studentDetails.studentId + Date.now(),
-            studentName: studentDetails.name,
-            studentId: studentDetails.studentId,
-            school: studentDetails.school,
-            phq9Score,
-            gad7Score,
-            ghq12Score,
-            assessmentDate: format(new Date(), 'yyyy-MM-dd'),
-        });
-    }
+        try {
+            await addStudentAssessmentData({
+                studentName: studentDetails.name,
+                studentId: studentDetails.studentId,
+                school: studentDetails.school,
+                phq9Score,
+                gad7Score,
+                ghq12Score,
+                assessmentDate: new Date().toISOString(),
+            });
 
-    if (authState.userName) {
-      const today = new Date().toISOString();
-      localStorage.setItem(`lastTestDate_${authState.userName}`, today);
-      setLastTestDate(today);
+            if (authState.userName) {
+              const today = new Date().toISOString();
+              localStorage.setItem(`lastTestDate_${authState.userName}`, today);
+              setLastTestDate(today);
+            }
+        } catch (error) {
+            console.error("Failed to save assessment data:", error);
+            // Optionally, show a toast to the user
+        }
     }
   }
 
@@ -110,11 +114,7 @@ export default function TestWizard() {
       return (
         <Card className="max-w-2xl mx-auto">
            <CardHeader>
-<<<<<<< HEAD
-                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
-=======
                 <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
->>>>>>> refs/remotes/origin/main
             </CardHeader>
           <CardContent>
              <p className="text-sm text-center text-muted-foreground py-8">
@@ -178,11 +178,7 @@ export default function TestWizard() {
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
-<<<<<<< HEAD
-                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
-=======
                         <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
->>>>>>> refs/remotes/origin/main
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-4">
