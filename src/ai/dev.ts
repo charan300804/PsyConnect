@@ -1,4 +1,6 @@
 import { config } from 'dotenv';
+import 'dotenv/config';
+
 config();
 
 import '@/ai/flows/detect-user-sentiment.ts';

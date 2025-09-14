@@ -110,7 +110,11 @@ export default function TestWizard() {
       return (
         <Card className="max-w-2xl mx-auto">
            <CardHeader>
+<<<<<<< HEAD
                 <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
+=======
+                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
+>>>>>>> refs/remotes/origin/main
             </CardHeader>
           <CardContent>
              <p className="text-sm text-center text-muted-foreground py-8">
@@ -174,7 +178,11 @@ export default function TestWizard() {
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
+<<<<<<< HEAD
                         <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName })}</CardTitle>
+=======
+                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
+>>>>>>> refs/remotes/origin/main
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-4">
