@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import ChatMessage from './chat-message';
 import { initialChatbotPrompt } from '@/ai/flows/initial-chatbot-prompt';
 import { generateChatResponse } from '@/ai/flows/generate-chat-response';
+import { detectUserSentiment } from '@/ai/flows/detect-user-sentiment';
+import { addSentimentData } from '@/lib/admin-data';
 import { Skeleton } from '../ui/skeleton';
 import { useLanguage, useTranslation } from '@/context/language-context';
 
@@ -74,10 +76,11 @@ export default function ChatInterface() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    const userMessageText = input.trim();
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      text: input,
+      text: userMessageText,
     };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
@@ -85,20 +88,36 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-      const history = newMessages.slice(0, -1).map(m => ({
-        role: m.role,
-        text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
-      }));
+        // Run sentiment detection and response generation in parallel
+        const sentimentPromise = detectUserSentiment({ text: userMessageText }).then(sentimentResult => {
+            // Anonymously store sentiment data. Do not store any user identifiers.
+            addSentimentData({
+                sentiment: sentimentResult.sentiment.toLowerCase() as 'positive' | 'negative' | 'neutral',
+                severity: sentimentResult.severity.toLowerCase() as 'low' | 'medium' | 'high',
+            });
+        }).catch(error => {
+            // Log silently. Don't block the chat if sentiment analysis fails.
+            console.error('Failed to detect user sentiment:', error);
+        });
 
-      const { response } = await generateChatResponse({ text: input, history, language, region });
+        const history = newMessages.slice(0, -1).map(m => ({
+            role: m.role,
+            text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
+        }));
 
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'bot',
-        text: response,
-      };
+        const responsePromise = generateChatResponse({ text: userMessageText, history, language, region });
 
-      setMessages((prev) => [...prev, botMessage]);
+        // Wait for both promises to complete
+        const [_, { response }] = await Promise.all([sentimentPromise, responsePromise]);
+
+        const botMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            role: 'bot',
+            text: response,
+        };
+
+        setMessages((prev) => [...prev, botMessage]);
+
     } catch (error) {
       console.error('Failed to generate chat response:', error);
       const errorMessage: Message = {

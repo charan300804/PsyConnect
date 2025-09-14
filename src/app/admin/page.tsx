@@ -7,6 +7,7 @@ import ForumActivityChart from '@/components/admin/forum-activity-chart';
 import { AppointmentsTable } from '@/components/admin/appointments-table';
 import { StudentDataTable } from '@/components/admin/student-data-table';
 import { useTranslation } from '@/context/language-context';
+import SentimentTrendsChart from '@/components/admin/sentiment-trends-chart';
 
 export default function AdminPage() {
   const { t } = useTranslation();
@@ -20,6 +21,9 @@ export default function AdminPage() {
       </div>
 
       <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+            <SentimentTrendsChart />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <AssessmentResultsChart />
           <AppointmentsChart />
