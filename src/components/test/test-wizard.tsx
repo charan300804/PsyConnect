@@ -69,32 +69,28 @@ export default function TestWizard() {
     return '';
   };
 
-  const handleTestCompletion = async () => {
+  const handleTestCompletion = () => {
     const phq9Score = calculateScore(phq9Answers);
     const gad7Score = calculateScore(gad7Answers);
     const ghq12Score = calculateScore(ghq12Answers);
 
-    if (studentDetails) {
-        try {
-            await addStudentAssessmentData({
-                studentName: studentDetails.name,
-                studentId: studentDetails.studentId,
-                school: studentDetails.school,
-                phq9Score,
-                gad7Score,
-                ghq12Score,
-                assessmentDate: new Date().toISOString(),
-            });
+ if (studentDetails) {
+    addStudentAssessmentData({
+        studentName: studentDetails.name,
+        studentId: studentDetails.studentId,
+        school: studentDetails.school,
+        phq9Score,
+        gad7Score,
+        ghq12Score,
+        assessmentDate: format(new Date(), 'yyyy-MM-dd'),
+    });
+}
 
-            if (authState.userName) {
-              const today = new Date().toISOString();
-              localStorage.setItem(`lastTestDate_${authState.userName}`, today);
-              setLastTestDate(today);
-            }
-        } catch (error) {
-            console.error("Failed to save assessment data:", error);
-            // Optionally, show a toast to the user
-        }
+
+    if (authState.userName) {
+      const today = new Date().toISOString();
+      localStorage.setItem(`lastTestDate_${authState.userName}`, today);
+      setLastTestDate(today);
     }
   }
 
@@ -114,6 +110,8 @@ export default function TestWizard() {
       return (
         <Card className="max-w-2xl mx-auto">
            <CardHeader>
+
+                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || ''})}</CardTitle>
                 <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
             </CardHeader>
           <CardContent>
@@ -178,6 +176,8 @@ export default function TestWizard() {
             return (
                 <Card className="max-w-2xl mx-auto">
                     <CardHeader>
+
+                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
                         <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-6">
