@@ -55,19 +55,19 @@ export default function ChatInterface() {
       }
     };
     fetchInitialMessage();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [t]);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
       // Use `setTimeout` to allow the DOM to update before scrolling
       setTimeout(() => {
-         if (scrollAreaRef.current) {
-            scrollAreaRef.current.scrollTo({
-                top: scrollAreaRef.current.scrollHeight,
-                behavior: 'smooth',
-            });
-         }
+        if (scrollAreaRef.current) {
+          scrollAreaRef.current.scrollTo({
+            top: scrollAreaRef.current.scrollHeight,
+            behavior: 'smooth',
+          });
+        }
       }, 100);
     }
   }, [messages]);
@@ -88,35 +88,35 @@ export default function ChatInterface() {
     setIsLoading(true);
 
     try {
-        // Run sentiment detection and response generation in parallel
-        const sentimentPromise = detectUserSentiment({ text: userMessageText }).then(sentimentResult => {
-            // Anonymously store sentiment data. Do not store any user identifiers.
-            addSentimentData({
-                sentiment: sentimentResult.sentiment.toLowerCase() as 'positive' | 'negative' | 'neutral',
-                severity: sentimentResult.severity.toLowerCase() as 'low' | 'medium' | 'high',
-            });
-        }).catch(error => {
-            // Log silently. Don't block the chat if sentiment analysis fails.
-            console.error('Failed to detect user sentiment:', error);
+      // Run sentiment detection and response generation in parallel
+      const sentimentPromise = detectUserSentiment({ text: userMessageText }).then(sentimentResult => {
+        // Anonymously store sentiment data. Do not store any user identifiers.
+        addSentimentData({
+          sentiment: sentimentResult.sentiment.toLowerCase() as 'positive' | 'negative' | 'neutral',
+          severity: sentimentResult.severity.toLowerCase() as 'low' | 'medium' | 'high',
         });
+      }).catch(error => {
+        // Log silently. Don't block the chat if sentiment analysis fails.
+        console.error('Failed to detect user sentiment:', error);
+      });
 
-        const history = newMessages.slice(0, -1).map(m => ({
-            role: m.role,
-            text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
-        }));
+      const history = newMessages.slice(0, -1).map(m => ({
+        role: m.role,
+        text: typeof m.text === 'string' ? m.text : 'Complex UI Component',
+      }));
 
-        const responsePromise = generateChatResponse({ text: userMessageText, history, language, region });
+      const responsePromise = generateChatResponse({ text: userMessageText, history, language, region });
 
-        // Wait for both promises to complete
-        const [_, { response }] = await Promise.all([sentimentPromise, responsePromise]);
+      // Wait for both promises to complete
+      const [_, { response }] = await Promise.all([sentimentPromise, responsePromise]);
 
-        const botMessage: Message = {
-            id: (Date.now() + 1).toString(),
-            role: 'bot',
-            text: response,
-        };
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'bot',
+        text: response,
+      };
 
-        setMessages((prev) => [...prev, botMessage]);
+      setMessages((prev) => [...prev, botMessage]);
 
     } catch (error) {
       console.error('Failed to generate chat response:', error);
@@ -132,7 +132,7 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col w-full max-w-2xl mx-auto h-full max-h-[70vh] bg-card border rounded-lg shadow-lg">
+    <div className="flex flex-col w-full max-w-3xl mx-auto h-[min(650px,80vh)] glass rounded-3xl overflow-hidden shadow-2xl border-white/20">
       <div className="p-4 border-b flex items-center gap-3">
         <Avatar>
           <AvatarFallback className="bg-primary/20">
@@ -161,16 +161,16 @@ export default function ChatInterface() {
             </div>
           ) : messages.length > 0 ? (
             messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+              <ChatMessage key={message.id} message={message} />
             ))
           ) : (
-             <div className="text-center py-16 text-muted-foreground flex flex-col items-center gap-2">
-                <Frown />
-                <p>{t('chat_no_messages')}</p>
+            <div className="text-center py-16 text-muted-foreground flex flex-col items-center gap-2">
+              <Frown />
+              <p>{t('chat_no_messages')}</p>
             </div>
           )}
           {isLoading && messages.length > 0 && (
-             <div className="flex items-start gap-3">
+            <div className="flex items-start gap-3">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-primary/20">
                   <Bot className="w-4 h-4 text-primary" />
@@ -205,7 +205,7 @@ export default function ChatInterface() {
           </Button>
         </form>
         <p className="text-xs text-muted-foreground mt-2 text-center">
-            {t('chat_disclaimer')}
+          {t('chat_disclaimer')}
         </p>
       </div>
     </div>

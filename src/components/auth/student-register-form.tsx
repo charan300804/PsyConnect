@@ -28,56 +28,58 @@ const formSchema = z.object({
 export type StudentRegisterFormValues = z.infer<typeof formSchema>;
 
 export default function StudentRegisterForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const form = useForm<StudentRegisterFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            fullName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-    });
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const form = useForm<StudentRegisterFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
 
   const onSubmit = (data: StudentRegisterFormValues) => {
     const success = addUser('student', data);
     if (success) {
-        toast({
-            title: t('toast_registration_success_title'),
-            description: t('toast_registration_success_description'),
-        });
-        router.push('/login/student');
+      toast({
+        title: t('toast_registration_success_title'),
+        description: t('toast_registration_success_description'),
+      });
+      router.push('/login/student');
     } else {
-        toast({
-            title: t('toast_registration_error_title'),
-            description: t('toast_user_already_exists_description'),
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_registration_error_title'),
+        description: t('toast_user_already_exists_description'),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
-    <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-            <div className="flex justify-center mb-2">
-                <UserPlus className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle>{t('student_register_title')}</CardTitle>
-            <CardDescription>{t('student_register_subtitle')}</CardDescription>
-        </CardHeader>
-      <CardContent>
+    <Card className="w-full glass border-white/40 dark:border-white/10 shadow-2xl backdrop-blur-md">
+      <CardHeader className="text-center space-y-2">
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <UserPlus className="w-8 h-8 text-primary" />
+          </div>
+        </div>
+        <CardTitle className="text-2xl font-bold font-headline">{t('student_register_title')}</CardTitle>
+        <CardDescription className="text-base">{t('student_register_subtitle')}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_full_name')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_full_name')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('form_full_name')} {...field} />
+                    <Input placeholder={t('form_full_name')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,9 +90,9 @@ export default function StudentRegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_email')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder={t('form_email')} {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,42 +103,42 @@ export default function StudentRegisterForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_password')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder={t('form_password')} {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_confirm_password')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_confirm_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder={t('form_confirm_password')} {...field} />
+                    <Input type="password" placeholder={t('form_confirm_password')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">{t('register_button')}</Button>
+            <div className="pt-2">
+              <Button type="submit" className="w-full h-11 text-base font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">{t('register_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
+      <CardFooter className="flex flex-col gap-4 bg-muted/30 p-6 rounded-b-xl border-t border-gray-100 dark:border-gray-800">
         <div className="text-center text-sm text-muted-foreground">
-            {t('already_have_account')}{' '}
-            <Link href="/login/student" className="text-primary hover:underline">
-                {t('login_here_link')}
-            </Link>
+          {t('already_have_account')}{' '}
+          <Link href="/login/student" className="text-primary font-medium hover:underline decoration-2 underline-offset-4">
+            {t('login_here_link')}
+          </Link>
         </div>
-        <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+        <Button type="button" variant="ghost" size="sm" asChild className="hover:bg-transparent hover:text-primary transition-colors">
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

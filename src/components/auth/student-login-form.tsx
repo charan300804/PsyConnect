@@ -24,17 +24,17 @@ const formSchema = z.object({
 export type StudentLoginFormValues = z.infer<typeof formSchema>;
 
 export default function StudentLoginForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const { login } = useAuth();
-    const form = useForm<StudentLoginFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-    });
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const { login } = useAuth();
+  const form = useForm<StudentLoginFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   const onSubmit = (data: StudentLoginFormValues) => {
     const user = validateUser('student', data.email, data.password);
@@ -47,34 +47,36 @@ export default function StudentLoginForm() {
       });
       router.push('/test');
     } else {
-        toast({
-            title: t('toast_login_failed_title'),
-            description: t('toast_login_failed_description'),
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_login_failed_title'),
+        description: t('toast_login_failed_description'),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
-    <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-            <div className="flex justify-center mb-2">
-                <User className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('student_login_title')}</CardTitle>
-            <CardDescription>{t('login_form_subtitle')}</CardDescription>
-        </CardHeader>
-      <CardContent>
+    <Card className="w-full glass border-white/40 dark:border-white/10 shadow-2xl backdrop-blur-md">
+      <CardHeader className="text-center space-y-2">
+        <div className="flex justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <User className="w-8 h-8 text-primary" />
+          </div>
+        </div>
+        <CardTitle className="text-2xl font-bold font-headline">{t('student_login_title')}</CardTitle>
+        <CardDescription className="text-base">{t('login_form_subtitle')}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_email')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder={t('form_email')} {...field} />
+                    <Input type="email" placeholder={t('form_email')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,29 +87,29 @@ export default function StudentLoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_password')}</FormLabel>
+                  <FormLabel className="text-foreground/80">{t('form_password')}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder={t('form_password')} {...field} />
+                    <Input type="password" placeholder={t('form_password')} {...field} className="h-11 bg-white/50 border-gray-200 focus:border-primary focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">{t('login_button')}</Button>
+            <div className="pt-2">
+              <Button type="submit" className="w-full h-11 text-base font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">{t('login_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex flex-col gap-4">
+      <CardFooter className="flex flex-col gap-4 bg-muted/30 p-6 rounded-b-xl border-t border-gray-100 dark:border-gray-800">
         <div className="text-center text-sm text-muted-foreground">
-            {t('dont_have_account')}{' '}
-            <Link href="/login/student/register" className="text-primary hover:underline">
-                {t('register_here_link')}
-            </Link>
+          {t('dont_have_account')}{' '}
+          <Link href="/login/student/register" className="text-primary font-medium hover:underline decoration-2 underline-offset-4">
+            {t('register_here_link')}
+          </Link>
         </div>
-        <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+        <Button type="button" variant="ghost" size="sm" asChild className="hover:bg-transparent hover:text-primary transition-colors">
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

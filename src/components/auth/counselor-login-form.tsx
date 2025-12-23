@@ -24,21 +24,21 @@ const formSchema = z.object({
 export type CounselorLoginFormValues = z.infer<typeof formSchema>;
 
 export default function CounselorLoginForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const { login } = useAuth();
-    const form = useForm<CounselorLoginFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-    });
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const { login } = useAuth();
+  const form = useForm<CounselorLoginFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   const onSubmit = (data: CounselorLoginFormValues) => {
     const user = validateUser('counselor', data.email, data.password);
-    
+
     if (user) {
       login('counselor', user.fullName);
       toast({
@@ -47,23 +47,23 @@ export default function CounselorLoginForm() {
       });
       router.push('/counselor');
     } else {
-        toast({
-            title: t('toast_login_failed_title'),
-            description: t('toast_login_failed_description'),
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_login_failed_title'),
+        description: t('toast_login_failed_description'),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
     <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-            <div className="flex justify-center mb-2">
-                <Briefcase className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('counselor_login_title')}</CardTitle>
-            <CardDescription>{t('login_form_subtitle')}</CardDescription>
-        </CardHeader>
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-2">
+          <Briefcase className="w-10 h-10 text-primary" />
+        </div>
+        <CardTitle className="text-2xl font-bold font-headline">{t('counselor_login_title')}</CardTitle>
+        <CardDescription>{t('login_form_subtitle')}</CardDescription>
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -94,20 +94,20 @@ export default function CounselorLoginForm() {
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">{t('login_button')}</Button>
+              <Button type="submit" className="w-full">{t('login_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            {t('dont_have_account')}{' '}
-            <Link href="/login/counselor/register" className="text-primary hover:underline">
-                {t('register_here_link')}
-            </Link>
+          {t('dont_have_account')}{' '}
+          <Link href="/login/counselor/register" className="text-primary hover:underline">
+            {t('register_here_link')}
+          </Link>
         </div>
         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

@@ -15,7 +15,7 @@ export type User = {
 
 export const COUNSELOR_LIMIT = 10;
 
-function getUsers(role: UserRole): User[] {
+export function getUsers(role: UserRole): User[] {
   if (typeof window === 'undefined') return [];
   const key = `registered_${role}s`;
   const usersJson = localStorage.getItem(key);

@@ -29,66 +29,66 @@ const formSchema = z.object({
 export type AdminRegisterFormValues = z.infer<typeof formSchema>;
 
 export default function AdminRegisterForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const [isRegistered, setIsRegistered] = React.useState(true);
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isRegistered, setIsRegistered] = React.useState(true);
 
-    React.useEffect(() => {
-        setIsRegistered(hasUser('admin'));
-    }, []);
-    
-    const form = useForm<AdminRegisterFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            fullName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        disabled: isRegistered,
-    });
+  React.useEffect(() => {
+    setIsRegistered(hasUser('admin'));
+  }, []);
+
+  const form = useForm<AdminRegisterFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    disabled: isRegistered,
+  });
 
   const onSubmit = (data: AdminRegisterFormValues) => {
     if (isRegistered) {
-        toast({
-            title: t('toast_registration_error_title'),
-            description: t('toast_admin_already_registered_description'),
-            variant: 'destructive',
-        });
-        return;
+      toast({
+        title: t('toast_registration_error_title'),
+        description: t('toast_admin_already_registered_description'),
+        variant: 'destructive',
+      });
+      return;
     }
-    
+
     const success = addUser('admin', data);
     if (success) {
-        toast({
-            title: t('toast_admin_registration_success_title'),
-            description: t('toast_admin_registration_success_description'),
-        });
-        router.push('/login/admin');
+      toast({
+        title: t('toast_admin_registration_success_title'),
+        description: t('toast_admin_registration_success_description'),
+      });
+      router.push('/login/admin');
     } else {
-        toast({
-            title: t('toast_registration_error_title'),
-            description: t('toast_user_already_exists_description'),
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_registration_error_title'),
+        description: t('toast_user_already_exists_description'),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
     <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-            <div className="flex justify-center mb-2">
-                <ShieldCheck className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle>{t('admin_register_title')}</CardTitle>
-            <CardDescription>
-              {isRegistered 
-                ? t('admin_register_already_exists')
-                : t('admin_register_subtitle')
-              }
-            </CardDescription>
-        </CardHeader>
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-2">
+          <ShieldCheck className="w-10 h-10 text-primary" />
+        </div>
+        <CardTitle>{t('admin_register_title')}</CardTitle>
+        <CardDescription>
+          {isRegistered
+            ? t('admin_register_already_exists')
+            : t('admin_register_subtitle')
+          }
+        </CardDescription>
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -131,7 +131,7 @@ export default function AdminRegisterForm() {
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
@@ -145,20 +145,20 @@ export default function AdminRegisterForm() {
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full" disabled={isRegistered}>{t('register_admin_button')}</Button>
+              <Button type="submit" className="w-full" disabled={isRegistered}>{t('register_admin_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            {t('already_have_account')}{' '}
-            <Link href="/login/admin" className="text-primary hover:underline">
-                {t('login_here_link')}
-            </Link>
+          {t('already_have_account')}{' '}
+          <Link href="/login/admin" className="text-primary hover:underline">
+            {t('login_here_link')}
+          </Link>
         </div>
-         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+        <Button type="button" variant="link" size="sm" asChild>
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

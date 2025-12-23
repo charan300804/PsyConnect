@@ -19,26 +19,28 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   return (
     <div
       className={cn(
-        'flex items-start gap-3',
+        'flex items-start gap-4 animate-in slide-in-from-bottom-2 duration-300',
         !isBot && 'flex-row-reverse'
       )}
     >
-      <Avatar className="w-8 h-8">
+      <Avatar className="w-9 h-9 border-2 border-white shadow-sm">
         <AvatarFallback
           className={cn(
-            isBot ? 'bg-primary/20 text-primary' : 'bg-accent/20 text-accent'
+            isBot ? 'bg-gradient-to-br from-primary to-primary/60 text-white' : 'bg-gradient-to-br from-accent to-accent/60 text-white'
           )}
         >
-          {isBot ? <Bot className="w-4 h-4" /> : <User className="w-4 h-4" />}
+          {isBot ? <Bot className="w-5 h-5" /> : <User className="w-5 h-5" />}
         </AvatarFallback>
       </Avatar>
       <div
         className={cn(
-          'p-3 rounded-lg max-w-sm md:max-w-md',
-          isBot ? 'bg-secondary' : 'bg-primary/90 text-primary-foreground'
+          'p-4 max-w-sm md:max-w-md shadow-md text-sm leading-relaxed',
+          isBot
+            ? 'glass-card rounded-2xl rounded-tl-none border-0 bg-white/80 dark:bg-gray-800/80'
+            : 'bg-gradient-to-br from-primary to-primary/90 text-primary-foreground rounded-2xl rounded-tr-none'
         )}
       >
-        <p className="text-sm leading-relaxed">{message.text}</p>
+        <p>{message.text}</p>
       </div>
     </div>
   );

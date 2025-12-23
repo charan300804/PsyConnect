@@ -16,33 +16,33 @@ type ForumPostItemProps = {
 export default function ForumPostItem({ post }: ForumPostItemProps) {
   const { t } = useTranslation();
   return (
-    <Link href={`/forum/${post.id}`} className="block">
-      <Card className="hover:bg-muted/50 transition-colors">
-        <CardHeader>
-          <CardTitle className="text-lg">{post.title}</CardTitle>
+    <Link href={`/forum/${post.id}`} className="block group">
+      <Card className="glass border-white/20 dark:border-white/10 hover:shadow-lg transition-all duration-300 hover:scale-[1.01] hover:border-primary/30 bg-white/40 dark:bg-black/20 backdrop-blur-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-lg group-hover:text-primary transition-colors font-headline">{post.title}</CardTitle>
           <div className="flex items-center gap-2 text-sm text-muted-foreground pt-1">
-              <Avatar className="w-6 h-6">
-                  <AvatarFallback className="bg-accent/20 text-accent text-xs">
-                      {post.author.isModerator ? <Shield className="w-4 h-4" /> : <UserCircle className="w-4 h-4" />}
-                  </AvatarFallback>
-              </Avatar>
-              <span>{post.author.name}</span>
-              {post.author.isModerator && <Badge variant="secondary">{t('forum_moderator')}</Badge>}
-              <span>•</span>
-              <span>{post.createdAt}</span>
+            <Avatar className="w-6 h-6 border border-white/20">
+              <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
+                {post.author.isModerator ? <Shield className="w-3.5 h-3.5" /> : <UserCircle className="w-4 h-4" />}
+              </AvatarFallback>
+            </Avatar>
+            <span className="font-medium text-foreground/80">{post.author.name}</span>
+            {post.author.isModerator && <Badge variant="secondary" className="text-[10px] h-5 px-1.5 bg-primary/10 text-primary border-primary/20">{t('forum_moderator')}</Badge>}
+            <span className="text-muted-foreground/40">•</span>
+            <span className="text-muted-foreground/80">{post.createdAt}</span>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground line-clamp-2">{post.content}</p>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground mt-4">
-              <div className="flex items-center gap-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>{post.replies} {t('forum_replies')}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                  <Eye className="w-4 h-4" />
-                  <span>{post.views} {t('forum_views')}</span>
-              </div>
+          <p className="text-sm text-foreground/70 line-clamp-2 leading-relaxed">{post.content}</p>
+          <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground mt-4">
+            <div className="flex items-center gap-1.5 bg-muted/30 px-2 py-1 rounded-md">
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>{post.replies} {t('forum_replies')}</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-muted/30 px-2 py-1 rounded-md">
+              <Eye className="w-3.5 h-3.5" />
+              <span>{post.views} {t('forum_views')}</span>
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -59,164 +59,176 @@ export default function BookingForm() {
 
   const onSubmit = async (data: BookingFormValues) => {
     const selectedCounselor = counselors.find(c => c.id === data.counselorId);
-    
+
     if (!selectedCounselor) {
-        toast({
-            title: t('toast_error_title'),
-            description: t('toast_counselor_not_found_description'),
-            variant: 'destructive',
-        });
-        return;
+      toast({
+        title: t('toast_error_title'),
+        description: t('toast_counselor_not_found_description'),
+        variant: 'destructive',
+      });
+      return;
     }
 
     try {
-        await addAppointmentRequest({
-            studentName: data.name,
-            studentId: data.studentId,
-            date: format(data.date, 'yyyy-MM-dd'),
-            reason: data.reason,
-            counselor: selectedCounselor,
-        });
-        
-        toast({
-          title: t('toast_appointment_booked_title'),
-          description: t('toast_appointment_booked_description', { date: format(data.date, 'PPP') }),
-        });
-        form.reset();
+      await addAppointmentRequest({
+        studentName: data.name,
+        studentId: data.studentId,
+        date: format(data.date, 'yyyy-MM-dd'),
+        reason: data.reason,
+        counselor: selectedCounselor,
+      });
+
+      toast({
+        title: t('toast_appointment_booked_title'),
+        description: t('toast_appointment_booked_description', { date: format(data.date, 'PPP') }),
+      });
+      form.reset();
     } catch (error) {
-        toast({
-            title: t('toast_error_title'),
-            description: "Failed to book appointment. Please try again later.",
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_error_title'),
+        description: "Failed to book appointment. Please try again later.",
+        variant: 'destructive',
+      });
     }
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>{t('booking_form_title')}</CardTitle>
+    <Card className="max-w-3xl mx-auto glass border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-md bg-white/40 dark:bg-black/20">
+      <CardHeader className="text-center pb-8 border-b border-white/10 dark:border-white/5">
+        <CardTitle className="text-3xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">{t('booking_form_title')}</CardTitle>
+        <p className="text-muted-foreground mt-2">Schedule a session with our professional counselors.</p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-8">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>{t('form_full_name')}</FormLabel>
+                  <FormItem>
+                    <FormLabel className="text-foreground/80 font-medium">{t('form_full_name')}</FormLabel>
                     <FormControl>
-                        <Input placeholder={t('form_full_name')} {...field} />
+                      <Input placeholder={t('form_full_name')} {...field} className="h-12 bg-white/40 border-white/20 focus:border-primary/50 focus:ring-primary/20 transition-all duration-200" />
                     </FormControl>
                     <FormMessage />
-                    </FormItem>
+                  </FormItem>
                 )}
-                />
-                <FormField
+              />
+              <FormField
                 control={form.control}
                 name="studentId"
                 render={({ field }) => (
-                    <FormItem>
-                    <FormLabel>{t('form_student_id')}</FormLabel>
+                  <FormItem>
+                    <FormLabel className="text-foreground/80 font-medium">{t('form_student_id')}</FormLabel>
                     <FormControl>
-                        <Input placeholder={t('form_student_id')} {...field} />
+                      <Input placeholder={t('form_student_id')} {...field} className="h-12 bg-white/40 border-white/20 focus:border-primary/50 focus:ring-primary/20 transition-all duration-200" />
                     </FormControl>
                     <FormMessage />
-                    </FormItem>
+                  </FormItem>
                 )}
-                />
+              />
             </div>
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_email')}</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">{t('form_email')}</FormLabel>
                   <FormControl>
-                    <Input placeholder={t('form_email')} {...field} />
+                    <Input placeholder={t('form_email')} {...field} className="h-12 bg-white/40 border-white/20 focus:border-primary/50 focus:ring-primary/20 transition-all duration-200" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-             <FormField
-              control={form.control}
-              name="counselorId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t('form_select_counselor')}</FormLabel>
-                   <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!hasCounselors}>
-                        <FormControl>
-                        <SelectTrigger>
-                            <SelectValue placeholder={hasCounselors ? t('form_select_counselor_placeholder') : t('no_counselors_registered')} />
-                        </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                            {counselors.map(counselor => (
-                                <SelectItem key={counselor.id} value={counselor.id}>{counselor.name}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>{t('form_preferred_date')}</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FormField
+                control={form.control}
+                name="counselorId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-foreground/80 font-medium">{t('form_select_counselor')}</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!hasCounselors}>
                       <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>{t('form_pick_date')}</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
+                        <SelectTrigger className="h-12 bg-white/40 border-white/20 focus:border-primary/50 focus:ring-primary/20">
+                          <SelectValue placeholder={hasCounselors ? t('form_select_counselor_placeholder') : t('no_counselors_registered')} />
+                        </SelectTrigger>
                       </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={(date) =>
-                          date < new Date() || date < new Date("1900-01-01")
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription>
-                    {t('form_date_description')}
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
+                      <SelectContent>
+                        {hasCounselors ? (
+                          counselors.map(counselor => (
+                            <SelectItem key={counselor.id} value={counselor.id}>{counselor.name}</SelectItem>
+                          ))
+                        ) : (
+                          <div className="p-2 text-sm text-muted-foreground text-center">
+                            No counselors available
+                          </div>
+                        )}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                    {!hasCounselors && (
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-2 bg-amber-100 dark:bg-amber-900/30 p-2 rounded-md">
+                        ⚠️ {t('no_counselors_registered')}
+                      </p>
+                    )}
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel className="text-foreground/80 font-medium">{t('form_preferred_date')}</FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full h-12 pl-3 text-left font-normal bg-white/40 border-white/20 hover:bg-white/60",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>{t('form_pick_date')}</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date < new Date() || date < new Date("1900-01-01")
+                          }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <FormField
               control={form.control}
               name="reason"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('form_reason_for_appointment')}</FormLabel>
+                  <FormLabel className="text-foreground/80 font-medium">{t('form_reason_for_appointment')}</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder={t('form_reason_placeholder')}
-                      className="resize-none"
+                      className="resize-none min-h-[120px] bg-white/40 border-white/20 focus:border-primary/50 focus:ring-primary/20 transition-all duration-200"
                       {...field}
                     />
                   </FormControl>
@@ -224,10 +236,17 @@ export default function BookingForm() {
                 </FormItem>
               )}
             />
-            <Button type="submit" disabled={!hasCounselors}>{t('book_appointment_button')}</Button>
+            <Button type="submit" disabled={!hasCounselors} className="w-full h-12 text-lg font-medium shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300 mt-4">
+              {t('book_appointment_button')}
+            </Button>
           </form>
         </Form>
       </CardContent>
-    </Card>
+      {!hasCounselors && (
+        <div className="bg-amber-100/50 dark:bg-amber-900/20 p-4 text-center text-sm text-amber-800 dark:text-amber-200 border-t border-amber-200/50 dark:border-amber-800/50 rounded-b-xl">
+          <p>Testing Mode: Please <a href="/login/counselor/register" className="underline font-bold hover:text-amber-900">register a counselor</a> account first to enable booking.</p>
+        </div>
+      )}
+    </Card >
   );
 }

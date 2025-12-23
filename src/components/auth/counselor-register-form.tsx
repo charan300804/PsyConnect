@@ -29,72 +29,72 @@ const formSchema = z.object({
 export type CounselorRegisterFormValues = z.infer<typeof formSchema>;
 
 export default function CounselorRegisterForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const [isLimitReached, setIsLimitReached] = React.useState(false);
-    const [counselorCount, setCounselorCount] = React.useState(0);
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isLimitReached, setIsLimitReached] = React.useState(false);
+  const [counselorCount, setCounselorCount] = React.useState(0);
 
-    React.useEffect(() => {
-        const limitReached = hasReachedUserLimit('counselor');
-        setIsLimitReached(limitReached);
-        if (!limitReached) {
-            setCounselorCount(getUserCount('counselor'));
-        }
-    }, []);
+  React.useEffect(() => {
+    const limitReached = hasReachedUserLimit('counselor');
+    setIsLimitReached(limitReached);
+    if (!limitReached) {
+      setCounselorCount(getUserCount('counselor'));
+    }
+  }, []);
 
-    const form = useForm<CounselorRegisterFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            fullName: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-        },
-        disabled: isLimitReached,
-    });
+  const form = useForm<CounselorRegisterFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    disabled: isLimitReached,
+  });
 
   const onSubmit = (data: CounselorRegisterFormValues) => {
     if (hasReachedUserLimit('counselor')) {
-        toast({
-            title: t('toast_registration_error_title'),
-            description: t('toast_counselor_limit_reached_description'),
-            variant: 'destructive',
-        });
-        return;
+      toast({
+        title: t('toast_registration_error_title'),
+        description: t('toast_counselor_limit_reached_description'),
+        variant: 'destructive',
+      });
+      return;
     }
-    
+
     const success = addUser('counselor', data);
-    
+
     if (success) {
-        toast({
-            title: t('toast_counselor_registration_success_title'),
-            description: t('toast_counselor_registration_success_description'),
-        });
-        router.push('/login/counselor');
+      toast({
+        title: t('toast_counselor_registration_success_title'),
+        description: t('toast_counselor_registration_success_description'),
+      });
+      router.push('/login/counselor');
     } else {
-        toast({
-            title: t('toast_registration_error_title'),
-            description: t('toast_user_already_exists_description'),
-            variant: 'destructive',
-        });
+      toast({
+        title: t('toast_registration_error_title'),
+        description: t('toast_user_already_exists_description'),
+        variant: 'destructive',
+      });
     }
   };
 
   return (
     <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-            <div className="flex justify-center mb-2">
-                <Briefcase className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle>{t('counselor_register_title')}</CardTitle>
-            <CardDescription>
-              {isLimitReached 
-                ? t('counselor_register_limit_reached')
-                : t('counselor_register_subtitle', { count: counselorCount, limit: COUNSELOR_LIMIT })
-              }
-            </CardDescription>
-        </CardHeader>
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-2">
+          <Briefcase className="w-10 h-10 text-primary" />
+        </div>
+        <CardTitle>{t('counselor_register_title')}</CardTitle>
+        <CardDescription>
+          {isLimitReached
+            ? t('counselor_register_limit_reached')
+            : t('counselor_register_subtitle', { count: String(counselorCount), limit: String(COUNSELOR_LIMIT) })
+          }
+        </CardDescription>
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -137,7 +137,7 @@ export default function CounselorRegisterForm() {
                 </FormItem>
               )}
             />
-             <FormField
+            <FormField
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
@@ -151,20 +151,20 @@ export default function CounselorRegisterForm() {
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full" disabled={isLimitReached}>{t('register_button')}</Button>
+              <Button type="submit" className="w-full" disabled={isLimitReached}>{t('register_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex flex-col gap-4">
         <div className="text-center text-sm text-muted-foreground">
-            {t('already_have_account')}{' '}
-            <Link href="/login/counselor" className="text-primary hover:underline">
-                {t('login_here_link')}
-            </Link>
+          {t('already_have_account')}{' '}
+          <Link href="/login/counselor" className="text-primary hover:underline">
+            {t('login_here_link')}
+          </Link>
         </div>
-         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+        <Button type="button" variant="link" size="sm" asChild>
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

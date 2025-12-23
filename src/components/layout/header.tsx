@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { BrainCircuit, LogIn, LogOut, PanelLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import LanguageSelector from './language-selector';
 import { useTranslation } from '@/context/language-context';
 import { useAuth } from '@/context/auth-context';
 import { Button } from '../ui/button';
@@ -26,7 +25,7 @@ export function Header() {
   };
 
   const navItems = [
-    { href: '/test', label: t('nav_test'), roles: ['student'] },
+    { href: '/test', label: t('nav_home'), roles: ['student'] },
     { href: '/chat', label: t('nav_chat'), roles: ['student'] },
     { href: '/resources', label: t('nav_resources'), roles: ['student'] },
     { href: '/booking', label: t('nav_booking'), roles: ['student'] },
@@ -47,7 +46,7 @@ export function Header() {
           onClick={() => isMobile && setMobileMenuOpen(false)}
           className={cn(
             'px-3 py-2 rounded-md text-sm font-medium transition-colors',
-             isMobile && 'w-full text-left',
+            isMobile && 'w-full text-left',
             pathname === item.href
               ? 'bg-primary/10 text-primary'
               : 'text-muted-foreground hover:text-foreground'
@@ -60,14 +59,16 @@ export function Header() {
   );
 
   return (
-    <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
+    <header className="sticky top-0 z-50 w-full glass transition-all duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-2 text-primary">
-              <BrainCircuit className="w-7 h-7" />
-              <span className="text-xl font-bold font-headline text-foreground">
-                Psyconnect
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-accent text-white shadow-lg transition-transform group-hover:scale-105">
+                <BrainCircuit className="h-6 w-6" />
+              </div>
+              <span className="text-xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+                PsyConnect
               </span>
             </Link>
           </div>
@@ -76,7 +77,7 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-2">
             {authState.isAuthenticated && renderNavLinks()}
             <div className="border-l h-6 mx-2"></div>
-            <LanguageSelector />
+            <div className="border-l h-6 mx-2"></div>
             {authState.isAuthenticated ? (
               <Button variant="ghost" size="sm" onClick={handleLogout} className="text-muted-foreground hover:text-foreground">
                 <LogOut className="w-4 h-4 mr-2" />
@@ -94,7 +95,6 @@ export function Header() {
 
           {/* Mobile Navigation */}
           <div className="md:hidden flex items-center">
-             <LanguageSelector />
             <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon">

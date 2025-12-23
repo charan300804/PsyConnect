@@ -4,45 +4,26 @@
  * @fileOverview Provides a friendly and helpful initial message from the chatbot to encourage user interaction.
  *
  * @exports initialChatbotPrompt - Function to generate the initial chatbot message.
- * @exports InitialChatbotPromptInput - The input type for the initialChatbotPrompt function (currently empty).
- * @exports InitialChatbotPromptOutput - The return type for the initialChatbotPrompt function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+const WELCOME_MESSAGES = [
+  "Hello! I'm PsyConnect Assistant. I'm here to listen and support you. How are you feeling today?",
+  "Hi there. I'm PsyConnect Assistant, your personal support companion. What's on your mind?",
+  "Welcome. I'm PsyConnect Assistant. I'm here to provide a safe space for you to share your thoughts. How can I help?",
+  "Hello. I'm PsyConnect Assistant. Feel free to share whatever is troubling you. I'm here to listen.",
+  "Hi! I'm PsyConnect Assistant. I'm here to support you through whatever you're experiencing. Want to talk about it?"
+];
 
-const InitialChatbotPromptInputSchema = z.object({});
-export type InitialChatbotPromptInput = z.infer<typeof InitialChatbotPromptInputSchema>;
+export type InitialChatbotPromptInput = {};
 
-const InitialChatbotPromptOutputSchema = z.object({
-  message: z.string().describe('A friendly and helpful initial message from the chatbot.'),
-});
-export type InitialChatbotPromptOutput = z.infer<typeof InitialChatbotPromptOutputSchema>;
+export type InitialChatbotPromptOutput = {
+  message: string;
+};
 
 export async function initialChatbotPrompt(input: InitialChatbotPromptInput): Promise<InitialChatbotPromptOutput> {
-  return initialChatbotPromptFlow(input);
+  // Select a random message from the list
+  const randomMessage = WELCOME_MESSAGES[Math.floor(Math.random() * WELCOME_MESSAGES.length)];
+
+  // Return immediately for instant UI feedback
+  return { message: randomMessage };
 }
-
-const prompt = ai.definePrompt({
-  name: 'initialChatbotPrompt',
-  input: {schema: InitialChatbotPromptInputSchema},
-  output: {schema: InitialChatbotPromptOutputSchema},
-  prompt: `You are a friendly and supportive AI chatbot designed to provide psychological first aid.
-  Your initial message should set a welcoming and supportive tone, encouraging users to share their feelings and concerns.
-  The message should be concise and reassuring, letting the user know that you are there to listen and offer guidance.
-
-  Generate the initial message:
-  `,
-});
-
-const initialChatbotPromptFlow = ai.defineFlow(
-  {
-    name: 'initialChatbotPromptFlow',
-    inputSchema: InitialChatbotPromptInputSchema,
-    outputSchema: InitialChatbotPromptOutputSchema,
-  },
-  async () => {
-    const {output} = await prompt({});
-    return output!;
-  }
-);

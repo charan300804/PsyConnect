@@ -24,17 +24,17 @@ const formSchema = z.object({
 export type AdminLoginFormValues = z.infer<typeof formSchema>;
 
 export default function AdminLoginForm() {
-    const { t } = useTranslation();
-    const { toast } = useToast();
-    const router = useRouter();
-    const { login } = useAuth();
-    const form = useForm<AdminLoginFormValues>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-    });
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const router = useRouter();
+  const { login } = useAuth();
+  const form = useForm<AdminLoginFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   const onSubmit = (data: AdminLoginFormValues) => {
     const user = validateUser('admin', data.email, data.password);
@@ -47,7 +47,7 @@ export default function AdminLoginForm() {
       });
       router.push('/admin');
     } else {
-       toast({
+      toast({
         title: t('toast_login_failed_title'),
         description: t('toast_login_failed_description'),
         variant: 'destructive',
@@ -57,13 +57,13 @@ export default function AdminLoginForm() {
 
   return (
     <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-             <div className="flex justify-center mb-2">
-                <Shield className="w-10 h-10 text-primary" />
-            </div>
-            <CardTitle className="text-2xl font-bold font-headline">{t('admin_login_title')}</CardTitle>
-            <CardDescription>{t('login_form_subtitle')}</CardDescription>
-        </CardHeader>
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-2">
+          <Shield className="w-10 h-10 text-primary" />
+        </div>
+        <CardTitle className="text-2xl font-bold font-headline">{t('admin_login_title')}</CardTitle>
+        <CardDescription>{t('login_form_subtitle')}</CardDescription>
+      </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -94,20 +94,20 @@ export default function AdminLoginForm() {
               )}
             />
             <div className="flex flex-col gap-4">
-                <Button type="submit" className="w-full">{t('login_button')}</Button>
+              <Button type="submit" className="w-full">{t('login_button')}</Button>
             </div>
           </form>
         </Form>
       </CardContent>
-       <CardFooter className="flex flex-col gap-4 text-center">
+      <CardFooter className="flex flex-col gap-4 text-center">
         <div className="text-center text-sm text-muted-foreground">
-            {t('admin_login_register_prompt')}{' '}
-            <Link href="/login/admin/register" className="text-primary hover:underline">
-                {t('admin_login_register_link')}
-            </Link>
+          {t('admin_login_register_prompt')}{' '}
+          <Link href="/login/admin/register" className="text-primary hover:underline">
+            {t('admin_login_register_link')}
+          </Link>
         </div>
         <Button type="button" variant="link" size="sm" asChild>
-            <Link href="/login">{t('back_to_login_selection')}</Link>
+          <Link href="/">{t('back_to_login_selection')}</Link>
         </Button>
       </CardFooter>
     </Card>

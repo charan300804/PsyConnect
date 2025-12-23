@@ -54,7 +54,7 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
     try {
       // In a real app, you would pass the full resource content.
       // For this prototype, we summarize the description.
-      const result = await summarizeSupportResource({ 
+      const result = await summarizeSupportResource({
         resourceText: resource.description,
         summaryLength: summaryLength
       });
@@ -73,62 +73,68 @@ export default function ResourceCard({ resource }: ResourceCardProps) {
 
 
   return (
-    <Card className="h-full flex flex-col transition-shadow duration-300 hover:shadow-lg hover:border-primary/50">
-      <Link href={resource.url} className="group block" target="_blank" rel="noopener noreferrer">
-        <CardHeader className="p-0">
-          <div className="relative aspect-video w-full overflow-hidden rounded-t-lg">
+    <Card className="h-full flex flex-col glass border-white/20 dark:border-white/10 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 group/card backdrop-blur-sm bg-white/40 dark:bg-black/20">
+      <Link href={resource.url} className="group block h-full flex flex-col" target="_blank" rel="noopener noreferrer">
+        <CardHeader className="p-0 relative overflow-hidden">
+          <div className="relative aspect-video w-full overflow-hidden">
             {placeholder && (
               <Image
                 src={placeholder.imageUrl}
                 alt={resource.title}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
                 data-ai-hint={placeholder.imageHint}
               />
             )}
-            <div className="absolute top-2 right-2 bg-card/80 backdrop-blur-sm p-1.5 rounded-md flex items-center gap-1.5 text-xs">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+            <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white px-2 py-1 rounded-md flex items-center gap-1.5 text-xs font-medium border border-white/10 shadow-sm">
               {typeIcons[resource.type]}
               <span className="capitalize">{resource.type}</span>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="p-4 flex-1">
-          <CardTitle className="text-lg mb-2 leading-tight group-hover:text-primary transition-colors">
+        <CardContent className="p-5 flex-1 space-y-2">
+          <CardTitle className="text-xl font-bold font-headline leading-tight group-hover:text-primary transition-colors line-clamp-2">
             {resource.title}
           </CardTitle>
-          <p className="text-sm text-muted-foreground line-clamp-2">
+          <p className="text-sm text-foreground/80 line-clamp-3 leading-relaxed">
             {resource.description}
           </p>
         </CardContent>
       </Link>
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
+      <CardFooter className="p-5 pt-0 flex justify-between items-center mt-auto border-t border-white/10 dark:border-white/5 pt-4">
         <div className="flex flex-wrap gap-2">
-          {resource.tags.map((tag) => (
-            <Badge key={tag} variant="secondary">
+          {resource.tags.slice(0, 2).map((tag) => (
+            <Badge key={tag} variant="outline" className="bg-primary/5 hover:bg-primary/10 border-primary/20 text-xs font-normal">
               {tag}
             </Badge>
           ))}
+          {resource.tags.length > 2 && (
+            <span className="text-xs text-muted-foreground flex items-center">+{resource.tags.length - 2}</span>
+          )}
         </div>
-        
+
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm" onClick={handleSummarize} className="shrink-0">
+            <Button variant="ghost" size="sm" onClick={(e) => { e.preventDefault(); handleSummarize(); }} className="shrink-0 hover:bg-primary/10 text-primary hover:text-primary transition-colors">
               <BookOpen className="mr-2 h-4 w-4" />
               Summarize
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent className="sm:max-w-[425px] glass border-white/20">
             <DialogHeader>
-              <DialogTitle>Summary of: {resource.title}</DialogTitle>
+              <DialogTitle className="font-headline">Summary of: {resource.title}</DialogTitle>
             </DialogHeader>
             <div className="py-4 min-h-[100px] flex items-center justify-center">
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center gap-2 text-muted-foreground">
-                  <Loader2 className="h-8 w-8 animate-spin" />
-                  <p>Generating summary...</p>
+                <div className="flex flex-col items-center justify-center gap-3 text-muted-foreground">
+                  <div className="relative">
+                    <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                  </div>
+                  <p className="text-sm font-medium animate-pulse">Analyzing content...</p>
                 </div>
               ) : (
-                <p className="text-sm text-foreground">{cachedSummary?.summary}</p>
+                <p className="text-sm text-foreground/90 leading-relaxed bg-muted/30 p-4 rounded-lg border border-white/10">{cachedSummary?.summary}</p>
               )}
             </div>
           </DialogContent>

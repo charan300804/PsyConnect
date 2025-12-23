@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -74,8 +73,8 @@ export default function TestWizard() {
     const gad7Score = calculateScore(gad7Answers);
     const ghq12Score = calculateScore(ghq12Answers);
 
- if (studentDetails) {
-    addStudentAssessmentData({
+    if (studentDetails) {
+      addStudentAssessmentData({
         studentName: studentDetails.name,
         studentId: studentDetails.studentId,
         school: studentDetails.school,
@@ -83,9 +82,8 @@ export default function TestWizard() {
         gad7Score,
         ghq12Score,
         assessmentDate: format(new Date(), 'yyyy-MM-dd'),
-    });
-}
-
+      });
+    }
 
     if (authState.userName) {
       const today = new Date().toISOString();
@@ -96,11 +94,11 @@ export default function TestWizard() {
 
   useEffect(() => {
     if (currentStep === steps.length - 1) { // Check for the last step
-        handleTestCompletion();
+      handleTestCompletion();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
-  
+
   const renderStep = () => {
     const lastTestDateObj = lastTestDate ? parseISO(lastTestDate) : null;
     const canRetakeTest = !lastTestDateObj || !isValid(lastTestDateObj) || isBefore(addDays(lastTestDateObj, 15), new Date());
@@ -108,21 +106,22 @@ export default function TestWizard() {
 
     if (currentStep === 0 && !canRetakeTest) {
       return (
-        <Card className="max-w-2xl mx-auto">
-           <CardHeader>
-
-                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || ''})}</CardTitle>
-                <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
-            </CardHeader>
+        <Card className="max-w-2xl mx-auto glass border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-md bg-white/40 dark:bg-black/20 text-center">
+          <CardHeader className="pt-10">
+            <div className="w-20 h-20 rounded-full bg-primary/10 mx-auto flex items-center justify-center mb-4 border border-primary/20">
+              <span className="text-4xl">🎉</span>
+            </div>
+            <CardTitle className="text-3xl font-bold font-headline">{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
+          </CardHeader>
           <CardContent>
-             <p className="text-sm text-center text-muted-foreground py-8">
-                {t('test_retake_message', { date: nextTestDate })}
-             </p>
+            <p className="text-lg text-muted-foreground py-8 leading-relaxed max-w-lg mx-auto">
+              {t('test_retake_message', { date: nextTestDate })}
+            </p>
           </CardContent>
-          <CardFooter className="flex justify-center">
-             <Button asChild>
-                <Link href="/resources">{t('nav_resources')}</Link>
-             </Button>
+          <CardFooter className="flex justify-center pb-10">
+            <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
+              <Link href="/resources">{t('nav_resources')}</Link>
+            </Button>
           </CardFooter>
         </Card>
       );
@@ -168,84 +167,91 @@ export default function TestWizard() {
           />
         );
       case 4:
-            const phq9Score = calculateScore(phq9Answers);
-            const gad7Score = calculateScore(gad7Answers);
-            const ghq12Score = calculateScore(ghq12Answers);
-            const needsSupport = phq9Score >= 10 || gad7Score >= 10;
-            
-            return (
-                <Card className="max-w-2xl mx-auto">
-                    <CardHeader>
+        const phq9Score = calculateScore(phq9Answers);
+        const gad7Score = calculateScore(gad7Answers);
+        const ghq12Score = calculateScore(ghq12Answers);
+        const needsSupport = phq9Score >= 10 || gad7Score >= 10;
 
-                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
-                        <CardTitle>{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <div className="space-y-4">
-                            <div>
-                                <h3 className="font-bold">{t('test_results_phq9_score')}: {phq9Score}</h3>
-                                <p>{getInterpretation(phq9Score, 'phq9')}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-bold">{t('test_results_gad7_score')}: {gad7Score}</h3>
-                                <p>{getInterpretation(gad7Score, 'gad7')}</p>
-                            </div>
-                            <div>
-                                <h3 className="font-bold">{t('test_results_ghq12_score')}: {ghq12Score}</h3>
-                                <p>{t('interpretation_ghq12')}</p>
-                            </div>
-                        </div>
+        return (
+          <Card className="max-w-3xl mx-auto glass border-white/20 dark:border-white/10 shadow-2xl backdrop-blur-md bg-white/40 dark:bg-black/20">
+            <CardHeader className="text-center pb-8 border-b border-white/10 dark:border-white/5">
+              <CardTitle className="text-3xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent py-1">{t('test_results_title', { name: studentDetails?.name || authState.userName || '' })}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-8 pt-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="bg-white/40 dark:bg-white/5 p-6 rounded-xl border border-white/20 dark:border-white/10 shadow-sm text-center transform hover:scale-105 transition-transform duration-300">
+                  <h3 className="font-bold text-lg mb-2 text-primary">{t('test_results_phq9_score')}</h3>
+                  <div className="text-4xl font-black mb-3 text-foreground/80">{phq9Score}</div>
+                  <p className="text-sm font-medium text-muted-foreground">{getInterpretation(phq9Score, 'phq9')}</p>
+                </div>
+                <div className="bg-white/40 dark:bg-white/5 p-6 rounded-xl border border-white/20 dark:border-white/10 shadow-sm text-center transform hover:scale-105 transition-transform duration-300">
+                  <h3 className="font-bold text-lg mb-2 text-primary">{t('test_results_gad7_score')}</h3>
+                  <div className="text-4xl font-black mb-3 text-foreground/80">{gad7Score}</div>
+                  <p className="text-sm font-medium text-muted-foreground">{getInterpretation(gad7Score, 'gad7')}</p>
+                </div>
+                <div className="bg-white/40 dark:bg-white/5 p-6 rounded-xl border border-white/20 dark:border-white/10 shadow-sm text-center transform hover:scale-105 transition-transform duration-300">
+                  <h3 className="font-bold text-lg mb-2 text-primary">{t('test_results_ghq12_score')}</h3>
+                  <div className="text-4xl font-black mb-3 text-foreground/80">{ghq12Score}</div>
+                  <p className="text-sm font-medium text-muted-foreground">{t('interpretation_ghq12')}</p>
+                </div>
+              </div>
 
-                        {needsSupport && (
-                            <div className="p-4 bg-accent/10 border-l-4 border-accent text-accent-foreground rounded-r-lg">
-                                <h4 className="font-bold mb-2">{t('support_recommended_title')}</h4>
-                                <p className="text-sm">
-                                    {t('support_recommended_description')}
-                                </p>
-                            </div>
-                        )}
-                        
-                        <p className="text-sm text-muted-foreground pt-4">
-                           {t('test_results_disclaimer')}
-                        </p>
-                        
-                        {!canRetakeTest && (
-                           <p className="text-sm text-center text-muted-foreground pt-4">
-                                {t('test_retake_message', { date: nextTestDate })}
-                           </p>
-                        )}
-                        
-                    </CardContent>
-                     <CardFooter className="flex justify-between">
-                           <Button variant="outline" onClick={() => setCurrentStep(0)} disabled={!canRetakeTest}>{t('start_over_button')}</Button>
-                           <Button asChild>
-                             <Link href="/booking">{t('book_appointment_button')}</Link>
-                           </Button>
-                        </CardFooter>
-                </Card>
-            );
+              {needsSupport && (
+                <div className="p-6 bg-red-50/50 dark:bg-red-900/10 border border-red-200 dark:border-red-800 rounded-xl flex gap-4 mt-6">
+                  <div className="text-3xl">🛡️</div>
+                  <div>
+                    <h4 className="font-bold text-lg text-red-700 dark:text-red-400 mb-2">{t('support_recommended_title')}</h4>
+                    <p className="text-sm text-red-600/90 dark:text-red-300/90 leading-relaxed">
+                      {t('support_recommended_description')}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              <p className="text-xs text-center text-muted-foreground pt-4 max-w-lg mx-auto italic">
+                {t('test_results_disclaimer')}
+              </p>
+
+              {!canRetakeTest && (
+                <p className="text-sm text-center text-muted-foreground pt-4 font-medium">
+                  {t('test_retake_message', { date: nextTestDate })}
+                </p>
+              )}
+
+            </CardContent>
+            <CardFooter className="flex justify-between items-center bg-muted/10 p-6 border-t border-white/10 dark:border-white/5">
+              <Button variant="outline" onClick={() => setCurrentStep(0)} disabled={!canRetakeTest} className="border-white/20 hover:bg-white/10">{t('start_over_button')}</Button>
+              <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
+                <Link href="/booking">{t('book_appointment_button')}</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        );
       default:
         return null;
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-8 overflow-x-auto pb-4">
-        <div className="flex items-start justify-center min-w-max">
+    <div className="max-w-5xl mx-auto">
+      <div className="mb-10 overflow-x-auto pb-4 scrollbar-hide">
+        <div className="flex items-start justify-center min-w-max px-4">
           {steps.map((step, index) => (
-            <div key={index} className="flex items-center w-36">
-              <div className="flex flex-col items-center text-center">
+            <div key={index} className="flex items-center">
+              <div className="flex flex-col items-center text-center relative z-10">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
-                    index <= currentStep ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-                  }`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 shadow-sm border-2 ${index <= currentStep
+                      ? 'bg-primary text-primary-foreground border-primary scale-110 shadow-primary/30'
+                      : 'bg-muted text-muted-foreground border-transparent'
+                    }`}
                 >
-                  {index + 1}
+                  <span className="font-bold text-sm">{index + 1}</span>
                 </div>
-                <p className={`mt-2 text-sm ${index <= currentStep ? 'text-foreground font-semibold' : 'text-muted-foreground'}`}>{steps[index]}</p>
+                <p className={`mt-3 text-xs font-medium tracking-wide uppercase transition-colors duration-300 ${index <= currentStep ? 'text-primary' : 'text-muted-foreground'}`}>{step}</p>
               </div>
-              {index < steps.length - 1 && <div className={`flex-1 h-px mx-2 transition-colors ${index < currentStep ? 'bg-primary' : 'bg-muted'}`}></div>}
+              {index < steps.length - 1 && (
+                <div className={`w-24 md:w-32 h-1 mx-2 rounded-full transition-all duration-700 ${index < currentStep ? 'bg-primary' : 'bg-muted/50'}`}></div>
+              )}
             </div>
           ))}
         </div>
