@@ -1,110 +1,131 @@
-# Psyconnect
+# PsyConnect - Psychological First-Aid Platform
 
-This is a Next.js application built in Firebase Studio. It is a psychological first-aid platform that provides students with access to a supportive chatbot, mental health resources, well-being assessments, and a community forum.
+**PsyConnect** is a comprehensive web-based platform designed to provide immediate psychological first aid and mental health support to students. It serves as a bridge between students seeking help and professional counselors, while also offering immediate AI-driven support and self-help tools.
 
-## Tech Stack
+## 🌟 Key Features
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **UI Components**: [React](https://react.dev/) with [ShadCN UI](https://ui.shadcn.com/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **AI/Generative**: [Genkit](https://firebase.google.com/docs/genkit) with [Google's Gemini models](https://deepmind.google/technologies/gemini/)
-- **Authentication**: [Firebase Authentication](https://firebase.google.com/docs/auth)
-- **Database**: [Firebase Firestore](https://firebase.google.com/docs/firestore)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
+### 1. 🤖 AI-Powered Chatbot ("PsyConnect Assistant")
+- **Instant Support**: A Gemini-powered AI assistant available 24/7.
+- **Triage**: Capable of understanding student sentiment and distress levels.
+- **Safe Environment**: Provides empathetic responses and directs students to professional help when necessary.
+- **Seamless Integration**: Floats on every page for easy access.
 
-## Running Locally
+### 2. 📝 Self-Assessment Tools
+- **Standardized Questionnaires**: integrated PHQ-9 (Depression), GAD-7 (Anxiety), and GHQ-12 (General Health) assessments.
+- **Immediate Feedback**: Instantly calculates scores and provides clinically relevant interpretations (e.g., "Moderate Anxiety").
+- **Guidance**: Recommends next steps based on scores, such as booking a counselor or exploring resources.
+- **Visual Results**: Displays results in clean, easy-to-read cards.
 
-To run this application on your local machine, follow these steps:
+### 3. 📚 Resource Hub
+- **Curated Content**: A library of 30+ mental health articles covering Anxiety, Depression, Stress, Sleep, and more.
+- **Wikipedia Integration**: Direct "Read More" links to verified Wikipedia articles for in-depth learning.
+- **Search & Filter**: Robust search functionality and tag-based filtering (e.g., "Mindfulness", "Self-Care").
+
+### 4. 📅 Appointment Booking System
+- **Counselor Discovery**: Students can view registered counselors.
+- **Booking Requests**: Simple form to request appointments with specific counselors.
+- **Status Tracking**: (Admin side) Track appointment requests (simulated in this demo).
+
+### 5. 👥 Community Forum
+- **Peer Support**: A safe space for students to share experiences and ask questions.
+- **Moderation**: Visual badges for Moderators (Counselors/Admins).
+- **Engagement**: View counts and reply tracking.
+
+### 6. 🔐 Role-Based Access Control
+- **Student**: Access to Chat, Assessments, Resources, Booking, and Forum (Write).
+- **Counselor**: Dashboard access, Forum Moderation.
+- **Admin**: System-wide oversight, User management (simulated).
+- **Secure Authentication**: Role-gated routes to protect sensitive areas.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend**: [Next.js 14](https://nextjs.org/) (App Router), [React](https://react.dev/)
+- **UI Framework**: [Tailwind CSS](https://tailwindcss.com/)
+- **Component Library**: [Shadcn UI](https://ui.shadcn.com/) (Radix Primitives)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **AI Integration**: [Google Gemini Pro](https://deepmind.google/technologies/gemini/) (via Google Generative AI SDK)
+- **Database**: [Firebase Firestore](https://firebase.google.com/docs/firestore) (for Forum & Appointments)
+- **State Management**: React Hooks & Context API (`AuthContext`, `LanguageContext`)
+- **Theme**: Custom "Calm & Connected" glassmorphism design system.
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the application locally.
 
 ### 1. Prerequisites
+- **Node.js** (v18 or later)
+- **npm** (Node Package Manager)
 
-- **Node.js**: Make sure you have Node.js (version 18 or later) installed. You can download it from [nodejs.org](https://nodejs.org/).
-- **npm**: npm (Node Package Manager) is included with Node.js.
-
-### 2. Install Dependencies
-
-Open your terminal, navigate to the project's root directory, and run the following command to install all the necessary packages:
+### 2. Installation
+Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/charan300804/PsyConnect.git
+cd PsyConnect
 npm install
 ```
 
-### 3. Set Up Environment Variables
+### 3. Environment Setup
+Create a `.env` file in the root directory and add your Google Gemini API key:
 
-The application requires environment variables to connect to Firebase and Google AI services.
-
-a. **Create a `.env` file** in the root of your project.
-
-b. **Add your Google AI API Key**: You need an API key for the Gemini models. You can get one from [Google AI Studio](https://aistudio.google.com/app/apikey). Add it to your `.env` file:
-
-```
-GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```env
+GEMINI_API_KEY=your_actual_api_key_here
 ```
 
-c. **Add Firebase Configuration**: The application is already configured to connect to a Firebase project. No further action is needed for this as the configuration is included in the source code.
-
-### 4. Run the Application
-
-You need to run two processes in separate terminal windows: one for the AI flows (Genkit) and one for the Next.js application itself.
-
-**Terminal 1: Start the Genkit AI Server**
-
-This server runs the AI flows that power the chatbot.
-
-```bash
-npm run genkit:dev
-```
-
-Keep this terminal running. It will watch for changes in your AI flow files.
-
-**Terminal 2: Start the Next.js Development Server**
-
-This server runs the main application frontend and backend.
+### 4. Run the Development Server
+Start the local development server:
 
 ```bash
 npm run dev
 ```
 
-### 5. Open the Application
+Open [http://localhost:3000](http://localhost:3000) (or the port shown in your terminal, e.g., 9002) in your browser.
 
-Once both servers are running, you can open your browser and navigate to the URL provided by the `npm run dev` command (usually [http://localhost:9002](http://localhost:9002)).
+---
 
-You should now be able to use the "Psyconnect" application on your local machine.
+## 📂 Project Structure
 
-## Deploying to Firebase (Public Host)
-
-To deploy your application to a public URL so it can be accessed from any device, follow these steps.
-
-### 1. Install Firebase CLI
-
-If you don't have it already, install the Firebase Command Line Interface (CLI) globally on your machine.
-
-```bash
-npm install -g firebase-tools
+```
+src/
+├── app/                 # Next.js App Router pages
+│   ├── login/           # Role-based login selection
+│   ├── resources/       # Resource Hub page
+│   ├── test/            # Self-Assessment Wizard
+│   ├── forum/           # Community Forum
+│   └── page.tsx         # Landing Page
+├── components/          # Reusable UI components
+│   ├── ai/              # AI-specific logic (Prompting)
+│   ├── auth/            # Login/Register forms
+│   ├── booking/         # Appointment forms
+│   ├── chat/            # Chat interface & messages
+│   ├── resources/       # Resource cards & search
+│   └── ui/              # Shadcn primitive components
+├── lib/                 # Utility functions & Data mocks
+│   ├── gemini.ts        # AI Client initialization
+│   ├── resources.ts     # Curated resource data
+│   └── user-store.ts    # LocalStorage user management
+└── context/             #/ Global state (Auth, Language)
 ```
 
-### 2. Log in to Firebase
+## 🎨 Design System
 
-Log in to your Google account using the Firebase CLI.
+The application uses a custom **Glassmorphism** aesthetic designed to be calming and modern:
+- **Primary Colors**: Soft Violets and Teals (`#7c3aed`, `#2dd4bf`)
+- **Effects**: Backdrop blur (`backdrop-blur-md`), translucent white layers (`bg-white/40`).
+- **Typography**:
+  - **Headlines**: *Lexend* (Geometric, readable)
+  - **Body**: *Outfit* (Modern, clean sans-serif)
 
-```bash
-firebase login
-```
+---
 
-### 3. Deploy the Application
+## 🤝 Contributing
 
-In your project's root directory, run the following command to start the deployment process:
-
-```bash
-firebase deploy --only apphosting
-```
-
-The CLI will guide you through the following:
-
-- **Selecting a Firebase Project**: Choose the Firebase project you want to deploy to. If you don't have one, you can create a new one from the [Firebase Console](https://console.firebase.google.com/).
-- **Creating a Backend**: The CLI will detect your `apphosting.yaml` and create a new App Hosting backend for you.
-- **Building and Deploying**: The CLI will then build your Next.js application and deploy it. This may take a few minutes.
-
-### 4. Access Your Public App
-
-Once the deployment is complete, the Firebase CLI will provide you with a public URL (e.g., `https://your-app-name.web.app`). You can now share this URL and access your application from any mobile device or computer with an internet connection.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
