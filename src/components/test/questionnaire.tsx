@@ -45,20 +45,36 @@ export default function Questionnaire({ title, questions, options, answers, setA
 
             <RadioGroup
               onValueChange={(value) => handleOptionChange(question.id, value)}
-              value={answers[question.id]?.toString()}
+              value={answers[question.id]?.toString() || ''}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2"
             >
-              {options.map((option) => (
-                <div key={option.value} className="relative">
-                  <RadioGroupItem value={option.value.toString()} id={`${question.id}-${option.value}`} className="peer sr-only" />
-                  <Label
-                    htmlFor={`${question.id}-${option.value}`}
-                    className="flex flex-col items-center justify-center p-3 h-full rounded-lg border-2 border-transparent bg-muted/30 cursor-pointer hover:bg-muted/50 peer-checked:bg-primary/10 peer-checked:border-primary peer-checked:text-primary transition-all duration-200 text-center text-sm font-medium"
+              {options.map((option) => {
+                const optionId = `${question.id}-${option.value}`;
+                const isSelected = answers[question.id] === option.value;
+                return (
+                  <div 
+                    key={option.value} 
+                    className="relative w-full cursor-pointer"
+                    onClick={() => handleOptionChange(question.id, option.value.toString())}
                   >
-                    {t(option.label)}
-                  </Label>
-                </div>
-              ))}
+                    <RadioGroupItem 
+                      value={option.value.toString()} 
+                      id={optionId}
+                      className="peer sr-only" 
+                    />
+                    <Label
+                      htmlFor={optionId}
+                      className={`flex flex-col items-center justify-center p-4 min-h-[80px] rounded-lg border-2 transition-all duration-200 text-center text-sm font-medium cursor-pointer w-full ${
+                        isSelected
+                          ? 'border-primary bg-primary/15 text-primary shadow-md'
+                          : 'border-muted/40 bg-muted/20 hover:bg-muted/40 hover:border-muted/60'
+                      }`}
+                    >
+                      {t(option.label)}
+                    </Label>
+                  </div>
+                );
+              })}
             </RadioGroup>
           </div>
         ))}
